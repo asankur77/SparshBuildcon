@@ -1,0 +1,70 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var d = db.CompanyInfos.Single(ci => ci.Id == 1);
+    ViewBag.Title = "vissionandmission";
+}
+
+
+  
+  <!--======= BANNER =========-->
+  <div class="sub-banner" style="background-image:url('../Content/Home/img/vision-banner-1000x_.jpg')">
+    <div class="overlay">
+      <div class="container">
+        <h1>Vision &amp; Mission</h1>
+        <ol class="breadcrumb">
+          <li class="pull-left">Vision &amp; Mission</li>
+          <li><a href="../Home/Index">Home</a></li>
+          <li class="active">Vision &amp; Mission</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!--======= WHAT WE DO =========-->
+  <section class="what-we-do">
+    <div class="container"> 
+      
+      <!--======= TITTLE =========-->
+      <div class="tittle"> <img src="~/Content/Home/img/head-top.png" alt="">
+        <h3>who we are</h3>
+        <p>@d.CompanyName is a Big Company in the field of Real estate. It works on Kanpur Currently and provides residencial plots at better price options.</p>
+      </div>
+      <div role="tabpanel"> 
+        
+        <!--======= NAV TABS =========-->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#what-we" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-bullhorn"></i> <span class="font-montserrat">what we do</span></a></li>
+          <li role="presentation"><a href="#mission" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-rocket"></i><span class="font-montserrat">our mission</span></a></li>
+          <li role="presentation"><a href="#vision" aria-controls="messages" role="tab" data-toggle="tab"><i class="fa fa-lightbulb-o"></i><span class="font-montserrat">our vision</span></a></li>
+        </ul>
+        
+        <!--======= TAB CONTENT =========-->
+        <div class="tab-content">
+        
+        <!--======= WHAT WE DO =========-->
+          <div role="tabpanel" class="tab-pane animated-6s flipInX active" id="what-we">
+            <h4>WHAT WE DO</h4>
+            <p>@d.CompanyName is offered you to provide residencial and commercial plot across Kanpur and Uttar Pradesh. We offering plots for a huge investment and can get benifits upto double in few years. Our sites are ready now you can call us and get your plot after paid booking ammount you can booked your plot.</p>
+          </div>
+          
+          <!--======= OUR MISSION =========-->
+          <div role="tabpanel" class="tab-pane animated-6s flipInX" id="mission">
+            <h4>OUR MISSION</h4>
+            <p>Commitment towards Quality, Integrity and Value Creation for all stakeholders / customers.Implement Best Business Practices that goes beyond customer expectations.Deliver high quality Residential and Commercial projects that correlate with Global Developers.Establish new benchmarks for the industry by besting existing standards.To ensure continuous delight for our customers and stakeholders by always staying a step ahead of the curve.Lead the real estate industry with high caliber, efficient manpower and cutting edge technology.</p>
+          </div>
+          
+          <!--======= OUR VISION =========-->
+          <div role="tabpanel" class="tab-pane animated-6s flipInX" id="vision">
+            <h4>OUR VISION</h4>
+            <p>Create a progressive organization that can boast of International Standards in Integrity, Ethics, Corporate Social Responsibility and Business Transparency.Create a culture of professionalism, core competence, teamwork, leadership and service excellence.To conceive and deliver quality that conforms to the best practices of Eco – Friendly development.Leverage modern cost effective techniques resulting in quality, durability, wealth creation and value multiplication.
+ </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!--======= CALL US =========-->

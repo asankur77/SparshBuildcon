@@ -1,0 +1,170 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.DatewiseCustomerList>
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "ChequeRegis";
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    int a = 0;
+    DateTime dt = DateTime.Now.Date;
+}
+<script type='text/javascript'>
+$(document).ready(function(){
+
+ $('#datepicker').datepicker({
+  dateFormat: "yy-mm-dd",
+  maxDate:'+0d'
+ });
+
+});
+</script>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Cheque Register Report</a></li>
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+   <div class="card-header">
+                            <h3 class="card-title">Cheque Register Report</h3>
+   
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                              @using (Html.BeginForm())
+          {
+                                    <div class="form-group">
+                                       
+                                        <label class="form-label">Start Date</label>
+                                        <div class="input-group">
+                                                 <input type="text" id="datepicker"  class="form-control" required name="sdate"/>
+                                            <span class="input-group-append">
+                                               <button id="submit" value="Search" class="btn btn-primary pull-right" type="submit">Submit</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                              }
+                                </div>
+                                       <div class="col-md-12 col-lg-12">
+							<div class="table-responsive">
+                                 <table class="table table-striped table-bordered">
+
+                    @using (Html.BeginForm())
+                    {
+                        foreach (var item in Model)
+                        {
+                            if (a == 0)
+                            {
+                        <tr>
+                            
+                    <th colspan="4"><b> <a href="@Url.Action("PrintChequeRegis")" target="_blank">Get Report In PDF</a></b></th>
+              
+                            <th colspan="4"><b>Dated: @DateTime.Now.Date.ToString("dd/MM/yyyy")</b></th>
+                        </tr>
+                        <tr>
+                            <th style="width: 5%; text-align: center;">
+                                <label id="sn"><b>S.N.</b></label>
+                            </th>
+                            <th style="width: 10%; text-align: center;">
+                                <label id="newid"><b>Account Holder Name</b></label>
+                            </th>
+
+                            <th style="width: 10%; text-align: center;">
+                                <label id="introducerid"><b>Cheque No</b></label>
+                            </th>
+
+                            <th style="width: 10%; text-align: center;">
+                                <label id="spilid"><b>Amount</b></label>
+                            </th>
+                          <th style="width: 8%; text-align: center;">
+                                <label id="doj"><b>Bank</b></label>
+                            </th>
+                            <th style="width: 8%; text-align: center;">
+                                <label id="pay"><b>Cheque Date </b></label>
+                            </th>
+                            
+                        </tr>
+                            }
+                            a = a + 1;
+
+                            
+                        <tr style="text-align: center;">
+                            <td>
+                                @a
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.newbondid)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.payment)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.newintroducerid)
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.formdate).ToString("dd/MM/yyyy")
+
+                            </td>
+                          
+                        </tr>
+                   
+                        }
+
+                    }
+</table> 
+
+							</div>
+                                           </div>
+                            </div>
+                        </div>
+                        
+          
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

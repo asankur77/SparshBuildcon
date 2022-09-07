@@ -1,0 +1,206 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.misdetails>
+@using SPARSHBUILDCON.Models;
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "SLPReturn";
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var a = 0;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#BondId").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Branch/AutoCompletePPSBondId",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.newbondid };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Pay SLP Return</a></li>
+
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">SLP Return</h3>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("SLPReturn", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {    
+                        <div class="row">
+
+
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+
+                                    <label class="form-label">@mr.custname Id or Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="newbondid" id="BondId">
+                                        <span class="input-group-append">
+                                            <button type="submit" class="btn btn-primary" name="Commond" id="Pay"><i class="fa fa-search"></i>Search</button>
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+                <div class="card">
+                    <table class="table-responsive table-striped table-bordered" style="width:75%;margin-left:12%;" >
+                        @using (Html.BeginForm())
+                        {
+                            foreach (var item in Model)
+                            {
+                                if (a == 0)
+                                {
+                                    var cr = db.appltabs.Single(c => c.newbondid == item.newbondid);
+                                    var ar = db.AgentDetails.Single(aa => aa.uid == cr.uid);
+                                    <tr>
+                               
+                                <th style="width: 10%; text-align: center;">
+                                    <label><b>@mr.custname Id:-</b></label>
+                                </th>
+                                <td style="width: 6%; text-align: center;">
+                                    <label >@item.newbondid</label>
+                                </td>
+                                <th  style="width: 12%; text-align: center;">
+                                    <label id="spilid"><b>@mr.custname Name:-</b></label>
+                                </th>
+                               
+                                <td  style="width: 8%; text-align: center;">
+                                    <label>@item.name</label>
+                                </td>
+                                <th colspan="2" style="width: 5%; text-align: center;">
+                                    <label><b>Form Date:-</b></label>
+                                </th>
+                                <td style="width: 5%; text-align: center;">
+                                    <label>@item.duedate.AddDays(-45).ToString("dd/MM/yyyy")</label>
+                                </td>                                
+                            </tr>
+                             <tr>
+                               
+                                <th style="width: 10%; text-align: center;">
+                                    <label><b>Bank Name:-</b></label>
+                                </th>
+                                <td style="width: 6%; text-align: center;">
+                                    <label >@ar.BankName</label>
+                                </td>
+                                <th  style="width: 12%; text-align: center;">
+                                    <label ><b>Bank A/c No:-</b></label>
+                                </th>
+                               
+                                <td  style="width: 8%; text-align: center;">
+                                    <label>@ar.BankAccountno</label>
+                                </td>
+                                <th colspan="2" style="width: 5%; text-align: center;">
+                                    <label><b>IFSC Code:-</b></label>
+                                </th>
+                                <td style="width: 5%; text-align: center;">
+                                    <label>@ar.IFCCode</label>
+                                </td>                                
+                            </tr>
+                            <tr>
+                                <th style="width: 10%; text-align: center;">
+                                    <label id="sn"><b>Installment No</b></label>
+                                </th>
+                                
+                                <th style="width: 6%; text-align: center;">
+                                    <label id="introducerid"><b>Receipt No</b></label>
+                                </th>
+                                <th style="width: 8%; text-align: center;">
+                                    <label><b>Pay Amount</b></label>
+                                </th>
+                                <th style="width: 6%; text-align: center;">
+                                    <label><b>Due Date</b></label>
+                                </th>
+                                <th style="width: 6%; text-align: center;">
+                                    <label><b>Next Due Date</b></label>
+                                </th>
+                                <th colspan="2" style="width: 6%; text-align: center;">
+                                    <label id="View"><b>Action</b></label>
+                                </th>
+
+                            </tr>
+                                }
+                                a = a + 1;
+
+
+                            <tr style="text-align: center;">
+                                <td>
+                                    @a
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.receiptno)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.amount)
+                                </td>
+
+                                <td>
+                                    @item.duedate.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+                                    @item.expirydate.ToString("dd/MM/yyyy")
+                                </td>
+                                @if (item.status == 0)
+                                {
+                                    <td colspan="2" >
+                                        @if (item.duedate > DateTime.Now)
+                                        {
+                                            <button type="button"  class="btn btn-md btn-info" disabled="disabled">Waiting</button>
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("Pay SLP", "SLPReturn", new { newbondid = item.newbondid, receiptno = item.receiptno, status = 0 }, new { onclick = "return confirm('Are you sure to Pay this SLP?');" })
+                                        }
+                                    </td>
+                                }
+                                @if (item.status == 1)
+                                {
+                                    <td colspan="2">
+                                        <button type="button" class="btn btn-success" disabled="disabled">Paid</button>
+                                    </td>
+                                }
+
+                            </tr>
+        
+                            }
+                        }
+                    </table>
+                    <h4>@ViewBag.msg</h4>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

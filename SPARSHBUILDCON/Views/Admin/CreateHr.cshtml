@@ -1,0 +1,108 @@
+﻿@model SPARSHBUILDCON.Models.HRTab
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1); 
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "CreateHr";
+}
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<script type="text/javascript" src="~/Scripts/autosearch.js"></script> 
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Create HR</h4>
+         
+            
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+                  @using (Html.BeginForm())
+                  { <div class="card-header">
+                        <h3 class="card-title">Create HR</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @*<div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label"> @mr.branchname Code</label>*@
+                                  <input type="hidden" class="form-control"  name="BranchCode" id="BranchCode" value="Admin">
+                              @*  </div>
+                            </div>*@
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label"> Hr Name</label>
+                                 <input type="text" class="form-control"  name="HRName" id="oname" required>
+                                </div>
+
+                                </div>
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">HR ID</label>
+                                   <input type="text" class="form-control"   name="HRId" id="oid" required>
+                                </div>
+
+                                </div>
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label"> Mobile No</label>
+                                <input type="tel" class="form-control" pattern="[789][0-9]{9}" title="Mobile no is not correct format"  maxlength="10" name="Mobile" id="omob" required>
+                                </div>
+
+                                </div>
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label"> Email Id</label>
+                               <input type="email" class="form-control" title="EmailId not in correct format" name="emailid" required>
+                                </div>
+
+                                </div>
+                            <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label"> Address</label>
+                                <textarea class="form-control"   name="Address" id="oadd" required></textarea>
+                                </div>
+
+                                </div>
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label"> Date Of Joining</label>
+                                 <input type="text" class="form-control datepicker" name="date" id="date" required>
+                                </div>
+
+                                </div>
+                            
+                            	<div class="card-footer text-right">
+										<div class="d-flex">
+								  <button  type="submit" class="btn btn-primary pull-right"> Create HR</button>   
+                                </div>
+                                             </div>
+     <p style="color:maroon;"><b> @ViewBag.msg</b></p>
+                                   
+                        </div>
+                    </div>
+                  }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+           
+                        
+                  
+  <script type="text/javascript">
+    $(document).ready(function () {
+        $('#submit').click(function () {
+             @Html.ValidationSummary( true)
+        });
+    });
+ </script>

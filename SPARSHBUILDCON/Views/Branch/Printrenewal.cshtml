@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    ViewBag.Title = "Printrenewal";
+}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Print Renewal</a></li>
+            </ol>
+            <label>@DateTime.Now</label>
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3><span class="label label-primary card-title">Your Renewal is Done Successfully</span></h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Payment No. :</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" value="@ViewData["Paymentno"]" name="payment"  readonly="true">
+                                        <span class="input-group-append">
+                                            <a href="@Url.Action("PrintRenewalReport")" class="btn btn-primary"><i class="fa fa-print"></i>Print Reciept</a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+

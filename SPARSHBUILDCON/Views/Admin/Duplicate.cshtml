@@ -1,0 +1,188 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var br = db.CompanyInfos.Single(b => b.AdminId == User.Identity.Name);
+    var logo = string.Empty;
+    var companyname = string.Empty;
+    var incometype = string.Empty;
+    var mr = db.Members.Single(m => m.Id == 1);
+    var r = db.CompanyInfos.Single(ci => ci.AdminId == User.Identity.Name);
+
+    var f1 = db.VFormatTabs.Single(f => f.Id == 1);
+    var f2 = db.VFormatTabs.Single(f => f.Id == 2);
+    var f3 = db.VFormatTabs.Single(f => f.Id == 3);
+    logo = r.CompanyLogo;
+    companyname = r.CompanyName;
+    incometype = r.IncomeType;
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Duplicate";
+}
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Welcome, @br.CompanyName</h4>
+            <button type="button" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>Welcome, @br.CompanyName</button>
+
+        </div>
+        <div class="row  row-cards">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Duplicate</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/AgentWelcomeLetter" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Agent Welcome Letter
+                                            <img alt="" src="/Images/icon/2.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/WelcomeLetter" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.custname Welcome Letter
+                             <img alt="" src="/Images/icon/69.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/AllotmentLetter" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.custname Welcome Letter
+                             <img alt="" src="/Images/icon/2.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/AllotmentLetter" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.custname Allotment Letter
+                             <img alt="" src="/Images/icon/74.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/DuplicateBond" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.custname
+                             <img alt="" src="/Images/icon/2.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/ChequeDuplicateReceipt" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Pending @mr.custname
+                             <img alt="" src="/Images/icon/2.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/DuplicateReceipt" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Renewal
+                             <img alt="" src="/Images/icon/54.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/ChequeDuplicateRenewalReceipt" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Pending Renewal
+                                            <img alt="" src="/Images/icon/54.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/DupliSpotCommission" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Spot Commission
+                             <img alt="" src="/Images/icon/spotcomm.jpg" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+       

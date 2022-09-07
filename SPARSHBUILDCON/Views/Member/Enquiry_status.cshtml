@@ -1,0 +1,60 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Enquiry_tab>
+@{
+    ViewBag.Title = "Enquiry_status";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    
+}
+
+<div class="outter-wp">
+  <div class="sub-heard-part">
+        <ol class="breadcrumb m-b-0">
+            <li><a href="index.html">Home</a></li>
+            <li class="active">Enquiry Status</li>
+        </ol>
+    </div>
+
+    <div class="forms-main">
+            <h2 class="inner-tittle">Enquiry Info</h2>
+            @using(Html.BeginForm())
+            {
+            <div class="graph-form">
+                <div class="form-body">
+                    <form method="post" action="../Member/Enquiry_status">
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Ticket No.</label>
+                            <input type="text" required="required" id="ticketno" name="ticketno" value="@ViewData["tid"]" class="form-control">
+                        </div>
+                         <button type="submit" class="btn btn-primary pull-right" name="command" value="search">Get Detail</button>
+                        <br />
+                        <br />
+                    </form>
+                </div>
+
+            </div>
+            }
+        @if(Model.Count()>0)
+        {
+        foreach(var item in Model)
+        {
+            <div class="graph-form">
+            <div class="form-body">
+                <form>
+                    <div class="form-group ">
+                        <label class="control-label">Subject</label>
+                        <textarea name="subject" class="form-control" required>@item.Request</textarea>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label">Message</label>
+                        <textarea name="request" rows="6" class="form-control" required>@item.Response</textarea>
+
+                    </div>
+                    
+                </form>
+            </div>
+
+        </div>
+        }
+        }
+        </div>
+</div>

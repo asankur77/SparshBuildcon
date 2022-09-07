@@ -1,0 +1,119 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<SPARSHBUILDCON.Models.Memberlist>
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "Autopool_income";
+    Layout = "~/Views/Shared/_member_new_layout.cshtml";
+    var b = 1;
+      int counting = Convert.ToInt32(ViewData["lastpage"]);
+    int pageno = Convert.ToInt32(ViewData["pageno"]);
+    int gets = Convert.ToInt32(ViewData["srno"]);
+    int sr = gets + 1;
+    int starts = gets + 1;
+}
+
+@if (TempData["my2"] != null)
+{
+    <script>
+        alert('@TempData["my2"]');
+    </script>
+}
+
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">Auto Pool Income
+                </h3>
+                <i style="font-weight: 800; color: green; text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @ViewData["msg"] </i>
+                <ul class="breadcrumb">
+                    <li><a href="~/Member/Dashboard"><i class="icon-home"></i></a><span class="divider">&nbsp;</span>
+
+                    </li>
+                    <li><a href="#">DYNAMIC WAY REAL ESTATE PVT LTD</a><span class="divider">&nbsp;</span> </li>
+                    <li><a href="#">Auto Pool Income</a><span class="divider-last">&nbsp;</span></li>
+                </ul>
+            </div>
+        </div>
+       <div class="row-fluid">
+        <div class="span12">
+           <div class="widget-title">
+                    <h4>
+                        <i class="icon-reorder"></i>Auto Pool Income </h4>  </div>
+                        </div>
+                        </div>
+                        <br />
+                           <div class="col-lg-12">
+                               @if(Model.Count()>0)
+                               {
+        <div class="col-sm-12">
+           
+            <div class="card-box table-responsive">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover dataTables-example">
+           
+                         @if(b==1)
+                                            {
+                                                <thead class="text-primary">
+                                                    <tr>
+                                                    <th>Sr. No.</th>
+                                                    <th>Member Id</th>
+                                                    <th>Name</th>
+                                                   @* <th>Level</th>*@
+                                                    <th>Amount</th>
+                                                    <th>Income Date</th>
+                                                    <th>Status</th>
+                                                   
+                                                        </tr>
+                                                </thead>
+                                            }
+                         @for (int i = 0; i < Model.Count(); i++ )
+                                        {
+                                           
+                                          
+                                           
+                                            <tbody>
+                                                <tr>
+                                                    @if(pageno==1)
+                                                    {
+                                                    <td>@b</td>
+                                                    }
+                                                    else
+                                                    {<td>@sr</td>
+                                                    }
+                                                  <td>@Model[i].AccountHolder</td>
+                                                     <td>@Model[i].BankName</td>
+                                               @*     <td>@item.point</td>*@
+                                                    <td>@Model[i].totalamt</td>
+                                                     <td>@Model[i].JoinDate.ToString("dd/MM/yyyy")</td>
+                                                    <td>@Model[i].PAN</td>
+                                                </tr>
+                                            </tbody>
+                                            b = b + 1;
+                                            sr++;
+                                        }
+                   </table>
+                    <center> <div id="container" >
+        <p></p>
+        <p></p>
+        <div class="pagination">
+           <label style="color:#a311dd;"> Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+            of @Model.PageCount</label>&nbsp&nbsp @Html.PagedListPager(Model, page => Url.Action("Autopool_income", new { page }))
+        </div>
+    </div></center>
+            </div>
+        </div>
+    </div>
+                               }
+                               else
+                               {
+                                   <label style="font-size: medium; font-weight: bold; color: red;">You Have no Auto Pool Income</label>
+                               }
+</div>
+
+    </div>
+</div>
+
+
+
+

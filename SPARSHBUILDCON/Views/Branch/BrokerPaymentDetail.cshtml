@@ -1,0 +1,220 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.BrokerPayment>
+@using SPARSHBUILDCON.Models;
+@{
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    ViewBag.Title = "BrokerPaymentDetail";
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var a = 0;
+    var br = db.Branchtabs.Single(o => o.BranchCode == User.Identity.Name);
+    Double commissiom = 0, TDS = 0, Amount = 0, business = 0;
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#newagent").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteAgentid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.NewAgentId };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>  
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">@mr.agentname Payment Details</a></li>
+
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">@mr.agentname Payment Details</h3>
+                </div>
+                <div class="card-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Select @mr.agentname Id</label>
+                                        <div class="input-group">
+                                            	 <input type="text" id="newagent" name="newagentid" class="form-control" required>
+                                            <span class="input-group-append">
+                                            <button class="btn btn-primary"><i class="fa fa-search"></i>Search</button> 
+                                            </span>
+                                      
+                                        </div>
+                                    </div>
+                                
+
+                            </div>
+
+                        </div>
+            
+                    }
+                </div>
+
+                	<div class="card-body">
+                                	<div class="table-responsive">
+									<table class="table table-striped table-bordered" style="width:100%">
+							    @foreach (var item in Model)
+           {
+               if (a == 0)
+               {
+             <tr style="text-align:center;"><th colspan="3" >@mr.branchname Name:@br.BranchName</th>
+                
+                 <th colspan="3" ><b>  @mr.agentname Payment Details</b></th>
+                  <th colspan="2" ><b>@Convert.ToDateTime(DateTime.Now.Date).ToString("dd/MM/yyyy") </b></th>
+               </tr>
+        <tr style="text-align:center;"><th colspan="4" >@mr.agentname Id:@item.newagentid</th>
+                <th colspan="4" >@mr.agentname Name:@item.name</th>
+                 
+               </tr>
+ <tr style="text-align:center;">
+        <th style="width:5%;">
+           <label id="sn"><b>S.N.</b></label>
+            </th>
+        
+            <th style="width:15%;">
+           <label id="Business"><b>Business</b></label>
+        </th>
+        <th style="width:15%;">
+           <label id="commission"><b>Commission</b></label>
+        </th>
+            
+        <th style="width:10%;">
+            <label id="tds" ><b>TDS</b></label>
+        </th>
+              <th style="width:15%;">
+           <label id="netamount"><b>Amount</b></label>
+        </th>
+        <th style="width:15%;">
+           <label id="month"><b>Month</b></label>
+        </th>
+            <th style="width:10%;">
+           <label id="Year"><b>Year</b></label>
+        </th>
+        <th style="width:15%;">
+            <label id="Date" ><b>Payment Date</b></label>
+        </th>
+         
+            
+        
+             
+
+    </tr>
+               }
+               a = a + 1;
+    <tr style="text-align:left;">
+        <td>
+            @a
+        </td>
+     
+       
+         <td>
+            @Html.DisplayFor(modelItem => item.Business)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.commission)
+        </td>
+             <td>
+            @Html.DisplayFor(modelItem => item.tds)
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.netamount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.month)
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.year)
+        </td>
+        <td>
+            @Convert.ToDateTime(item.pdate).ToString("dd/MM/yyyy")
+        </td>
+
+            
+    </tr>
+               commissiom = commissiom + Convert.ToDouble(item.commission);
+               TDS = TDS + Convert.ToDouble(item.tds);
+               Amount = Amount + Convert.ToDouble(item.netamount);
+               business = business + Convert.ToDouble(item.Business);
+           }
+    @if (a > 0)
+    {
+        <tr>
+            <td><b>Grand Total</b></td>
+            <td><b>@business</b></td>
+            <td><b>@commissiom</b></td>
+            <td><b>@TDS</b></td>
+            <td><b>@Amount</b></td>
+            <td></td>
+             <td></td>
+             <td></td>
+        </tr>
+    }
+
+</table>
+
+         @if (a > 0)
+         {
+         <a href="@Url.Action("PrintBrokerPaymentReport")" target="_blank">Get Report In PDF</a>
+         }
+       
+
+                                        </div>
+                        </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

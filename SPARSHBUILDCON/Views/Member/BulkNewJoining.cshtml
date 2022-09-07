@@ -1,0 +1,424 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "NewJoining";
+    UsersContext db = new UsersContext();
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    
+    
+    var comp = db.CompanyInfos.Single(a => a.Id == 1);
+
+    var name = db.AgentDetails.Single(a => a.NewAgentId == User.Identity.Name);
+}
+<style>
+    .fileback {
+        background: rgba(169,3,41,1);
+background: -moz-linear-gradient(top, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(169,3,41,1)), color-stop(44%, rgba(143,2,34,1)), color-stop(100%, rgba(109,0,25,1)));
+background: -webkit-linear-gradient(top, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%);
+background: -o-linear-gradient(top, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%);
+background: -ms-linear-gradient(top, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%);
+background: linear-gradient(to bottom, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019', GradientType=0 );
+color:white;
+    }
+</style>
+
+<script>
+    function ImageUpload(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#insert')
+                    .attr('src', e.target.result)
+                    .width(250)
+                    .height(150);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function ImageUpload2(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#insert2')
+                    .attr('src', e.target.result)
+                    .width(250)
+                    .height(150);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function ImageUpload3(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#insert3')
+                    .attr('src', e.target.result)
+                    .width(250)
+                    .height(150);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function ImageUpload4(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#insert4')
+                    .attr('src', e.target.result)
+                    .width(250)
+                    .height(150);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>       <!--------------------------------- Image Load ------------------------------->
+
+
+<script type="text/javascript">
+    function alphaonly(e) {
+        debugger
+        var str = $("#username").val();
+
+        if (/^[a-zA-Z\s]*$/.exec(str)) {
+
+        }
+        else {
+            $("#username").val("")
+            alert('Please Enter Alphabets Only in Member Name');
+        }
+    }
+
+    function alphaonly2(e) {
+        debugger
+        var str = $("#father_name").val();
+
+        if (/^[a-zA-Z\s]*$/.exec(str)) {
+
+        }
+        else {
+            $("#father_name").val("")
+            alert('Please Enter Alphabets Only in Father Name');
+        }
+    }
+
+    function alphaonly3(e) {
+        debugger
+        var str = $("#district").val();
+
+        if (/^[a-zA-Z\s]*$/.exec(str)) {
+
+        }
+        else {
+            $("#district").val("")
+            alert('Please Enter Alphabets Only in District Name');
+        }
+    }
+
+    function alphaonly4(e) {
+        debugger
+        var str = $("#relation").val();
+
+        if (/^[a-zA-Z\s]*$/.exec(str)) {
+
+        }
+        else {
+            $("#relation").val("")
+            alert('Please Enter Alphabets Only in Relation Name');
+        }
+    }
+
+    function alphaonly5(e) {
+        debugger
+        var str = $("#accountname").val();
+
+        if (/^[a-zA-Z\s]*$/.exec(str)) {
+
+        }
+        else {
+            $("#accountname").val("")
+            alert('Please Enter Alphabets Only in Account Name');
+        }
+    }
+
+    function banknameonly(e) {
+        debugger
+        var str = $("#bankname").val();
+
+        if (/^[a-zA-Z\s]*$/.exec(str)) {
+
+        }
+        else {
+            $("#bankname").val("")
+            alert('Please Enter Alphabets Only in Bank Name');
+        }
+    }
+
+    function branchnameonly(e) {
+        debugger
+        var str = $("#branchname").val();
+
+        if (/^[a-zA-Z\s]*$/.exec(str)) {
+
+        }
+        else {
+            $("#branchname").val("")
+            alert('Please Enter Alphabets Only in Branch Name');
+        }
+    }
+
+    function nomineeonly(e) {
+        debugger
+        var str = $("#nominee").val();
+
+        if (/^[a-zA-Z\s]*$/.exec(str)) {
+
+        }
+        else {
+            $("#nominee").val("")
+            alert('Please Enter Alphabets Only in Nominee Name');
+        }
+    }
+
+    function mobileonly(e) {
+        debugger
+        var str = $("#mobile").val();
+
+        if (str.length == 10) {
+
+            if (str[0] > 6) {
+                if (/^[0-9\\s]*$/.exec(str)) {
+
+                }
+                else {
+                    $("#mobile").val("")
+                    alert('Please Enter 10 Digits Mobile Number Only');
+                }
+            }
+            else {
+                $("#mobile").val("")
+                alert('Invalid Mobile Number');
+            }
+        }
+        else {
+            $("#mobile").val("")
+            alert('Please Enter 10 Digits Mobile Number');
+        }
+    }
+
+    function phoneonly(e) {
+        debugger
+        var str = $("#phone").val();
+        if (/^[0-9\\s]*$/.exec(str)) {
+
+        }
+        else {
+            $("#phone").val("")
+            alert('Please Enter Phone Number Only');
+        }
+        }
+
+    function adhaaronly(e) {
+        debugger
+        var str = $("#adhaar").val();
+
+        if (str.length == 12) {
+            if (/^[0-9\\s]*$/.exec(str)) {
+
+            }
+            else {
+                $("#adhaar").val("")
+                alert('Please Enter 12 Digits Adhaar Only');
+            }
+        }
+        else {
+            $("#adhaar").val("")
+            alert('Please Enter 12 Digits Adhaar Only');
+        }
+    }
+
+    function pincodeonly(e) {
+        debugger
+        var str = $("#pincode").val();
+
+        if (str.length == 6) {
+            if (/^[0-9\\s]*$/.exec(str)) {
+
+            }
+            else {
+                $("#pincode").val("")
+                alert('Please Enter 6 Digits Pin Code Only');
+            }
+        }
+        else {
+            $("#pincode").val("")
+            alert('Please Enter 6 Digits Pin Code Only');
+        }
+    }
+
+    function panonly(e) {
+        debugger
+        var str = $("#panno").val();
+
+        if (str.length == 10) {
+
+        }
+        else {
+            $("#panno").val("")
+            alert('Please Enter 10 Digits PAN Only');
+        }
+    }
+
+    function ifsconly(e) {
+        debugger
+        var str = $("#ifscno").val();
+
+        if (str.length == 11) {
+
+        }
+        else {
+            $("#ifscno").val("")
+            alert('Please Enter 11 Digits IFSC Only');
+        }
+    }
+
+    
+
+</script>
+
+<script type="text/javascript" language="javascript">
+    function JavascriptFunction() {
+        var url = '@Url.Action("PostMethod", "Admin")';
+        $("#divLoading").show();
+        $.post(url, null,
+                function (data) {
+                    $("#PID")[0].innerHTML = data;
+                    $("#divLoading").hide();
+                });
+    }
+</script>
+
+<script>
+    function introname(check_id) {
+
+        debugger
+
+        var Introducer1 = $("#Introducer1").val();
+
+        var url = '@Url.Action("introname", "Home")';
+
+        if (Introducer1.length > 0) {
+            $.get(url, { Introducer1: Introducer1 }, function data(t) {
+
+                if (t.length > 0) {
+                    $("#introname").text(t);
+                }
+                else {
+                    $("#introname").text("");
+                }
+            });
+        }
+        else {
+            $("#introname").text("");
+        }
+
+        }
+</script>
+
+<div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001; opacity: .8; filter: alpha(opacity=70); display: none">
+    <p style="position: absolute; top: 30%; left: 42%; color: White;">
+        <img src="~/Content/11.gif"><br />
+        <br />
+        <b style="margin-left: 50px;">Loading, please wait...</b>
+    </p>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+@using (Html.BeginForm("BulkNewJoining", "Member", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "JavascriptFunction()" }))
+{
+    
+    
+<div class="container jumbotron" style="margin-top:-60px;">
+    <p style="color:rgba(169,3,41,1);font-weight:700;">@ViewData["msg"]</p>
+    @*<h3 style="text-align:center;font-family:'Bookman Old Style', Bookman, 'URW Bookman L', 'Palatino Linotype', serifVerdana, Geneva, 'DejaVu Sans', sans-serif;color:#0a9f0e;text-transform:uppercase;text-shadow: 2px 2px white;"> Join Now . . .<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:30px;"></i> <br /></h3>*@
+    <div class="row">
+        
+        <div class="col-md-10 well">
+          <h4 style="background-color:purple;padding:5px;color:white;border-radius:2px;"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; BULK JOINING</h4><hr />
+              <div class="form-group row">
+                <label for="inputPassword" class="col-sm-3 col-form-label" style="font-weight:500;color:black;">Referral Id <span style="color:#f00;">*</span></label>
+                <div class="col-sm-9">
+                  <input onblur="introname()" id="Introducer1" value="@User.Identity.Name" name="Introducer1" type="text" class="form-control" required readonly="true">
+                    <input name="newid" type="hidden" class="form-control">
+                </div>
+              </div>
+                <div class="form-group row">
+                <label for="inputPassword" class="col-sm-3 col-form-label" style="font-weight:500;color:black;">Position <span style="color:#f00;">*</span></label>
+                <div class="col-sm-9">
+                  <div class="form-check form-check-inline">
+                      <label style="color:green;">
+                        <input class="form-check-input" type="radio" name="position" value="1" required> Left 
+                      </label>
+                      <label style="color:green;">
+                        <input class="form-check-input" type="radio" name="position" value="2" required> Right
+                      </label>
+                      <label class="label label-success pull-right btn-lg " id="introname" style="color:white;">@name.name</label>
+                    </div>
+                </div>
+              </div>
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-3 col-form-label" style="font-weight:500;color:black;">Your Name<span style="color:#f00;">*</span></label>
+                <div class="col-sm-9">
+                  <input type="text" onkeyup="alphaonly(this.id)" id="username" name="username" class="form-control" required>
+                </div>
+              </div>
+
+             <div class="form-group row">
+                <label for="inputPassword" class="col-sm-3 col-form-label" style="font-weight:500;color:black;">Mobile No.<span style="color:#f00;">*</span></label>
+                <div class="col-sm-9">
+                  <input type="text" onblur="mobileonly(this.id)" maxlength="10" id="mobile" name="mobile" class="form-control" required>
+                </div>
+              </div>
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-3 col-form-label" style="font-weight:500;color:black;">Number of Joining<span style="color:#f00;">*</span></label>
+                <div class="col-sm-9">
+                  <input type="text" onblur="mobileonly(this.id)" maxlength="10" name="noj" class="form-control" required>
+                </div>
+              </div>
+         
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+    
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            
+            <div class="form-group row">
+                  <button type="submit" class="form-control btn-success" style="padding:20px;font-size:15px;height:45px;background-color:purple"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i>&nbsp;&nbsp;<b>JOIN NOW</b><br /><br /></button>
+                </div>
+
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+</div>
+
+}
+
+       

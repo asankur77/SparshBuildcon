@@ -1,0 +1,155 @@
+﻿
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var br = db.AgentDetails.Single(b => b.NewAgentId == User.Identity.Name);
+    Layout = "~/Views/Shared/_New_AgentLayout.cshtml";
+    ViewBag.Title = "Index";
+
+    
+    var mr = db.Members.Single(m => m.Id == 1);
+    DateTime PreviousFiveDay = DateTime.Now.AddDays(-5).Date;
+
+                var teambusiness = 0.0;
+                var teamsumbusiness1 = 0.0;
+                var teamsumbusiness2 = 0.0;
+                var mydirect = db.Database.SqlQuery<Int32>("select count(*) from agentdetail where newintroducerid='" + User.Identity.Name + "'").FirstOrDefault();
+                var downline = db.Database.SqlQuery<Int32>("select count(*) from AgentDetail where IntroducerCode in (select agencycode from AgentDetail where NewIntroducerId='" + User.Identity.Name + "')").FirstOrDefault();
+                var totaldownline = mydirect + downline;
+                var agencycode=db.AgentDetails.Single(a=>a.NewAgentId==User.Identity.Name).AgencyCode;
+                var selfbusiness = db.Database.SqlQuery<double>("select isnull(sum(ip.amount),0) from appltab as ap join installmenttab as ip on ap.bondid=ip.bondid where ap.introducerid='" + agencycode + "' and payamount<>0").FirstOrDefault();
+                var dueemi = db.Database.SqlQuery<double>("select isnull(sum(ip.amount),0) from appltab as ap join installmenttab as ip on ap.bondid=ip.bondid where ap.introducerid='" + agencycode + "' and ip.payamount=0 and ip.paymentdate<=GETDATE()").FirstOrDefault();
+                var vouheramount = db.Database.SqlQuery<double>("select isnull(sum(netamount),0) from voucher_report where agentid='" + agencycode + "'").FirstOrDefault();
+                var list = db.Database.SqlQuery<agencycodelist1>("select agencycode from agentdetail where newintroducerid='" + User.Identity.Name + "'").ToList();
+                var list1 = db.Database.SqlQuery<agencycodelist2>("select agencycode from AgentDetail where IntroducerCode in (select agencycode from AgentDetail where NewIntroducerId='" + User.Identity.Name + "')").ToList();
+                foreach (var item in list)
+                {
+                    var selfbusinessby1 = db.Database.SqlQuery<double>("select isnull(sum(ip.amount),0) from appltab as ap join installmenttab as ip on ap.bondid=ip.bondid where ap.introducerid='" + item.agencycode + "' and payamount<>0").FirstOrDefault();
+                    teamsumbusiness1 = teamsumbusiness1 + selfbusinessby1;
+                }
+                foreach (var item in list1)
+                {
+                    var selfbusinessby1 = db.Database.SqlQuery<double>("select isnull(sum(ip.amount),0) from appltab as ap join installmenttab as ip on ap.bondid=ip.bondid where ap.introducerid='" + item.agencycode + "' and payamount<>0").FirstOrDefault();
+                    teamsumbusiness2 = teamsumbusiness2 + selfbusinessby1;
+                }
+                teambusiness = teamsumbusiness1 + teamsumbusiness2;
+                var suspanseamount = 0.0;
+                
+                }
+
+
+   
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title"></h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+            </ol>
+
+        </div>
+
+        <div class="row row-cards">
+            
+            
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                        <h4 class="font-weight-normal  mb-3">My Direct
+											<i class="fa fa-user-o fs-30 float-right"></i>
+                        </h4>
+                        <h2 class="mb-0">@mydirect</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-warning card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                        <h4 class="font-weight-normal  mb-3">Total Downline
+											<i class="fa fa-heart-o fs-30 float-right"></i>
+                        </h4>
+                        <h2 class="mb-0">@totaldownline</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                        <h4 class="font-weight-normal mb-3">Self Business
+											<i class="fa fa-comment-o fs-30 float-right"></i>
+                        </h4>
+                        <h2 class="mb-0">@selfbusiness</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                        <h4 class="font-weight-normal  mb-3">Total Customer
+											<i class="fa fa-paper-plane-o fs-30 float-right"></i>
+                        </h4>
+                        <h2 class="mb-0">@totaldownline</h2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row row-cards">
+            
+            
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                        <h4 class="font-weight-normal  mb-3">Voucher Payment
+											<i class="fa fa-user-o fs-30 float-right"></i>
+                        </h4>
+                        <h2 class="mb-0">@vouheramount</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                        <h4 class="font-weight-normal  mb-3">Suspense Amount
+											<i class="fa fa-heart-o fs-30 float-right"></i>
+                        </h4>
+                        <h2 class="mb-0">@suspanseamount</h2>
+                    </div>
+                </div>
+            </div>
+             <div class="col-sm-12 col-lg-3">
+                <div class="card bg-warning card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                        <h4 class="font-weight-normal mb-3">Due EMI
+											<i class="fa fa-comment-o fs-30 float-right"></i>
+                        </h4>
+                        <h2 class="mb-0">@dueemi</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-danger card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                        <h4 class="font-weight-normal  mb-3">Team Business
+											<i class="fa fa-paper-plane-o fs-30 float-right"></i>
+                        </h4>
+                        <h2 class="mb-0">@teambusiness</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+

@@ -1,0 +1,357 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<SPARSHBUILDCON.Models.temptotaldownline>
+@using SPARSHBUILDCON.Models
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "TotalBinary";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var mr = db.Members.Single(m => m.Id == 1);
+    var memberid = Convert.ToString(ViewData["memberid"]);
+    var position = Convert.ToInt32(ViewData["position"]);
+    var status = Convert.ToInt32(ViewData["status"]);
+    
+    var sr = 1;
+    int g = 1;
+    int counting = Convert.ToInt32(ViewData["lastpage"]);
+    int pageno = Convert.ToInt32(ViewData["pageno"]);
+    int gets = Convert.ToInt32(ViewData["srno"]);
+    int sr3 = gets + 1;
+    int starts = gets + 1;
+
+    double totalbv = 0;
+    
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#memid").autocomplete({
+            source: function (request, response) {
+                debugger;
+                var countmember = $("#memid").val();
+                if (countmember.length >= 4) {
+                    $.ajax({
+                        url: "/Operator/intro",
+                        type: "POST",
+                        dataType: "json",
+                        data: { introid: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.username, value: item.memberid };
+                            }))
+
+                        }
+                    })
+                }
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+
+<style>
+    .row {
+        color: black!important;
+    }
+</style>
+
+
+<style>
+    .ul.pagination {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul.pagination li {
+        display: inline;
+    }
+
+        ul.pagination li a {
+            color: black;
+            float: left;
+            padding: 0px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+        }
+
+            ul.pagination li a.active {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            ul.pagination li a:hover:not(.active) {
+                background-color: #ddd;
+            }
+</style>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">@mr.agentname Matching Summary</h4>
+        </div>
+        <br />
+        <div class="row card">
+            <div class="card-body" style="width: 100%">
+
+                @if (TempData["erromsg22"] != null)
+                {
+                    <center><label style="color:red;" id="lblmssg">@TempData["erromsg22"]&nbsp;&nbsp; (@TempData["newid2"])</label></center> 
+                }
+
+                @using (Html.BeginForm("TotalBinary", "Admin", FormMethod.Get, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+                        <div class="col-md-4 col-lg-4">
+                            <div class="form-group">
+                                <label class="form-label">Enter @mr.agentname Id</label>
+                                <input type="text" onblur="checkid(this.id)" id="memid" name="memberid" class="form-control" value="@Request.QueryString["memberid"]" style="border-top: none; border-left: none; border-right: none;" onkeyup="sdateerror()" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-lg-4">
+                            <div class="form-group">
+                                <label class="form-label">Start Date </label>
+                                <input type="date" name="sdate" class="form-control" id="sdate1" onchange="sdateerror()" style="width: 89%;" value="@Request.QueryString["sdate"]" />
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-md-4 col-lg-4">
+                            <div class="form-group">
+                                <label class="form-label">End Date </label>
+                                <input type="date" name="edate" class="form-control" id="edate1" onchange="sdateerror()" style="width: 89%;" value="@Request.QueryString["edate"]" />
+                            </div>
+
+
+                        </div>
+
+                        <div class="card-footer text-right">
+                            <button type="submit" class="btn btn-primary pull-right" name="command" value="Search" id="btnsearch" disabled="disabled">Search</button>
+                        </div>
+                        <span class="text-danger"></span>
+
+                    </div>
+                }
+            </div>
+        </div>
+
+
+        @if (Model != null)
+        {
+            <div>
+                <h4 style="text-align: center; font-weight: 700">Get Downline Report (<a href="@Url.Action("TotalBinary", "Admin", new { excel = 1, page = 1, NewAgentId = ViewData["memberid"], pin = ViewData["pin"], status = ViewData["status"], sdate = ViewData["sdate"], edate = ViewData["edate"] })" target="_blank" style="color:green;">&nbsp;<i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp;GET EXCEL</a>)</h4>
+            </div>
+            <div class="container">
+                <div class="row card">
+                    <div class="card-body" style="width: 100%;">
+                        <div id="Div1" class="col-md-12">
+                            <div class="col-lg-12">
+                                <div class="col-sm-12">
+                                    <div class="card-box table-responsive">
+                                        <div class="table-responsive">
+
+                                            <table class="table table-striped table-bordered table-hover dataTables-example" id="myTable">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>S.N.</th>
+                                                        <th>MemberId</th>
+                                                        <th>Member Name</th>
+                                                        <th>Date</th>
+                                                        <th>Left Business</th>
+                                                        <th>Right Business</th>
+                                                        <th>Amount</th>
+                                                        <th>Left Carry</th>
+                                                        <th>Right Carry</th>
+                                                    </tr>
+
+
+                                                </thead>
+                                                <tbody>
+                                                    @for (int i = 0; i < Model.Count(); i++)
+                                                    {
+
+                                                        totalbv += Model[i].pinamount;
+                                                    
+                                  
+                                     
+                                                        <tr>
+                                                            @if (pageno == 1)
+                                                            {
+                                                                <td>@sr</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>@sr3</td>
+                                                            }
+                                                            <td>@Model[i].memberid</td>
+                                                            <td>@Model[i].username</td>
+                                                            <td>@Model[i].joindate.ToString("dd/MM/yyyy")</td>
+                                                            <td>@Model[i].leftbv</td>
+                                                            <td>@Model[i].rightbv</td>
+                                                            <td>@Model[i].pinamount</td>
+                                                            <td>@Model[i].position</td>
+                                                            <td>@Model[i].SelfBV</td>
+
+                                                        </tr>
+                                     
+                                  
+                                                            sr++;
+                                                            sr3++;
+                                                    }
+                                                </tbody>
+                                                <tr>
+                                                    <td colspan="6">Total</td>
+                                                    <td>@totalbv</td>
+                                                    <td colspan="2"></td>
+                                                </tr>
+
+
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="pagination" style="float: right">
+                    <label style="color: #a311dd;">
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                        of @Model.PageCount</label>&nbsp&nbsp @Html.PagedListPager(Model, page => Url.Action("TotalBinary", new { page, memberid = ViewData["memberid"], pin = ViewData["pin"], status = ViewData["status"], sdate = ViewData["sdate"], edate = ViewData["edate"] }))
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#btnsearch").click(function () {
+        debugger;
+        $("#wait").show();
+
+    })
+
+    $(".pagination").click(function () {
+        $("#wait").show();
+    });
+    function sdateerror() {
+        debugger;
+        var memberid = $("#memid").val();
+        var sdate = $("#sdate1").val();
+        var edate = $("#edate1").val();
+        var status = $("#status").val();
+        var pin = $("#pin").val();
+        var position = $("#position").val();
+
+        if (memberid == "" && position == "") {
+            $("#btnsearch").attr("disabled", "disabled");
+        }
+        
+        if (sdate != "" && edate == "" && memberid == "") {
+            $("#edate1").attr("required", "required");
+            $("#btnsearch").attr("disabled", "disabled");
+            $("#position").attr("required", "required");
+        }
+        if (sdate == "" && edate != "" && memberid == "") {
+            $("#sdate1").attr("required", "required");
+            $("#btnsearch").attr("disabled", "disabled");
+            //$("#position").attr("required", "required");
+        }
+      
+        if (memberid == "" && sdate == "" && edate == "" && status == "" && pin == "" && position == "") {
+            $("#btnsearch").attr("disabled", "disabled");
+        }
+        if (memberid != "" && status != "" && position != "" || memberid != "" && sdate != "" && edate != "" && status != "" && position != "")
+        { $("#btnsearch").removeAttr("disabled", "disabled"); }
+
+    }
+
+
+
+   
+</script>
+
+<script>
+    $("#sel").change(function () {
+
+        var v = $(this).val();
+        if (v == "Member Name") {
+            $("#myInputto").css("display", "block")
+            $("#myInput").css("display", "none");
+        }
+        else if (v == "Member Id") {
+            $("#myInputto").css("display", "none");
+            $("#myInput").css("display", "block");
+        }
+        else if (v == "--Filter By--") {
+            $("#myInput").css("display", "none");
+            $("#myInputto").css("display", "none");
+            $("#datewise").css("display", "none");
+        }
+
+        else if (v == "ALL") {
+            location.reload();
+        }
+        else if (v == "Date") {
+
+            $("#myInputto").css("display", "none");
+            $("#myInput").css("display", "none");
+            $("#datewise").css("display", "block");
+        }
+        else if (v == "Red") {
+            $("#myInput").css("display", "none");
+            $("#myInputto").css("display", "none");
+
+            debugger;
+            var input, filter, table, tr, td, i;
+            input = v;
+            filter = v.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[12];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+
+        }
+        else if (v == "Green") {
+            $("#myInput").css("display", "none");
+            $("#myInputto").css("display", "none");
+            debugger;
+            var input, filter, table, tr, td, i;
+            input = v;
+            filter = v.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[12];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+
+        }
+    });
+</script>

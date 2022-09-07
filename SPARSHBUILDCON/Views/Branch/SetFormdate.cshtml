@@ -1,0 +1,104 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    ViewBag.Title = "SetFormdate";
+    var dd = db.Operators.Where(c => c.BranchCode == User.Identity.Name && c.Status == 1).ToList();
+}
+<script type="text/javascript">
+    function ShowHideDiv() {
+        var chkYes = document.getElementById("chkYes");
+        var dvPassport = document.getElementById("dvPassport");
+        dvPassport.style.display = chkYes.checked ? "block" : "none";
+    }
+</script>
+
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Set Business Date</a></li>
+
+            </ol>
+
+        </div>
+          @using (Html.BeginForm())
+        { <div class="row">
+
+
+                <div class="col-lg-12 card">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Action</label>
+                                    <input type="radio" id="chkYes" name="command" value="Activate" onclick="ShowHideDiv()" />
+                                    Active
+                                     <input type="radio" id="chkNo" name="command" value="Deactivate" onclick="ShowHideDiv()" />Deactive
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Operator Id</label>
+                                    <select id="Select1" class="form-control validate[required]" name="opid">
+                                        <option value="">Select</option>
+                                        @foreach (var item in dd)
+                                        {
+                                            <option value="@item.OperatorId">@item.OperatorName ( @item.OperatorId )</option>
+                                        }
+                                        <option value="All">All</option>
+                                    </select>
+                                </div>
+
+                                  <div id="dvPassport" style="display: none">
+                             
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Date Type</label>
+                                      <select class="form-control validate[required]" name="type">
+                                                <option value="">Select</option>
+                                                <option value="1">Back Date</option>
+                                                <option value="2">Fix Date</option>
+                                            </select>
+
+
+                                </div>
+                                <div class="form-group">
+                                               <label class="width">Set Date</label>
+                                            <input type="text" name="date"  class="form-control validate[required]"  placeholder="DD/MM/YYYY" value="@DateTime.Now.ToString("dd/MM/yyyy")" >
+                                       
+                                </div>
+                                
+                                </div>
+                                
+                                 <div class="form-footer">
+                                <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure to change option? ');">Submit</button>
+                                      <p style="color: maroon;">
+                                    <b>@ViewBag.msg
+                                    </b>
+                                </p>
+                            </div>
+                                
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+                
+
+            </div>
+          }
+    </div>
+</div>
+
+
+
+
+

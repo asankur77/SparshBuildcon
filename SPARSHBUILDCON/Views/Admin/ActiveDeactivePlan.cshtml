@@ -1,0 +1,111 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.NewPlan>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "ActiveDeactivePlan";
+    var a = 0;
+}
+
+<div class="page-content">
+    <div class="container" id="divid">
+        <div class="page-toolbar">
+
+            <div class="page-toolbar-block">
+                <div class="page-toolbar-title">Active-Deactive @mr.planname</div>
+                <div class="page-toolbar-subtitle"></div>
+            </div>
+            <div class="page-toolbar-block pull-right">
+            </div>
+        </div>
+
+        <table border="1" style="margin-left: 1%; margin-right: 1%; width: 98%;">
+
+            @foreach (var item in Model)
+            {
+                if (a == 0)
+                {
+                <tr>
+                    <th style="width: 5%; text-align: center;">
+                        <label id="sn"><b>S.N.</b></label>
+                    </th>
+                    <th style="width: 10%; text-align: center;">
+                        <label id="BranchCode"><b>@mr.planname Name</b></label>
+                    </th>
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="BranchName"><b>Term</b></label>
+                    </th>
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="BranchDistrict"><b>Monthly</b></label>
+                    </th>
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="branchaddress"><b>Quarterly</b></label>
+                    </th>
+
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="mobile"><b>Half-Yearly</b></label>
+                    </th>
+                    <th style="width: 10%; text-align: center;">
+                        <label><b>Yearly</b></label>
+                    </th>
+                    <th style="width: 10%; text-align: center;">
+                        <label id="Action"><b>Action</b></label>
+                    </th>
+                </tr>
+        }
+
+        a = a + 1;
+                <tr style="text-align: center;">
+                    <td>
+                        @a
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Planname)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Term)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mlyinstall)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.qlyinstall)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.hlyinstall)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ylyinstall)
+                    </td>
+                    @if (item.status == 1)
+                    {
+                        <td>
+
+                            @Html.ActionLink("Deactive", "ActiveDeactivePlan", new { Plancode = item.Plancode, status = 1 }, new { onclick = "return confirm('Are you sure to Deactivate this " + mr.planname + "?');" })
+                        </td>
+          }
+                    @if (item.status == 0)
+                    {
+                        <td>
+                            @Html.ActionLink("Active", "ActiveDeactivePlan", new { Plancode = item.Plancode, status = 0 }, new { onclick = "return confirm('Are you sure to Activate this " + mr.planname + "?');" })
+                        </td>
+        }
+                </tr>
+            }
+
+        </table>
+
+    </div>
+
+
+</div>
+

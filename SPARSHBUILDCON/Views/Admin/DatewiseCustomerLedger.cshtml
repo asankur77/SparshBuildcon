@@ -1,0 +1,108 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.DatewiseCustomerList>
+@using SPARSHBUILDCON.Models
+@{
+    ViewBag.Title = "DatewiseCustomerLedger";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var a = 0;
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(c => c.Id == 1);
+    var planlist = (from p in db.Plans where p.status == 1 select p).ToList();
+}
+
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet">
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+<script>
+    $(function () {
+        $('#popupDatepicker').datepick();
+        $('#popupDatepicker1').datepick();
+        $('#inlineDatepicker').datepick({ onSelect: showDate });
+    });
+
+    function showDate(date) {
+        alert('The date chosen is ' + date);
+    }
+</script>
+
+<div class="my-3 my-md-5">
+    <div class="container" id="divid">
+        <div class="page-header">
+            <h4 class="page-title">Datewise @mr.custname</h4>
+                                  
+             
+
+        
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+            
+                    <div class="card-header">
+                        <h3 class="card-title">Datewise @mr.custname</h3>
+                    </div>
+                     
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Start Date</label>
+                                     <input type="text" class="form-control" id="popupDatepicker" name="sdate" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">End date</label>
+                                   <input type="text" class="form-control" id="popupDatepicker1" name="edate" required>
+                                </div>
+                            </div>
+                              <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Select @mr.planname Type</label>
+                                     <select name="planname" class="form-control">
+                                            <option selected value="">--Select--</option>
+                                            @foreach (var plan in planlist)
+                                            {
+                                                <option value="@plan.shortcutname">@plan.shortcutname</option>
+                                            }
+                                        </select>
+                                </div>
+                            </div>
+                            	<div class="card-footer text-right">
+										 <button class="btn btn-primary" onclick="target='_blank'"><i class="fa fa-cog"></i>Search</button>
+									</div>
+                        </div>
+                        }
+                            
+                        
+
+                    </div>
+                     
+       
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

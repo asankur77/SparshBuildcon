@@ -1,0 +1,77 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "Change_pwd";
+    Layout = "~/Views/Shared/_member_new_layout.cshtml";
+    UsersContext db = new UsersContext();
+        
+}
+
+
+
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">Change Password
+                </h3>
+                <i style="font-weight: 800; color: green; text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @ViewData["msg"] </i>
+                <ul class="breadcrumb">
+                    <li><a href="~/Member/Dashboard"><i class="icon-home"></i></a><span class="divider">&nbsp;</span>
+
+                    </li>
+                    <li><a href="#">DYNAMIC WAY REAL ESTATE PVT LTD</a><span class="divider">&nbsp;</span> </li>
+                    <li><a href="#">My Profile</a><span class="divider-last">&nbsp;</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget">
+                    <div class="widget-title">
+                        <h4>
+                            <i class="icon-reorder"></i>Change Password</h4>
+                        <span id="ctl00_ContentPlaceHolder1_Label2" class="control-label"></span>
+                    </div>
+                    <div class="widget-body form">
+                        <div class="form-horizontal">
+                            @using(Html.BeginForm())
+                            {
+                            <div id="ctl00_ContentPlaceHolder1_pnlmain">
+
+
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        Old Password
+                                    </label>
+                                    <div class="controls">
+                                        <input type="password" name="oldpwd"  required>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        New Password
+                                    </label>
+                                    <div class="controls">
+                                        <input type="password" name="newpwd" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">
+                                        Confirm Password
+                                    </label>
+                                    <div class="controls">
+                                       <input type="password" name="conpwd" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary ">Change Password</button>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

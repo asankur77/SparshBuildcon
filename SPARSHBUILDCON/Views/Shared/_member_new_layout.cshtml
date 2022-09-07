@@ -1,0 +1,240 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    Layout = null;
+    UsersContext db = new UsersContext();
+    var user = db.AgentDetails.Single(a => a.NewAgentId == User.Identity.Name);
+    var mr = db.Members.Single(m => m.Id == 1);
+    var r = db.CompanyInfos.Single(ci => ci.Id == 1);
+    
+}
+
+<!DOCTYPE html>
+<!-- saved from url=(0042) -->
+<html lang="en">
+<head id="ctl00_Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Welcome to @r.CompanyName
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/MemebrContetnt/member/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/MemebrContetnt/member/css/bootstrap-responsive.min.css" rel="stylesheet" />
+    <link href="~/Content/MemebrContetnt/member/uniform.default.css" rel="stylesheet" />
+    <link href="~/Content/MemebrContetnt/member/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/MemebrContetnt/member/css/forms.css" rel="stylesheet" />
+    <link href="~/Content/MemebrContetnt/member/css/style.css" rel="stylesheet" />
+    <link href="~/Content/MemebrContetnt/member/css/style_responsive.css" rel="stylesheet" />
+    <link href="~/Content/MemebrContetnt/member/css/style_default.css" rel="stylesheet" />
+    <link href="~/Content/MemebrContetnt/member/inbox.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="~/Content/MemebrContetnt/member/jquery-1.8.3.min.js"></script>
+    <link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+    <script src="~/Content/datepicker/jquery.plugin.js"></script>
+    <script src="~/Content/datepicker/jquery.datepick.js"></script>
+</head>
+<body class="fixed-top">
+    <script type="text/javascript">
+        //<![CDATA[
+        var theForm = document.forms['aspnetForm'];
+        if (!theForm) {
+            theForm = document.aspnetForm;
+        }
+        function __doPostBack(eventTarget, eventArgument) {
+            if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+                theForm.__EVENTTARGET.value = eventTarget;
+                theForm.__EVENTARGUMENT.value = eventArgument;
+                theForm.submit();
+            }
+        }
+        //]]>
+    </script>
+
+
+    <script src="~/Content/MemebrContetnt/member/WebResource.axd" type="text/javascript"></script>
+    <script src="~/Content/MemebrContetnt/member/ScriptResource.axd" type="text/javascript"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        if (typeof (Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');
+        //]]>
+    </script>
+
+    <script src="~/Content/MemebrContetnt/member/ScriptResource(1).axd" type="text/javascript"></script>
+    <div>
+        <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="FD483FEE">
+        <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWAgKtwb2RAgLt6M7mAds6xm3wZ1qKq76kOIO2ezIFgp7A">
+    </div>
+    <script type="text/javascript">
+        //<![CDATA[
+        Sys.WebForms.PageRequestManager._initialize('ctl00$ToolkitScriptManager1', document.getElementById('aspnetForm'));
+        Sys.WebForms.PageRequestManager.getInstance()._updateControls([], [], [], 90);
+        //]]>
+    </script>
+
+
+    <div id="header" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="brand" href="~/Member/Dashboard">
+                    <img src="@Url.Content(r.CompanyLogo)" style="height: 120px; width: 120px;" alt="">
+                </a><a class="btn btn-navbar collapsed" id="main_menu_trigger" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="arrow"></span></a>
+                <div class="top-nav ">
+                    <div class="nav pull-left top-menu" style="width: 60%">
+                        <strong class="white-color">Latest News :</strong>
+                        <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+                        <div>   
+                        @foreach (var i in db.Newstabs.ToList())
+                        {
+                            if (i.fromdate.Date <= DateTime.Now.Date && i.todate.Date >= DateTime.Now.Date)
+                            {
+                            <img src="~/Images/NewAlt.gif" style="width:50px;height:25px"/>
+                            <b style="color:black;font-weight:bolder;font-size:15px";>@i.News_sub</b><i>&nbsp;&nbsp;&nbsp;</i> <i style="color:white;font-size:15px;font-family:Arial"> @i.News_Msg</i><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                            }
+                        }
+                    </div>
+                     </marquee>
+                        <strong></strong>
+
+
+                    </div>
+                    <ul class="nav pull-right top-menu">
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            @if (user.Photo != null)
+                            {
+                                <span class="prfil-img">
+                                    <img src="@Url.Content(user.Photo)" alt="" class="img-responsive" id="IMGI1" style="height:29px;width:29px;border-width:0px;">
+                                </span> 
+                            }
+                            <span id="ctl00_lblmemnam" style="color: #fff;">@user.name</span>&nbsp;<span id="ctl00_lbluser" style="color: #fff;">@user.NewAgentId</span>
+                            <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="~/Member/Update_Profile"><i class="icon-user"></i>My profile</a></li>
+                                <li class="divider"></li>
+
+                                <li><a href="~/Member/ochange_pwd"><i class="icon-logout"></i>Change Password</a></li>
+                                <li class="divider"></li>
+
+                                <li><a href="../Member/Logout"><i class="icon-logout"></i>Logout</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="container" class="row-fluid">
+
+        <div id="sidebar" class="nav-collapse collapse" style="margin-left: 0px; margin-top: 35px;">
+            <div class="sidebar-toggler hidden-phone">
+            </div>
+            <ul class="sidebar-menu" style="display: block;">
+                <li style="border-top: 1px solid white;"><a href="~/Member/Dashboard" class=""><span class="icon-box"><i class="icon-dashboard"></i></span>Dashboard </a></li>
+
+                <li style="border-top: 1px solid white;"><a href="~/Member/businessplan" class=""><span class="icon-box"><i class="fa fa-briefcase"></i></span>Business Plan </a></li>
+                <li class="has-sub" style="border-top: 1px solid white;"><a href="javascript:;" class=""><span class="icon-box"><i class="icon-user"></i></span>My Profile <span class="arrow"></span></a>
+                    <ul class="sub">
+
+                        <li><a href="~/Member/WelcomeNote">Welcome Letter</a></li>
+                        <li><a href="~/Member/profilestatus">Profile Status</a></li>
+                        <li><a href="~/Member/Update_Profile">Profile Update</a></li>
+                        <li><a href="~/Member/Bank_Update">KYC Update</a></li>
+
+                    </ul>
+                </li>
+                <li style="border-top: 1px solid white;"><a href="~/Member/CreateBroker" class=""><span class="icon-box"><i class="fa fa-registered"></i></span>Registration </a></li>
+                <li class="has-sub" style="border-top: 1px solid white;"><a href="javascript:;" class=""><span class="icon-box"><i class="fa fa-users"></i></span>My Team <span class="arrow"></span></a>
+                    <ul class="sub">
+                        <li><a href="~/Member/Mydirect">My Direct Report</a></li>
+                        <li><a href="~/Member/BTree">Associate Tree</a></li>
+                         <li><a href="~/Member/TotalBusiness">My Downline Business</a></li>
+                        <li><a href="~/Member/TotalBinary">My Matching Summary</a></li>
+
+                    </ul>
+                </li>
+                <li class="has-sub" style="border-top: 1px solid white;"><a href="javascript:;" class=""><span class="icon-box"><i class="fa fa-inr"></i></span>My Incomes <span class="arrow"></span></a>
+                    <ul class="sub">
+                        <li><a href="~/Member/Levelbonus_income">Direct Income </a></li>
+                        <li><a href="~/Member/matching_income">Matching Income</a></li>
+                        @*<li><a href="~/Member/Performance_income">SLP Income</a></li>*@
+                        <li><a href="~/Member/incomecheck">Check Income</a></li>
+                        <li><a href="~/Member/MyAllincome">Summary</a></li>
+
+                    </ul>
+                </li>
+                @*<li class="has-sub" style="border-top: 1px solid white;"><a href="javascript:;" class=""><span class="icon-box"><i class=" fa fa-key">
+                </i></span>My Pins<span class="arrow"></span></a>
+                    <ul class="sub">
+                        <li><a href="~/Member/BulkTopup">Bulk Topup</a></li>
+                        <li><a href="~/Member/Availablepins">Available Pins</a></li>
+                      <li><a href="~/Member/pinwallet">Pins Wallet </a></li>
+                        <li><a href="~/Member/Pintransfer">Pins Transfer</a></li>
+                        <li><a href="~/Member/Pintransferhistory">Pin History</a></li>
+                        <li><a href="~/Member/Create_Pin">Create Pin History</a></li>
+                         <li><a href="~/Member/Transfer_Pin_Report">Pin Transfer History</a></li>
+                    </ul>
+                </li>*@
+                <li class="has-sub" style="border-top: 1px solid white;"><a href="javascript:;" class=""><span class="icon-box"><i class="fa fa-money"></i></span>My Fund <span class="arrow"></span></a>
+                    <ul class="sub">
+                        <li><a href="~/Member/Ewallet">E Wallet</a></li>
+                        <li><a href="~/Member/EwalletWithdrawalHistory">Ewallet Withdrawal History</a></li>
+                        <li><a href="~/Member/e_walletincome">Wallet Deduction</a></li>
+
+                    </ul>
+                </li>
+
+                <li class="has-sub" style="border-top: 1px solid white;"><a href="javascript:;" class=""><span class="icon-box"><i class="icon-cogs"></i></span>Setting <span class="arrow"></span></a>
+                    <ul class="sub">
+                        <li><a href="~/Member/ochange_pwd">Change Password</a></li>
+
+
+                    </ul>
+                </li>
+
+                <li style="border-top: 1px solid white; border-bottom: 1px solid white;"><a href="../Member/Logout" class=""><span class="icon-box"><i class="fa fa-circle-o-notch"></i></span>
+                    Logout </a></li>
+            </ul>
+        </div>
+        @RenderBody()
+      
+    </div>
+
+    <div id="footer">
+        @r.RegDate.Year ©
+        @r.CompanyName
+        <div class="span pull-right">
+            <span class="go-top"><i class="icon-arrow-up"></i></span>
+        </div>
+    </div>
+
+
+    <script src="~/Content/MemebrContetnt/member/bootstrap.min.js"></script>
+    <script src="~/Content/MemebrContetnt/member/jquery.cookie.js"></script>
+    <script src="~/Content/MemebrContetnt/member/js/jquery-ui.min.js"></script>
+    <script src="~/Content/MemebrContetnt/member/scripts.js"></script>
+    <script src="~/Content/MemebrContetnt/member/inbox.js"></script>
+    <script src="~/Content/MemebrContetnt/member/jquery.metisMenu.js"></script>
+    <script src="~/Content/MemebrContetnt/member/jquery-ui.js"></script>
+
+    <script src="~/Content/MemebrContetnt/member/functions.js"></script>
+    <script src="~/Content/MemebrContetnt/member/loader.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+
+            App.init();
+        });
+    </script>
+
+
+    <!--Dashboard Js-->
+
+    <script type="text/javascript">
+        //<![CDATA[
+        (function () { var fn = function () { $get("ctl00_ToolkitScriptManager1_HiddenField").value = ''; Sys.Application.remove_init(fn); }; Sys.Application.add_init(fn); })(); Sys.Application.initialize();
+        //]]>
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+﻿@{
+    ViewBag.Title = "Addbank";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Add Bank</h4>
+         
+            
+        </div>
+        
+        <div class="row">
+            <div class="col-12 card">
+                 <div class="card-header">
+                        <h3 class="card-title">Add Bank</h3>
+                    </div>
+                    <div class="card-body">
+                          @using (Html.BeginForm())
+                  {
+                              
+                                  <input type="hidden" class="form-control" value="1" name="status"  />
+                        <div class="row">
+                           
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Bank Name</label>
+                             <input type="text" class="form-control" id="bankname" name="bankname" required />
+                                </div>
+
+                                </div>
+                                        <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Account Type</label>
+                             <select class="form-control" id="accountype" name="accountype" required>
+                                            <option selected>Select </option>
+                                             <option value="Saving Account">Saving Account </option>
+                                            <option value="Current Account">Current Account</option>
+                                           
+                                        </select>
+                                </div>
+
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Account No</label>
+                               <input type="text"class="form-control" id="accountno" name="accountno" required />
+                                </div>
+
+                                </div>
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Bank Branch</label>
+                               <input type="text" class="form-control" id="branchname" name="branchname" required>
+                                </div>
+
+                                </div>
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">IFSC Code</label>
+                               <input type="text" class="form-control" id="ifsccode" name="ifsccode" required>
+                                </div>
+
+                                </div>
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Authorised Sigh1:</label>
+                               <input type="text" class="form-control" id="Authorisedsignatory1" name="Authorisedsignatory1" required />
+                                </div>
+
+                                </div>
+                                                         <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Contact No 1</label>
+                               <input type="text" class="form-control" id="contact1" name="contact1" required />
+                                </div>
+
+                                </div>
+                                               <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Contact No 2</label>
+                               <input type="text" class="form-control" id="contact2" name="contact2"  />
+                                </div>
+
+                                </div>
+                                            <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Branch Address</label>
+                              <input type="text" class="form-control" id="branchaddress" name="branchaddress" required />
+                                </div>
+
+                                </div>
+                                     <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Account Open Date</label>
+                              <input type="date" class="form-control date" id="acopendate" name="acopendate" required />
+                                </div>
+
+                                </div>
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Pan No 1</label>
+                             <input type="text" class="form-control" id="panno1" name="panno1" required>
+                                </div>
+
+                                </div>
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Pan No 2</label>
+                            <input type="text" class="form-control" id="panno2" name="panno2"  />
+                                </div>
+
+                                </div>
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Company name</label>
+                              <input type="text" class="form-control" id="companyname" name="companyname" required />
+                                </div>
+
+                                </div>
+                            	<div class="card-footer text-right">
+										<div class="d-flex">
+							             <button type="submit" class="btn btn-primary pull-right">Add Bank</button>
+                                </div>
+                            </div>
+         
+                            <p style="color: maroon;"><b>@ViewBag.msg</b></p>
+
+                       
+                    </div>
+                  }
+                        </div>
+     
+                
+            </div>
+        </div>
+                 
+    </div>
+
+     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

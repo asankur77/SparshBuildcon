@@ -1,0 +1,702 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Downline1>
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "BTree";
+    UsersContext db = new UsersContext();
+    Layout = "~/Views/Shared/_New_AgentLayout.cshtml";
+    var memberid = ViewData["cmid"];
+    var user = db.AgentDetails.Single(a => a.NewAgentId == User.Identity.Name);
+    var mr = db.Members.Single(x => x.Id == 1);
+}
+
+
+<script>
+
+    function checkid(check_id) {
+        debugger;
+        $("#wait").modal('show').modal({ keyboard: false });
+        var intro = $("#" + check_id).text();
+
+        var url = '@Url.Action("SelectDetail", "Admin")';
+        var x = new window.XMLHttpRequest();
+        x.open('get', url + '?intro=' + intro);
+        x.send();
+        x.onload = function () {
+            if (x.status == 200 && x.readyState == 4) {
+                var t = JSON.parse(x.response);
+
+                $("#wait").modal('hide');
+                $("#myModal").modal('show');
+                for (var i = 0; i < t.length; i++) {
+                    debugger;
+                    $("#id").text(t[i].Memberid);
+                    $("#name").text(t[i].MemberName);
+                    $("#introducerid").text(t[i].introid);
+                    $("#introducername").text(t[i].introname);
+                    $("#packagename").text(t[i].packname);
+                    $("#packageamount").text(t[i].topup);
+                    var date = new Date(parseInt(t[i].doj.replace("/Date(", "").replace(")/", ""), 10));
+                    var day = ('0' + date.getDate()).slice(-2);
+                    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                    var parsedDate = (day) + "/" + (month) + "/" + date.getFullYear();
+                    $("#doj").text(parsedDate);
+                    var date = new Date(parseInt(t[i].topupdate.replace("/Date(", "").replace(")/", ""), 10));
+                    var day = ('0' + date.getDate()).slice(-2);
+                    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                    var parsedDate = (day) + "/" + (month) + "/" + date.getFullYear();
+
+                    $("#topupdate").text(parsedDate);
+                    $("#lgreen").text(t[i].leftpaid);
+                    $("#rgreen").text(t[i].rightpaid);
+                    $("#tottalleft").text(t[i].allleftmember);
+                    $("#totalright").text(t[i].allrightmember);
+                    $("#leftvol").text(t[i].leftvol);
+                    $("#rightvol").text(t[i].rightvol);
+                    $("#IAPLeftBusiness").text(t[i].IAPLeftBusiness);
+                    $("#IAPRightBusiness").text(t[i].IAPRightBusiness);
+                    $("#FreshLeftBusiness").text(t[i].FreshLeftBusiness);
+                    $("#FreshRightBusiness").text(t[i].FreshRightBusiness);
+                    $("#EMILeftBusiness").text(t[i].EMILeftBusiness);
+                    $("#EMIRightBusiness").text(t[i].EMIRightBusiness);
+                    $("#RETotalLeftBusiness").text(t[i].RETotalLeftBusiness);
+                    $("#RETotalRightBusiness").text(t[i].RETotalRightBusiness);
+                    $("#todayleftval").text(t[i].totallbusines);
+                    $("#todayrightval").text(t[i].totalrbusines);
+                    $("#ptotal").text(parseFloat(t[i].leftpaid) + parseFloat(t[i].rightpaid));
+                    $("#atotal").text(parseFloat(t[i].allleftmember) + parseFloat(t[i].allrightmember));
+                    $("#msbtotal").text(parseFloat(t[i].leftvol) + parseFloat(t[i].rightvol));
+                    $("#IAPtotal").text(parseFloat(t[i].IAPLeftBusiness) + parseFloat(t[i].IAPRightBusiness));
+                    $("#Freshtotal").text(parseFloat(t[i].FreshLeftBusiness) + parseFloat(t[i].FreshRightBusiness));
+                    $("#EMITotal").text(parseFloat(t[i].EMILeftBusiness) + parseFloat(t[i].EMIRightBusiness));
+                    $("#RETotal").text(parseFloat(t[i].RETotalLeftBusiness) + parseFloat(t[i].RETotalRightBusiness));
+                    $("#Total").text(parseFloat(t[i].totallbusines) + parseFloat(t[i].totalrbusines));
+                }
+            }
+            else {
+                $("#wait").modal('hide');
+                $("#myModal").modal('hide');
+                alert('error' + x.statusText);
+            }
+        };
+    }
+</script>
+
+<style>
+    hr {
+        display: block;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        margin-left: auto;
+        margin-right: auto;
+        border-style: inset;
+        border-width: 1px;
+    }
+
+    #tbl, tr, th {
+        /*height:50px;*/
+        padding: 0px 0px !important;
+    }
+
+    .modal {
+        display: none;
+    }
+</style>
+<script src="~/Scripts/mouseover.js"></script>
+<script>
+    function checkaccount(check_id) {
+        $("input[name=click]").on('click init-click', function () {
+            $("#tree").removeClass("hide");
+
+        });
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    function openTextBox() {
+        $("#tree").prop("disabled", false);
+    }
+</script>
+
+<style type="text/css">
+    .hide {
+        display: none;
+    }
+</style>
+
+<style>
+    #pup {
+        position: absolute;
+        z-index: 200; /* aaaalways on top*/
+        padding: 3px;
+        /*margin-left: 10px;*/
+        margin-top: 5px;
+        width: 150px;
+        border: 1px solid white;
+        background-color: #ede8e8;
+        color: #000;
+        font-size: 0.95em;
+        border-radius: 10px;
+    }
+</style>
+<div class="main-body">
+    <div class="page-wrapper">
+        
+
+        <div class="page-body">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <div class="card">
+                        <br />
+                        <h4 style="background-color: #1abc9c; padding: 5px; color: white; border-radius: 2px; margin-left: 2%; margin-right: 2%"><i class="fa fa-users" aria-hidden="true"></i>Tree Structure</h4>
+                        <div class="card-content">
+                          
+                            @foreach (var a in Model)
+                            {
+                                <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="MainRounded table-responsive" style="margin-left: 10%" width="80%">
+                                    <tr>
+                                        <td>
+                                            <br />
+                                            <br />
+                                            <table style="height: auto; width: 100%;" class="table-responsive">
+                                                <tr>
+                                                    <td class="style5" style="height: 90px; width: 12.5%;"></td>
+                                                    @if (a.MainId == "Not Present")
+                                                    {
+                                                        <td colspan="6" style="width: 25%; height: 90px;" valign="top" align="center">
+
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {<td colspan="6" style="width: 25%; height: 90px;" valign="top" align="center">
+
+                                                        <img alt="Image" class="img-responsive"  src="@Url.Content(a.Mprofile)" style="background:none;" /><br />
+                                                        <label style="color: green; font-size: 11px;">@a.MainName</label><br />
+                                                        <a href="#myModal" id="main" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.MainId</a><br />
+                                                        @Html.ActionLink("View Tree", "BTree", new { newid = a.MainId }, new { })<br />
+                                                        <br />
+                                                    </td>
+                            
+                                                    }
+                                                    <td class="style5" style="height: 90px; width: 12.5%;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 30px; width: 12.5%;"></td>
+                                                    <td style="height: 30px;" align="center" colspan="6" valign="top">
+                                                        <img src="~/Content/MemebrContetnt/member/1.png" style="border-width: 0px; width: 72%;" class="img-responsive" />
+                                                    </td>
+                                                    <td style="height: 30px; width: 12.5%;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 70px; width: 12.5%;"></td>
+                                                    @if (a.LeftId == "Not Present")
+                                                    {
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"   src="@Url.Content(a.Lprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.LeftName</label><br />
+                                                            <a href="#myModal" id="Lmain" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.LeftId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.LeftId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                                                    }
+
+                                                    <td class="style3"></td>
+                                                    <td class="style5" style="height: 70px; width: 12.5%;"></td>
+                                                    @if (a.RightId == "Not Present")
+                                                    {
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+
+                                                        </td>
+                        
+                                                    }
+                                                    else
+                                                    {
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.Rprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.RightName</label><br />
+                                                            <a href="#myModal" id="RMain" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.RightId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.RightId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                                                    }
+
+                                                    <td class="style5" style="height: 70px; width: 12.5%;"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td style="height: 27px;" align="center" colspan="4" valign="top">
+                                                        <img src="~/Content/MemebrContetnt/member/2.png" class="img-responsive" style="height: 25px; width: 53%; border-width: 0px; margin-left: 31px;" />
+                                                    </td>
+                                                    <td style="height: 27px;" colspan="4" valign="top">
+                                                        <img src="~/Content/MemebrContetnt/member/2.png" class="img-responsive" style="height: 25px; width: 52%; border-width: 0px; margin-left: 104px;" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    @if (a.LeftLeftId == "Not Present")
+                                                    {
+                                   
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    { 
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.LLprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.LeftLeftName</label><br />
+                                                            <a href="#myModal" id="LL" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.LeftLeftId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.LeftLeftId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                             
+                                                    }
+                                                    @if (a.LeftRightId == "Not Present")
+                                                    {
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"   src="@Url.Content(a.LRprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.LeftRightName</label><br />
+                                                            <a href="#myModal" id="LR" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.LeftRightId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.LeftRightId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                                                    }
+                                                    @if (a.RightLeftId == "Not Present")
+                                                    {
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                       
+                                                    }
+                                                    else
+                                                    {
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.RLprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.RightLeftName</label><br />
+                                                            <a href="#myModal" id="RL" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.RightLeftId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.RightLeftId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                                                    }
+                                                    @if (a.RightRightId == "Not Present")
+                                                    {
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td colspan="2" style="width: 25%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.RRprofile)"  /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.RightRightName</label><br />
+                                                            <a href="#myModal" id="RR" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.RightRightId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.RightRightId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                                                    }
+                                                </tr>
+
+                                                <tr>
+                                                    <td style="height: 27px;" align="center" colspan="2" valign="top">
+                                                        <img src="~/Content/MemebrContetnt/member/2.png" class="img-responsive" style="height: 25px; width: 55%; border-width: 0px; margin-left: 38px;" />
+                                                    </td>
+                                                    <td style="height: 27px;" align="center" colspan="2" valign="top">
+                                                        <img src="~/Content/MemebrContetnt/member/2.png" class="img-responsive" style="height: 25px; width: 57%; border-width: 0px; margin-left: -24px;" />
+                                                    </td>
+                                                    <td style="height: 27px;" align="center" colspan="2" valign="top">
+                                                        <img src="~/Content/MemebrContetnt/member/2.png" class="img-responsive" style="height: 25px; width: 57%; border-width: 0px; margin-left: 0px;" />
+                                                    </td>
+                                                    <td style="height: 27px;" colspan="2" valign="top">
+                                                        <img src="~/Content/MemebrContetnt/member/2.png" class="img-responsive" style="height: 25px; width: 54%; border-width: 0px; margin-left: 48px" />
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    @if (a.LLLId == "Not Present")
+                                                    {
+                                   
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    { 
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.LLLprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.LLLName</label><br />
+                                                            <a href="#myModal" id="LLL" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.LLLId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.LLLId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                             
+                                                    }
+                                                    @if (a.LLRId == "Not Present")
+                                                    {
+                                   
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    { 
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.LLRprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.LLRName</label><br />
+                                                            <a href="#myModal" id="LLR" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.LLRId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.LLRId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                             
+                                                    }
+                                                    @if (a.LRLId == "Not Present")
+                                                    {
+                                   
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    { 
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.LRLprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.LRLName</label><br />
+                                                            <a href="#myModal" id="LRL" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.LRLId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.LRLId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                             
+                                                    }
+
+                                                    @if (a.LRRId == "Not Present")
+                                                    {
+                                   
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    { 
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.LRRprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.LRRName</label><br />
+                                                            <a href="#myModal" id="LRR" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.LRRId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.LRRId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                             
+                                                    }
+
+
+                                                    @if (a.RLLId == "Not Present")
+                                                    {
+                                   
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    { 
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.RLLprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.RLLName</label><br />
+                                                            <a href="#myModal" id="RLL" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.RLLId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.RLLId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                             
+                                                    }
+                                                    @if (a.RLRId == "Not Present")
+                                                    {
+                                   
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    { 
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.RLRprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.RLRName</label><br />
+                                                            <a href="#myModal" id="RLR" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.RLRId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.RLRId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                             
+                                                    }
+                                                    @if (a.RRLId == "Not Present")
+                                                    {
+                                   
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    { 
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.RRLprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.RRLName</label><br />
+                                                            <a href="#myModal" id="RRL" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.RRLId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.RRLId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                             
+                                                    }
+                                                    @if (a.RRRId == "Not Present")
+                                                    {
+                                   
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive" src="~/Images/star/7.png" /><br />
+                                                            <span style="font-family: Verdana; font-size: 12px; color: red;">Not Present</span>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    { 
+                                                        <td colspan="1" style="width: 12%; height: 70px;" valign="top" align="center">
+                                                            <img alt="Image" class="img-responsive"  src="@Url.Content(a.RRRprofile)" /><br />
+                                                            <label style="color: green; font-size: 11px;">@a.RRRName</label><br />
+                                                            <a href="#myModal" id="RRR" onclick="checkid(this.id)" style="color: red; font-size: small;">@a.RRRId</a><br />
+                                                            @Html.ActionLink("View Tree", "BTree", new { newid = a.RRRId }, new { })<br />
+                                                            <br />
+                                                        </td>
+                             
+                                                    }
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="1" style="width: 20%; height: 60px">
+                                                        <label style="height: 30px; width: 100%; border: 1px solid green; background-color: lightgray; color: white; text-align: center">@Html.ActionLink("LastLeft(" + a.LastLeftId + ")", "BTree", new { newid = a.LastLeftId }, new { })</label></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td colspan="1" style="width: 20%; height: 60px">
+                                                        <label style="height: 30px; width: 100%; border: 1px solid green; background-color: lightgray; color: white; text-align: center">@Html.ActionLink("LastRight(" + a.LastRightId + ")", "BTree", new { newid = a.LastRightId }, new { })</label></td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div id="wait" class="modal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-content" style="background-color: transparent; box-shadow: none;">
+        <div class="modal-body" style="width: 70%; margin: 15% 20%;">
+            <div class="block-center">
+                <center>  <img src='~/Content/11.gif' width="64" height="64" /><br> Loading..</center>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #tbl th {
+        padding-left:10px !important;
+    }
+</style>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content" >
+            <div class="modal-body ">
+                <table border="1" style="border-color: green; width: 100%;" id="tbl">
+
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th>
+                            <label style="font-weight: bold; color: black">&nbsp;&nbsp; @mr.agentname Name</label></th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="name" style="font-weight: bold; color: white">&nbsp;&nbsp;XXXX</label></th>
+
+                        <th>
+                            <label style="font-weight: bold; color: black">&nbsp;&nbsp; @mr.agentname Id</label>
+
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="id" style="font-weight: bold; color: white">&nbsp;&nbsp;XXXX</label>
+
+                        </th>
+                    </tr>
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th>
+                            <label style="font-weight: bold; color: black">&nbsp;&nbsp; Introducer Name</label></th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="introducername" style="font-weight: bold; color: white">&nbsp;&nbsp;XXXX</label></th>
+
+                        <th>
+                            <label style="font-weight: bold; color: black">&nbsp;&nbsp; Introducer Id</label>
+
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="introducerid" style="font-weight: bold; color: white">&nbsp;&nbsp;XXXX</label>
+
+                        </th>
+                    </tr>
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th >
+                            <label style="font-weight: bold; color: black">&nbsp;&nbsp;Date Of Joining</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="doj" style="font-weight: bold; color: white">&nbsp;&nbsp;XXXX</label>
+                        </th>
+                        <th style="background-color: #ea7a5b; color: white;">
+                            <label style="font-weight: bold; color: black;">&nbsp;&nbsp;Self Business</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="packageamount" style="color: white">&nbsp;&nbsp;XXXX</label>
+                        </th>
+                    </tr>
+                    
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th></th>
+                        <th style="background-color: #ea7a5b; color: black;">Team Left</th>
+                        <th style="background-color: #ea7a5b; color: black;">Team Right</th>
+                        <th style="background-color: #ea7a5b; color: black;">Total</th>
+                    </tr>
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th style="color: black;">Paid @mr.agentname</th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="lgreen" style="color: white">&nbsp;&nbsp;XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="rgreen" style="color: white">&nbsp;&nbsp;XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="ptotal" style="color: white">&nbsp;&nbsp;XXXX</label>
+                        </th>
+                    </tr>
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th>All @mr.agentname</th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="tottalleft" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="totalright" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="atotal" style="color: white">XXXX</label>
+                        </th>
+                    </tr>
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th>Topup Business(Rs.)</th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="leftvol" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="rightvol" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="msbtotal" style="color: white">XXXX</label>
+                        </th>
+                    </tr>
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th>SIP Business(Rs.)</th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="IAPLeftBusiness" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="IAPRightBusiness" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="IAPtotal" style="color: white">XXXX</label>
+                        </th>
+                    </tr>
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th>RE Fresh Business(Rs.)</th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="FreshLeftBusiness" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="FreshRightBusiness" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="Freshtotal" style="color: white">XXXX</label>
+                        </th>
+                    </tr>
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th>RE EMI Business(Rs.)</th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="EMILeftBusiness" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="EMIRightBusiness" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="EMITotal" style="color: white">XXXX</label>
+                        </th>
+                    </tr>
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th>RE Total Business(Rs.)</th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="RETotalLeftBusiness" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="RETotalRightBusiness" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="RETotal" style="color: white">XXXX</label>
+                        </th>
+                    </tr>
+                    <tr style="background-color: #ea7a5b; color: black;">
+                        <th>All Business(Rs.)</th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="todayleftval" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="todayrightval" style="color: white">XXXX</label>
+                        </th>
+                        <th style="background-color: #91b1c8; color: black;">
+                            <label id="Total" style="color: white">XXXX</label>
+                        </th>
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>

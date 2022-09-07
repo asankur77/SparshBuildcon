@@ -1,0 +1,151 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<SPARSHBUILDCON.Models.Memberlist>
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "Performancebonus_income";
+    Layout = "~/Views/Shared/_member_new_layout.cshtml";
+    var b = 1;
+    var a = 1;
+    int counting = Convert.ToInt32(ViewData["lastpage"]);
+    int pageno = Convert.ToInt32(ViewData["pageno"]);
+    int gets = Convert.ToInt32(ViewData["srno"]);
+    int sr = gets + 1;
+    int starts = gets + 1;
+    UsersContext db = new UsersContext();
+    var name = db.AgentDetails.Single(aa => aa.NewAgentId == User.Identity.Name);
+    var team = db.Roiincomes.Where(x => x.intronewid == User.Identity.Name  && x.paidstatus == 1).ToList();
+}
+
+@if (TempData["my5"] != null)
+{
+    <script>
+        alert('@TempData["my5"]');
+    </script>
+}
+
+
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">SLP Income
+                </h3>
+                <i style="font-weight: 800; color: green; text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @ViewData["msg"] </i>
+                <ul class="breadcrumb">
+                    <li><a href="~/Member/Dashboard"><i class="icon-home"></i></a>
+
+                    </li>
+                   
+                    <li><a href="#">SLP Income</a><span class="divider-last">&nbsp;</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="widget-title">
+                        <h4>
+                            <i class="icon-reorder"></i>SLP Income </h4>
+                    </div>
+                </div>
+            </div>
+            <br />
+            @if (Model != null)
+            {
+                <div class="col-lg-12">
+                    <div class="col-sm-12">
+
+                        <div class="card-box table-responsive">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover dataTables-example">
+
+                                    @if (b == 1)
+                                    {
+                                    
+                                        <thead class="text-primary">
+                                            <tr>
+                                                <th>Sr. No.</th>
+                                                @* <th>Member Id</th>
+                                            <th>Name</th>*@
+                                                <th>Customer Id</th>
+                                                <th>Customer Name</th>
+                                                <th>Deposit Amount</th>
+                                                <th>Income</th>
+                                                <th>Payout Date</th>
+                                                <th>Next Payout Date</th>
+                                                @* <th>Status</th>*@
+
+                                            </tr>
+                                        </thead>
+                                    }
+@* @for (int i = 0; i < Model.Count(); i++ )
+                                        {
+                                           
+                                          
+                                           
+                                            *@<tbody>
+                                                @foreach (var i in Model)
+                                                {
+                                                    <tr>
+                                                        @if (pageno == 1)
+                                                        {
+                                                            <td>@b</td>
+                                                        }
+                                                        else
+                                                        {<td>@sr</td>
+                                                        }
+                                                        @*  <td>@User.Identity.Name</td>
+                                                    <td>@name.username</td>*@
+                                                        <td>@i.MemberId</td>
+                                                        <td>@i.MemberName</td>
+                                                        <td>@i.package</td>
+                                                        <td>@i.totalamt</td>
+                                                        @if (i.paidstatus != 0)
+                                                        {
+                                                            <td>@i.JoinDate.ToString("dd/MMM/yyyy")</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>UnPaid</td>
+                                                        }
+                                                        @if (i.paidstatus == 0)
+                                                        {
+                                                            <td>@i.JoinDate.ToString("dd/MMM/yyyy")</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>Paid</td>
+                                                        }
+                                                        @*@if (i.paidstatus != 0)
+                                                    {
+                                                    <td>Paid</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>Unpaid</td>
+                                                    }*@
+                                                    </tr>
+                                                        b++;
+                                                }
+                                            </tbody>
+
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <label style="font-size: medium; font-weight: bold; color: red;">You have no SLP Income</label>
+            }
+        </div>
+
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,828 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.appltab>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    ViewBag.Title = "Bond";
+    var a = 0;
+}
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">@mr.custname Details</h4>
+        </div>
+            <div class="row">
+                <div class="col-12 card">
+                    <div class="card-header">
+                        <h3 class="card-title">@mr.custname Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                   <button type="submit" value="PDF" class="btn btn-primary" onclick="target='_blank'">Download PDF</button>
+                                </div>
+                            </div>
+                        </div>
+                            <p style="color: maroon;"><b>@ViewBag.msg</b></p>  
+                            </form>
+                    </div>
+
+                </div>
+            </div> 
+       
+                     <form enctype="multipart/form-data" method="post" id="_submit">
+                                   @foreach (var item in Model)
+                                   {
+                                       if (a == 0)
+                                       {
+                                           var pr = db.Plans.Single(p => p.Plancode == item.projectid);
+                     <div class="row">
+                             
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Personal Details</div>
+                        </div>
+                        <div class="card-body">
+                                            <div class="form-group">
+                                               <label class="form-label">@mr.branchname Code </label> 
+                                            <input type="text" id="branchcode" class="form-control" readonly="true" value="@item.branchcode" name="branchcode" required /></div>
+                                          
+                                          <div class="form-group">
+                                           <label class="form-label">Form Fee</label>
+                                             <input type="text" class="form-control" id="applicationcharge" required name="applicationcharge" value="@item.applicationcharge" readonly="true"/>
+                                                </div>
+                                                
+                                       
+                            <div class="form-group">
+                                <label class="form-label">@mr.custname Id </label>
+                                <input type="text" class="form-control" readonly="true" value=" @Html.DisplayFor(modelItem => item.newbondid)" id="newbondid" name="newbondid" required />
+                            </div>
+                                           
+                                            <div class="form-group">
+       <label class="form-label">Name of Applicant </label>
+                                               
+     <input type="text" class="form-control"  value=" @Html.DisplayFor(modelItem => item.name)" id="name" name="name" required /></div>
+                              <div class="form-group">
+													
+													<div class="input-group">
+														 <input type="text" style="background-color:#eee" readonly="true" value="@Html.DisplayFor(modelItem => item.RelationOf)" class="form-control" required name="RelationOf" id="RelationOf" />
+														<span class="input-group-append">
+															  <input type="text" value="@Html.DisplayFor(modelItem => item.fathername)" readonly="true" class="form-control" required name="fathername" id="fathername" />
+														</span>
+													</div>
+												</div>
+                            
+                                       <div class="form-group">
+                                            <label class="form-label">Category</label>
+                                            <select class="form-control" id="category" name="category">
+                                                            <option>@Html.DisplayFor(modelItem => item.fathername)</option>
+                                           </select>
+                                       </div>
+                                 
+                                       <div class="form-group">
+                                           <label class="form-label">Income Group</label>
+                                          <select class="form-control" id="incomegroup" name="incomegroup">
+                                                     <option>@Html.DisplayFor(modelItem => item.incomegroup)</option>
+                                               <option value="Lower Income Group">Lower Income Group</option>
+                                               <option value="Middle Income Group">Middle Income Group</option>
+                                               <option value="Upper Income Group">Upper Income Group</option>                                              
+                                           </select>
+                                       </div>
+                                  
+                                            <div class="form-group">
+                                               <label class="form-label">Address </label>
+                                                 <input type="text" id="addr"  readonly="true" value="@Html.DisplayFor(modelItem => item.addr)" name="addr"  class="form-control" required />
+                                            </div>
+                                      
+                                            <div class="form-group">
+                                               <label class="form-label">Mobile No </label>
+                                                
+                                                <input type="text" id="mobileno" name="mobileno" maxlength="10" readonly="true" value="@Html.DisplayFor(modelItem => item.mobileno)" class="form-control" required/>
+                                            </div>
+                                     
+                                            <div class="form-group">
+       <label class="form-label">Introducer Code </label > 
+                                         <input type="text" class="form-control"  onchange="checkid(this.id)" value="@Html.DisplayFor(modelItem => item.newintroducerid)" onclick="checkid(this.id)" id="IntroducerCode" name="newintroducerid" required />
+                                                <span class="input-group-addon"><label class="width" style="width:15px;"><span class="fa fa-search"></span></label></span>
+                                            </div>
+                                    
+                                            <div class="form-group">
+       <label class="form-label">Introducer Name </label>  
+                                            <input type="text" class="form-control"/ id="introducername" readonly="true"></div>
+                                        
+                                            
+                                            <div class="form-group">
+                                         <label class="form-label">Date of Agreement </label>
+                                      <input type="text" class="form-control date" id="formdate" name="formdate" value="@Html.DisplayFor(modelitem => item.formdate)" required >
+                                                    </div>
+                                      
+
+                                        <div class="form-group">
+       <label class="form-label">Date of Birth </label> 
+                                         <input type="text" id="dob" readonly="true" value="@Html.DisplayFor(modelItem => item.dob)" name="dob" class="form-control" required/>
+                                         </div>
+                                        
+                                            <div class="form-group">
+       <label class="form-label">Nationality </label>  
+     <input type="text" id="nationality" name="nationality" readonly="true" class="form-control"  value="Indian"/></div>
+                            </div>
+
+                        </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Guardian Details</div>
+                        </div>
+                        <div class="card-body">
+                          <div class="form-group">
+                                    <label class="form-label">Guardian Name </label>
+                                     <input type="text" id="guardianname" name="guardianname" class="form-control" value="@Html.DisplayFor(modelItem => item.guardianname)"/>
+                                 </div>
+                         
+                                 <div class="form-group">
+                                      <label class="form-label">Guardian's Age </label>
+                                     <input type="text" id="gurage" name="gurage" class="form-control" value="@Html.DisplayFor(modelItem => item.gurage)"/>
+                                 </div>
+                          
+                                 <div class="form-group">
+                                      <label class="form-label">Relationship</label>
+                                     <input type="text" class="form-control" id="gurrel" name="gurrel" />
+                                 </div>
+                            <div class="form-group">
+                                      <input id="chk" type="checkbox" name="chk" />&nbsp;Same As Contributor
+                                 </div>
+                            <div class="form-group">
+                                      <label class="form-label">Guardian Address</label>
+                                    <textarea id="guraddr" name="guraddr" class="form-control"></textarea>
+                                 </div>
+                            <div class="form-group">
+                                      <label class="form-label">Upload Image</label>
+                                    <input class="form-control" id="File1" name="photo" type="file" />
+                                 </div>
+                            </div>
+                                         </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Bank Details</div>
+                        </div>
+                        <div class="card-body">
+                          
+                                      <div class="form-group">
+                                      <label class="form-label">PAN No </label>
+                                    <input type="text" id="panno" name="panno"  value="@Html.DisplayFor(modelItem => item.panno)" class="form-control" />
+                                 </div>
+                             
+                                 <div class="form-group">
+                                     <label class="form-label">Bank Name </label>
+                                     <input type="text" id="bankname" name="bankname" value="@Html.DisplayFor(modelItem => item.bankname)" class="form-control"/>
+                                 </div>
+                            
+                                 <div class="form-group">
+                                     <label class="form-label">Bank A/C No </label>
+                                     <input type="text" id="accountno" name="accountno" value="@Html.DisplayFor(modelItem => item.accountno)" class="form-control"/>
+                                 </div>
+                             
+                                 <div class="form-group">
+                                    <label class="form-label">IFSC Code </label>
+                                     <input type="text" id="IFSC"  value="@Html.DisplayFor(modelItem => item.IFSC)" name="IFSC" class="form-control"/>
+                                 </div>
+                             
+                            </div>
+                                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h2>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="" id="lsecondform" />Second Applicant Form</label></h2>
+                            </div>
+                        </div>
+                        <div class="card-body" id="secondform" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label">Applicant Name </label>
+                                <input type="text" name="sapplicantname" value="@item.sapplicantname" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Father's/Husband's Name </label>
+                                <input type="text" name="sfathername" value="@item.sfathername" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Mother's Name </label>
+                                <input type="text" name="smothername" value="@item.scategory" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select class="form-control" id="scategory" name="scategory">
+                                    <option value="@item.scategory" selected>@item.scategory</option>
+                                    <option value="General">General</option>
+                                    <option value="OBC">OBC</option>
+                                    <option value="SC">SC</option>
+                                    <option value="ST">ST</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Correspondence Address </label>
+                                <input type="text" name="scorraddress" value="@item.scorraddress" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">City</label>
+                                <input type="text" name="scity" value="@item.scity" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">State </label>
+                                <input type="text" name="sstate" value="@item.sstate" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Pin Code </label>
+                                <input type="text" name="spincode" value="@item.spincode" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <h3>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="" id="sameasabove">Same As Above</label></h3>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Permanent Address </label>
+                                <input type="text" name="spermanentaddress" value="@item.spermanentaddress" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">City</label>
+                                <input type="text" name="pcity" value="@item.scity" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">State </label>
+                                <input type="text" name="sstate" value="@item.sstate" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Pin Code </label>
+                                <input type="text" name="spincode" value="@item.spincode" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Nationality </label>
+                                <input type="text" name="snationality" value="@item.snationality" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Educational Qualification</label>
+                                <input type="text" name="squalification" value="@item.squalification" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Mobile No </label>
+                                <input type="text" name="smobileno" value="@item.smobileno" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Alternate Mobile No </label>
+                                <input type="text" name="salternatemobileno" value="@item.salternatemobileno" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Pan No. </label>
+                                <input type="text" name="spanno" value="@item.spanno" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email Id </label>
+                                <input type="text" name="semailid" value="@item.semailid" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Date Of Birth </label>
+                                <input type="text" name="sdob" value="@item.sdob" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Aadhar No. </label>
+                                <input type="text" name="saadharno" value="@item.saadharno" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Martial Status </label>
+
+                                <div class="radio">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="smaritialstatus" style="margin-top: 5px;" value="UnMarried">UnMarried</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="smaritialstatus" style="margin-top: 5px;" value="Married">Married</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Anniversary Date </label>
+                                <input type="text" name="sanniversarydate" value="@item.sanniversarydate" class="form-control"  />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Occupation </label>
+                                <input type="text" name="soccupation" value="@item.soccupation" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Passport No. </label>
+                                <input type="text" name="spassport" value="@item.spassport" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Residential Status </label>
+                                <div class="radio">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="sresidentialstatus" style="margin-top: 5px;" value="Resident">Resident</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="sresidentialstatus" style="margin-top: 5px;" value="Non-Resident">Non-Resident</label>
+                                </div>
+                            </div>
+                            <div class="row-form" id="picset">
+
+                                <div class="col-md-4">
+                                    <p>Customer Pic</p>
+                                    <img src="/Content/reg/img/u.png" id="imgsphoto" alt="/Content/reg/img/u.png" />
+                                    <input type="file" name="sphoto" id="sphoto" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <p>Aadhar Pic</p>
+                                    <img src="/Content/reg/img/adhar.jpg" id="imgsaadharphoto" alt="/Content/reg/img/adhar.jpg" />
+                                    <input type="file" name="saadharphoto" id="saadharphoto" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <p>Pan Pic</p>
+                                    <img src="/Content/reg/img/pan.jpg" id="imgspanphoto" alt="/Content/reg/img/pan.jpg" />
+                                    <input type="file" name="spanphoto" id="spanphoto" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                         <div class="col-lg-6">
+                             <div class="card">
+                                 <div class="card-header">
+                                     <div class="card-title">@mr.planname Details</div>
+                                 </div>
+                                 <div class="card-body">
+
+                                                      <div class="form-group">
+                                                          <label class="form-label">Property Type</label>
+                                                          <select class="form-control" id="propertytype" name="propertytype" onchange="selectproject(this.id)" required>
+                                                              <option value="@item.propertytype">@item.propertytype </option>
+                                                              <option value="Residential">Residential</option>
+                                                              <option value="Commercial">Commercial</option>
+                                                          </select>
+                                                      </div>
+
+                                                      <div class="form-group">
+                                                          <label class="form-label">Payment Type </label>
+                                                          <select class="form-control" id="paymenttype" name="paymenttype" required>
+                                                              <option value="@item.paymenttype" selected>@item.paymenttype</option>
+                                                              <option value="EMI" >EMI Payment Plan</option>
+                                                              <option value="FULL">FULL Payment Plan</option>
+                                                              <option value="PART">PART Payment Plan</option>
+                                                          </select>
+
+                                                      </div>
+
+                                                      <div class="form-group">
+                                                          <label class="form-label">@mr.planname Name </label>
+                                                          <select class="form-control" onchange="selectterm(this.id),selectphase(this.id)" id="PlanName" name="projectid" required>
+                                                             
+                                                   <option value="@item.projectid">@item.planname </option>
+                                              
+                                                          </select>
+                                                      </div>
+                                                      <div class="row-form" id="termDiv">
+                                                          <div class="form-group">
+                                                              <label class="form-label">Term(Yr.) </label>
+                                                              <select class="form-control" id="term" name="term" onchange="setexpiry()" required="">
+                                                                  <option value="@item.term" selected>@item.term </option>
+
+                                                              </select>
+
+                                                          </div>
+
+                                                          <div class="form-group">
+                                                              <label class="form-label">Assign Plot</label>
+                                                              <input type="radio" id="radio" name="PYN" class="PYN" value="Y" />
+                                                              Yes   
+                                           <input type="radio" id="radio2" name="PYN" class="PYN" value="N" checked>
+                                                              No  
+                                                          </div>
+
+                                                      </div>
+                                                      <div class="form-group" id="plotsizeDiv">
+                                                          <label class="form-label">Plot Size(SqYd)</label>
+                                                          @*<select class="form-control" id="nolandunit" name="nolandunit" required>
+                                           </select>*@
+                                                          <input type="text" class="form-control" id="nolandunit" value="@item.nolandunit" name="nolandunit" />
+                                                      </div>
+
+
+                                                      <div id="phasediv" class="row-form">
+                                                          <div class="form-group">
+                                                              <label class="form-label">Select Phase</label>
+                                                              <select class="form-control" id="phaseid" name="phaseid" onchange="getblock(this.id)">
+                                                                  <option value="@item.phaseid">@item.phase </option>
+
+                                                              </select>
+
+
+                                                          </div>
+                                                      </div>
+                                                      <div id="blok" class="row-form" style="padding-bottom: 15px;">
+
+                                                          <div class="form-group">
+                                                              <label class="form-label">Select Block</label>
+                                                              <select class="form-control" id="blk" name="block" onchange="getplot(this.id)">
+                                                                  <option value="@item.block" selected>@item.block</option>
+                                                              </select>
+
+                                                          </div>
+
+
+                                                          <div class="form-group">
+                                                              <label class="form-label">Property Address</label>
+                                                              <textarea name="propertyaddress"  class="form-control" style="resize: vertical;">@item.propertyaddress</textarea>
+                                                          </div>
+
+                                                      </div>
+                                                      <div id="plot" class="row-form">
+
+                                                          <div class="form-group">
+                                                              <label class="form-label">Select Plot No </label>
+                                                              <select class="form-control" id="plotno" name="plotno">
+                                                                  <option value="@item.plotno" selected>@item.plotno</option>
+                                                              </select>
+
+                                                          </div>
+                                                      </div>
+                                                      <div class="row-form" id="bookingamountDiv">
+
+                                                          <div class="form-group">
+                                                              <label class="form-label">Booking Amount</label>
+                                                              <input id="fullAmount" name="fullAmount" type="text" class="form-control" value="@item.totalcon" required style="display: none;" />
+                                                              <input id="bookingamount" name="bookingamount" type="text" class="form-control" value="@item.bookingamount" required="" />
+                                                          </div>
+                                                      </div>
+                                                      <div class="form-group">
+                                                          <label class="form-label">Discount(%)</label>
+                                                          <input type="text" class="form-control" id="discountper" onkeyup="selecttotolplot()" value="@item.discountper" onblur="selecttotolplot()" required name="discountper" value="0" />
+                                                      </div>
+                                                      <div class="form-group">
+                                                          <label class="form-label">Property Preference</label>
+                                                          <select name="propertypreference" class="form-control" id="propertypreference" onchange="selecttotolplot()">
+                                                              <option value="@item.propertypreference" selected>@item.propertypreference</option>
+                                                              <option value="Normal">Normal</option>
+                                                              <option value="Corner">Corner</option>
+                                                              <option value="Park facing">Park Facing</option>
+                                                              <option value="30ft Road">30Ft Road</option>
+                                                          </select>
+                                                      </div>
+                                                      <div class="form-group" id="plccostDiv">
+                                                          <label class="form-label">PLC Cost (In %)</label>
+                                                          <input type="number" name="plccost" id="plccost" min="0" onkeyup="selecttotolplot()" onblur="selecttotolplot()" class="form-control" value="@item.plccost" />
+                                                      </div>
+                                                      <div class="form-group">
+                                                          <label class="form-label">Development Charge (per.sqrt)</label>
+                                                          <input type="number" name="Devcharge" id="Devcharge" min="0" onkeyup="selecttotolplot()" onblur="selecttotolplot()" class="form-control" value="0" />
+
+                                                      </div>
+
+                                                      <div class="form-group" id="plotcostDiv">
+                                                          <label class="form-label">Plot Cost(Rs.) </label>
+                                                          <input type="text" class="form-control" id="totalcon" name="totalcon" disabled="" value="@item.totalcon" required data-v="0" />
+
+                                                      </div>
+
+                                                      <div class="form-group">
+                                                          <label class="form-label">Payment Mode </label>
+                                                          <select class="form-control" id="mode" name="mode" required>
+                                                              <option value="@item.mode" selected>@item.mode </option>
+                                                              <option value="Monthly">Monthly</option>
+                                                             
+                                                          </select>
+                                                      </div>
+
+                                                      <div class="row-form" id="paymentDiv">
+
+                                                          <div class="form-group">
+                                                              <label class="form-label">EMI Amount(Rs.) </label>
+                                                              <input type="text" class="form-control" id="payment" name="payment" readonly="true" required value="@item.payment" />
+
+                                                          </div>
+                                                      </div>
+
+                                                      <div class="row hide" id="maturityamtDiv">
+                                                          <div class="form-group">
+                                                              <label class="form-label">Maturity Amount(Rs.)</label>
+                                                              <input type="hidden" class="form-control" id="maturityamt" name="expectedraisablevalue" value="@item.expectedraisablevalue" />
+
+                                                          </div>
+                                                      </div>
+
+
+
+
+                                                      <div class="row-form hide" id="expirydateDiv">
+
+                                                          <div class="form-group">
+                                                              <label class="form-label">Expiry Date</label>
+                                                              <input type="text" class="form-control" id="expirydate" readonly="true" value="@item.expirydate" name="expirydate" />
+                                                          </div>
+
+                                                      </div>
+
+
+
+
+                                                  </div>
+
+
+
+                             </div>
+                             <div class="card">
+                                 <div class="card-header">
+                                     <div class="card-title">Nominee Details</div>
+                                 </div>
+                                 <div class="card-body" id="nomineeDiv">
+
+
+
+
+                                     <div class="form-group">
+
+                                         <label class="form-label">Nominee Name</label>
+                                         <input type="text" id="nomineename" name="nomineename" value=" @Html.DisplayFor(modelItem => item.nomineename)" class="form-control" />
+                                     </div>
+                                     <div class="form-group">
+                                         <label class="form-label">Nominee Age</label>
+                                         <input type="text" id="nomage" name="nomage" value=" @Html.DisplayFor(modelItem => item.nomage)" class="form-control"  />
+                                     </div>
+                                     <div class="form-group">
+
+                                         <label class="form-label">Relationship</label>
+                                         <input type="text" class="form-control" id="nomrel" name="nomrel" value=" @Html.DisplayFor(modelItem => item.nomrel)"  />
+                                     </div>
+                                     <div class="form-group">
+
+                                         <label class="form-label">Nominee Address </label>
+                                         <input type="text" id="nomaddr" name="nomaddr" value=" @Html.DisplayFor(modelItem => item.nomaddr)" class="form-control"  />
+                                     </div>
+                                 </div>
+
+
+
+                             </div>
+                             <div class="card">
+                                 <div class="card-header">
+                                     <div class="card-title">Payment Details</div>
+                                 </div>
+                                 <div class="card-body">
+
+                                     <div class="form-group">
+
+                                         <label class="form-label">Payment Mode </label>
+                                         <input type="radio" id="paymethod" name="paymethod" value="Cash" checked onclick="detail(this.id)">
+                                         Cash   
+                                             <input type="radio" id="paymethod2" name="paymethod" value="DD" onclick="detail(this.id)">
+                                         DD  
+                                          <input type="radio" id="paymethod3" name="paymethod" value="Cheque" onclick="detail(this.id)">
+                                         Cheque  
+                                            <input type="radio" id="paymethod4" name="paymethod" value="banktransaction" onclick="detail(this.id)">
+                                         Bank Transaction
+                                     </div>
+                                     <div class="form-group">
+                                         <label class="form-label">Payment Date</label>
+                                         <input type="text" id="pdate" name="pdate" class="form-control date" value="@item.pdate" readonly="true" required />
+                                     </div>
+                                     <div id="dd" style="display: none;">
+                                         <div class="form-group">
+
+                                             <label class="form-label">DD No</label>
+                                             <input type="text" id="checkorddno" name="checkorddno" value="@item.checkorddno" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">Draw No. </label>
+                                             <input type="text" id="drawno" name="drawno" value="@item.drawno" class="form-control" />
+                                         </div>
+                                     </div>
+                                     <div id="detail" style="display: none;">
+                                         <div class="form-group">
+
+                                             <label class="form-label">Bank Name</label>
+                                             <input type="text" id="bank" name="bank" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">A/C No. </label>
+                                             <input type="text" id="ACNO" name="Account" value="@item.Account" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">Cheque No. </label>
+                                             <input type="text" id="chequeno" name="chequeno" value="@item.chequeno" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">A/C Holder Name</label>
+                                             <input type="text" id="ACname" name="ACholdername" value="@item.ACholdername" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">Branch Name </label>
+                                             <input type="text" id="barnch" name="Branch" value="@item.Branch" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">IFSC </label>
+                                             <input type="text" id="IFSCcode" name="IFSCCode" value="@item.IFSCCode" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">Amount </label>
+                                             <input type="text" id="Amount" name="ChequeAmount" value="@item.ChequeAmount" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">Cheque Date </label>
+                                             <input type="text" id="Date" name="Chequedate" value="@item.Chequedate" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">Cheque Image </label>
+                                             <input type="file" id="Chequeimage" name="Chequeimage" value="@item.Chequeimage" class="form-control" />
+                                         </div>
+                                     </div>
+                                     <div id="trdetail" style="display: none;">
+                                         <div class="form-group">
+                                             <label class="form-label">Bank Name</label>
+                                             <select id="trbank" name="trbank" class="form-control">
+                                                 <option>select</option>
+                                                 @foreach (var blist in db.BankDetail_Tabs.ToList())
+                                                 {
+                                                     <option value="@blist.bankname">@blist.bankname</option>                                          
+                                                 }
+                                             </select>
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">Transaction Id </label>
+                                             <input type="text" id="transactionid" name="transactionid" value="@item.transactiontype" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">Transaction Date </label>
+                                             <input type="date" id="transactiondate" name="transactiondate" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">Amount</label>
+                                             <input type="text" id="tramount" name="tramount" class="form-control" />
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">Pay Method  </label>
+                                             <input type="radio" id="trpmethod1" name="transactiontype" value="NEFT" checked>
+                                             NEFT
+                                            <input type="radio" id="trpmethod2" name="transactiontype" value="IMPS" />
+                                             IMPS
+                                            <input type="radio" id="trpmethod3" name="transactiontype" value="RTGS" />
+                                             RTGS
+                                            <input type="radio" id="trpmethod4" name="transactiontype" value="UPI" />
+                                             UPI
+                                         </div>
+                                         <div class="form-group">
+
+                                             <label class="form-label">A/C Holder's A/C No. </label>
+                                             <input type="text" id="holderacno" name="holderacno" class="form-control" />
+                                         </div>
+
+                                     </div>
+                                     <div class="form-group">
+                                         <label class="form-label">Branch Payable At</label>
+                                         <input type="text" id="branchpay" name="branchpay" value="@item.branchpay" class="form-control" />
+                                     </div>
+                                     <div class="form-group">
+                                         <label class="form-label">Amount In Words </label>
+                                         <input type="text" name="amountword" class="form-control" id="amountinword" value="@item.amountword" readonly="true" required />
+                                     </div>
+                                 </div>
+
+
+                             </div>
+                             <div class="card" id="plotdetail">
+                                 <div class="card-header">
+                                     <div class="card-title">Plot Detail</div>
+                                 </div>
+                                 <div class="card-body">
+                                     <div class="form-group">
+
+                                         <label class="form-label">Plot Description </label>
+                                         <textarea name="plotdesp" class="form-control" style="resize: vertical;"></textarea>
+                                     </div>
+
+
+
+                                     <div class="row" data-id="direction">
+                                         <div class="col-md-3">
+                                             <input type="radio" name="rnortheast" id="rnortheast" />
+                                             <label for="rnortheast">East</label>
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="text" name="northeast" value="@item.northeast" class="form-control" disabled="" />
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="radio" name="rnortheast" id="rnortheast1" />
+                                             <label for="rnortheast1">North-East</label>
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="text" name="northeast" value="@item.northeast" class="form-control" disabled="" />
+                                         </div>
+                                     </div>
+                                     <div class="row" data-id="direction">
+                                         <div class="col-md-3">
+                                             <input type="radio" name="rsoutheast" id="rsoutheast" />
+                                             <label for="rsoutheast">West</label>
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="text" name="southeast" value="@item.southeast" class="form-control" disabled="" />
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="radio" name="rsoutheast" id="rsoutheast1" />
+                                             <label for="rsoutheast1">South-East</label>
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="text" name="southeast" value="@item.southeast" class="form-control" disabled="" />
+                                         </div>
+                                     </div>
+                                     <div class="row" data-id="direction">
+                                         <div class="col-md-3">
+                                             <input type="radio" name="rnorthwest" id="rnorthwest" />
+                                             <label for="rnorthwest">North</label>
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="text" name="northwest" value="@item.northwest" class="form-control" disabled="" />
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="radio" name="rnorthwest" id="rnorthwest1" />
+                                             <label for="rnorthwest1">North-West</label>
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="text" name="northwest" value="@item.northwest" class="form-control" disabled="" />
+                                         </div>
+                                     </div>
+                                     <div class="row" data-id="direction">
+                                         <div class="col-md-3">
+                                             <input type="radio" name="rsouthwest" id="rsouthwest" />
+                                             <label for="rsouthwest">South</label>
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="text" name="southwest" value="@item.southwest" class="form-control" disabled="" />
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="radio" name="rsouthwest" id="rsouthwest1" />
+                                             <label for="rsouthwest1">South-West</label>
+                                         </div>
+                                         <div class="col-md-3">
+                                             <input type="text" name="southwest" value="@item.southwest" class="form-control" disabled="" />
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                                
+                      <div class="col-md-6">
+                        <div class="card-footer text-right">
+                              <button id="submit"  value="Update" type="submit" name="command" class="btn btn-primary" onclick="return confirm('Are you sure to create @mr.custname?')">Submit</button>
+
+                            </div>
+                        </div>
+                    
+               
+                      </div>
+
+                                       }
+                                   }
+
+                                   
+               </form>
+     
+
+
+        </div>
+    </div>

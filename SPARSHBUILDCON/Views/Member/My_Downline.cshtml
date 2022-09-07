@@ -1,0 +1,75 @@
+﻿@using SPARSHBUILDCON.Models;
+@model IEnumerable<SPARSHBUILDCON.Models.Downline>
+
+@{
+    ViewBag.Title = "My_Downline";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    UsersContext db = new UsersContext();
+    var b = 0;
+}
+
+
+
+
+
+<div class="outter-wp">
+    <!--/sub-heard-part-->
+    <div class="sub-heard-part">
+        <ol class="breadcrumb m-b-0">
+            <li><a href="index.html">Home</a></li>
+            <li class="active">My All Downline</li>
+        </ol>
+    </div>
+    <!--/sub-heard-part-->
+    <!---728x90--->
+    <!--/forms-->
+
+
+    <br />
+    <br />
+    <div class="graph-visual tables-main">
+
+        @*	<div class="col-md-12" style="background-color:#fb442c">Colored Rows Table</div>*@
+
+        <div class="graph">
+            <div class="tables table-responsive">
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>User Id</th>
+                            <th>Name</th>
+                            <th>Upline Id</th>
+                            <th>Upline</th>
+                            <th>Joining Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                             
+                          
+                            <tr>
+                                <td>@b</td>
+                                <td>@item.MemberId</td>
+                                <td>@item.MemberName</td>
+                                <td>@item.Introducer</td>
+                                <td>@item.IntroducerName</td>
+                                <td>@item.JoinDate.ToString("dd-MMM-yyyy")</td>
+                            </tr>
+                            b++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--//forms-->
+</div>
+
+
+

@@ -1,0 +1,103 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.AgentDetail>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1); 
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    ViewBag.Title = "SearchBroker";
+}
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#NewAgentId").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteAgentid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.NewAgentId };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Search @mr.agentname</a></li>
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+   <div class="card-header">
+                            <h3 class="card-title">Search @mr.agentname</h3>
+   
+                        </div>
+                        <div class="card-body">
+                            <div class="row" id="hide">
+                                <div class="col-md-12 col-lg-12">
+                                              @using (Html.BeginForm())
+          {
+                                    <div class="form-group">
+                                       
+                                        <label class="form-label">Enter @mr.agentname Id</label>
+                                        <div class="input-group">
+                                                    <input type="text" id="NewAgentId" class="form-control" required name="NewAgentId">
+                                            <span class="input-group-append">
+                                              <button id="submit" name="command" value="Search" class="btn btn-primary pull-right" type="submit" ><i class="fa fa-search"></i>Search</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                              }
+                                </div>
+                                       
+                            </div>
+                        </div>
+                        
+          
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

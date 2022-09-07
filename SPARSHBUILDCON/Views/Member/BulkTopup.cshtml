@@ -1,0 +1,75 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    Layout = "~/Views/Shared/_member_new_layout.cshtml";
+    var packlst = db.package_tabs.ToList();
+}
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">BULK TOPUP
+                </h3>
+                <i style="font-weight: 800; color: green; text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @ViewData["msg"] </i>
+                <ul class="breadcrumb">
+                    <li><a href="~/Member/Dashboard"><i class="icon-home"></i></a><span class="divider">&nbsp;</span>
+
+                    </li>
+                    <li><a href="#">DYNAMIC WAY REAL ESTATE PVT LTD</a><span class="divider">&nbsp;</span> </li>
+                    <li><a href="#">BULK TOPUP</a><span class="divider-last">&nbsp;</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-title">
+                    <h4>
+                        <i class="icon-reorder"></i>BULK TOPUP</h4>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="col-lg-12">
+            <div class="row">
+                @using (Html.BeginForm("BulkTopup", "Member", FormMethod.Post))
+                {
+                    <div class="row-fluid">
+                        <hr />
+                        <div class="span4">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight: bold; color: black">Paste Memberid (Seprated with (,) Comma. Ex. ABC0001,ABC0002)</label><br />
+                                <br />
+                                <br />
+                                <textarea required="required" name="memberid" class="form-control" style="height: 150px; background-color: #ebe9e9"></textarea>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="span4">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight: bold; color: black">Remark</label><br />
+                                <br />
+                                <br />
+                                <textarea required="required" name="comment" class="form-control" style="height: 150px; background-color: #ebe9e9"></textarea>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight: bold; color: black">Package amount</label><br />
+                                <select class="form-control" name="package">
+                                    <option value="">Select Amount</option>
+                                    @foreach (var item in db.package_tabs.Where(a => a.status == 1).ToList())
+                                    { 
+                                        <option value="@item.packageamount">@item.packageamount</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Top Up</button>
+                    <div class="clearfix"></div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>

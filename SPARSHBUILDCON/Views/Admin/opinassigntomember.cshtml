@@ -1,0 +1,214 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "opinassigntomember";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var pack = db.package_tabs.ToList();
+    var uinfo = db.userinformations.Where(a => a.memberid != "PGCOMP00001");
+
+    
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script>
+    $(document).ready(function () {
+        $("#memid").blur(function () {
+            var mem = $("#memid").val();
+            debugger;
+            $.get("/Admin/mobile", { mem: mem }, function (d) {
+                $("#mobile").val(d);
+            });
+        });
+    });
+</script>
+
+<script>
+    function checkid(check_id) {
+
+        var intro = $("#" + check_id).val();
+        var url = '@Url.Action("SelectIntroName", "Admin")';
+        $.get(url, { intro: intro }, function data(name1) {
+            $('#introducername').text(name1)
+        });
+
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#memid").autocomplete({
+            source: function (request, response) {
+                debugger;
+                $.ajax({
+                    url: "/Admin/assignmem",
+                    type: "POST",
+                    dataType: "json",
+                    data: { mem: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.username, value: item.memberid };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+ <script>
+     function mobileonly(e) {
+         debugger
+         var str = $("#mobile").val();
+
+         if (str.length == 10) {
+
+             if (str[0] > 6) {
+                 if (/^[0-9\\s]*$/.exec(str)) {
+
+                 }
+                 else {
+                     $("#mobile").val("")
+                     alert('Please Enter 10 Digits Mobile Number Only');
+                 }
+             }
+             else {
+                 $("#mobile").val("")
+                 alert('Invalid Mobile Number');
+             }
+         }
+         else {
+             $("#mobile").val("")
+             alert('Please Enter 10 Digits Mobile Number');
+         }
+     }
+     </script>
+
+
+
+<div class="main-body">
+    <div class="page-wrapper">
+        <div class="page-header">
+            <div class="page-header-title">
+                <h4>Pin Assign</h4>
+                <span></span>
+            </div>
+            <div class="page-header-breadcrumb">
+                <ul class="breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">
+                            <i class="fa fa-university"></i>
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item"><a href="#">Pin Assign</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="page-body">
+           <center><h3 style="color:red; font-weight:800">@ViewData["assign"]</h3>
+<h3 style="color:red; font-weight:800">@ViewData["pinnahi"]</h3>
+<h3 style="color:red; font-weight:800">@ViewData["pinnkami"]</h3></center>
+            <div class="row" id="DATA">
+                   <div class="col-sm-12 col-md-12">
+                    <div class="card">
+                        <br />
+                         <h4 style="background-color: #1abc9c; padding: 5px; color: white; border-radius: 2px;margin-left:2%;margin-right:2%"><i class="fa fa-map-pin" aria-hidden="true"></i>ASSIGN PACKAGE PIN TO MEMBER &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+                          <div class="card-content">
+                @using (Html.BeginForm("opinassigntomember", "Admin", FormMethod.Post))
+                {
+                    <div class="row" style="margin-left:2%;margin-right:2%">
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Enter Member Id</label>
+                                <input type="text" name="assignto" id="memid" class="form-control" onblur="checkid(this.id)">
+                                <label id="introducername" style="font-weight:800;color:green;"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Select Package</label>
+                                 <select class="form-control" name="pinamount" required="required" style="width:100%">
+                                <option>select</option>
+                                @foreach(var item in pack)
+                                {
+                                <option>@item.packageamount</option>
+                                }
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Mobile NO.</label>
+                                <input type="text" id="mobile" value="0" onblur="mobileonly(this.id)" required="required" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">No. of Pin to be Assign</label>
+                                <input type="number" name="noofpin" required="required" class="form-control">
+                            </div>
+                        </div>
+
+                         <div class="col-md-1">
+                            <div class="form-group label-floating">
+                                <br />
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+
+                         <div class="col-md-3 well">
+                                            @foreach (var item in pack)
+                                            {
+
+                                                double amount = item.packageamount;
+                                                var countpin = db.pintabs.Where(aa => aa.assignto == User.Identity.Name && aa.usedby == null && aa.status == 0 && aa.pinamount == amount).Count();
+                                                
+                                                <h6>@item.packageamount - ( Available Pins: @countpin )</h6><hr />
+                                            }
+                                        </div>
+                       
+                    </div>
+                    <div class="clearfix"></div>
+                    <br />
+                    <br />
+                    
+                }
+
+
+                              <div class="row well" style="margin-left:2%;margin-right:2%">
+                                  <caption style="text-align:center;"><h4>Transferred Pins</h4></caption>
+                                  <table class="table">
+                                      
+                                      <tr>
+                                          <th>Transfer By</th>
+                                          <th>Transfer To</th>
+                                          <th>Pin Amount</th>
+                                          <th>Total Pin</th>
+                                          <th>Date</th>
+                                      </tr>
+
+                                      @foreach(var item in db.Transfer_Pins.Where(aa=>aa.Transfer_By==User.Identity.Name).ToList())
+                                      {
+                                      <tr>
+                                          <td>@item.Transfer_By</td>
+                                          <td>@item.Transfer_To</td>
+                                          <td>@item.Pin_Amount</td>
+                                          <td>@item.Total_Pin</td>
+                                          <td>@item.Date.ToString("dd-MMM-yyyy")</td>
+                                      </tr>
+                                      }
+                                  </table>
+                              </div>
+            </div>
+
+                        </div>
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

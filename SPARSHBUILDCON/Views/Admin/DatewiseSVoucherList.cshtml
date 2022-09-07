@@ -1,0 +1,184 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.DatewiseSVoucherList>
+@using SPARSHBUILDCON.Models
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "DatewiseSVoucherList";
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var a = 0;
+    Double sumpayment = 0, sumcommission = 0;
+    
+}
+
+<div class="my-3 my-md-5">
+    <div class="container" id="divid1">
+        <div class="page-header" id="2">
+            <h4 class="page-title">Datewise Spot Commission List</h4>
+                
+
+             
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Datewise Spot Commission List</h3>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm())
+                    {
+                        <div class="row"  id="hide">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Select Start Date </label>
+                             <input type="text" id="paymentdat" class="form-control datepicker" required name="sdate" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Select End Date</label>
+                             <input type="text" id="paymentdat1" class="form-control datepicker" required name="edate" />
+                                </div>
+                            </div>
+                          
+                              
+                            <div class="card-footer text-right">
+										<div class="d-flex">
+						<button id="submit" value="Search" class="btn btn-primary pull-right" type="submit">View</button>
+
+										</div>
+									</div>
+
+                        </div>
+                    }
+               
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" style="width: 100%">
+       @using (Html.BeginForm())
+                {
+                    foreach (var item in Model)
+                    {
+                        if (a == 0)
+                        {
+                            <tr>
+                                <th colspan="5" style="text-align:center;" ><b>Datewise Spot Commission List</b></th>
+                                <th colspan="3" style="text-align:center;" ><b>Duration:@item.sdate.ToString("dd/MM/yyyy")-@item.edate.ToString("dd/MM/yyyy")</b></th>
+                            </tr>
+        
+    <tr>
+        <th style="width:10%;text-align:center;">
+           <label id="sn"><b>S.N.</b></label>
+            </th>
+         <th style="width:20%;text-align:center;">
+           <label id="option"><b>@mr.agentname Id</b></label>
+        </th>
+        <th style="width:20%;text-align:center;">
+           <label id="planname"><b>Name</b></label>
+            </th>
+          <th style="width:20%;text-align:center;">
+           <label id="custid"><b>Customer ID</b></label>
+            </th>
+          <th style="width:20%;text-align:center;">
+           <label id="custname"><b>Customer Name</b></label>
+            </th>
+        <th style="width:20%;text-align:center;">
+           <label id="term_plan"><b>Amount</b></label>
+        </th>
+            
+         <th style="width:15%;text-align:center;">
+         <label id="Payment"><b>Commission</b></label>
+        </th>
+
+          <th style="width:15%;text-align:center;">
+         <label id="date"><b>Date</b></label>
+        </th>
+      
+    </tr>
+    }
+                        a = a + 1;
+                        
+
+    <tr style="text-align:center;">
+        <td>
+            @a
+        </td>
+          <td>
+             @Html.DisplayFor(modelItem => item.newagentid)
+        </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.newbondid)
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.bondname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.amount)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.commission)
+        </td>
+        
+          <td>
+            @Html.DisplayFor(modelItem => item.pdate)
+        </td>
+
+    </tr>
+                        sumpayment = sumpayment + Convert.ToDouble(item.amount);
+                        sumcommission = sumcommission + Convert.ToDouble(item.commission);
+                       
+                        
+                        
+    }
+    if(a>0)
+    {
+    <tr style="text-align:center;">
+     
+        <td colspan="5">
+            <b>GRAND TOTAL:</b>
+        </td>
+       
+        <td>
+           <b> @sumpayment</b>
+        </td>
+           <td>
+           <b> @sumcommission</b>
+        </td>
+       
+    
+        <td >
+            
+        
+            </td>
+    </tr>
+    }
+                     
+    }
+    
+    
+    
+   
+</table>
+                       @if(a>0)
+        {
+         <a href="@Url.Action("PrintDatewiseSVoucherList")" target="_blank">Get Report In PDF</a>
+        }
+          
+                    </div>
+               
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

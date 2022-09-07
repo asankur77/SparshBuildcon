@@ -1,0 +1,254 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var br = db.Branchtabs.Single(b => b.BranchCode == User.Identity.Name);
+    var mr = db.Members.Single(m => m.Id == 1);
+    
+    var plan1 = db.Plans.Single(p1 => p1.Plancode == 1);
+    var plan2 = db.Plans.Single(p2 => p2.Plancode == 2);
+    var plan3 = db.Plans.Single(p3 => p3.Plancode == 3);
+    var plan4 = db.Plans.Single(p4 => p4.Plancode == 4);
+    
+    var f1 = db.VFormatTabs.Single(f => f.Id == 1);
+    var f2 = db.VFormatTabs.Single(f => f.Id == 2);
+    var f3 = db.VFormatTabs.Single(f => f.Id == 3);
+    
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    ViewBag.Title = "FieldReportsMenu";
+}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Welcome @br.BranchName</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Field Reports</a></li>
+
+            </ol>
+
+        </div>
+
+        <div class="row row-cards">
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary   card-img-holder text-white">
+                    <div class="card-body" style="height: 130px">
+                        <a href="~/Branch/BTree" style="color: white">
+                            <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Tree View
+                             <img alt="" src="/Images/icon/btree.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BrokerListReport" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.agentname List
+											
+                                            <img alt="" src="~/Images/icon/7.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary  card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/DatewiseBroker" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Datewise @mr.agentname List
+											
+                                            <img alt="" src="~/Images/icon/63.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-warning    card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BrokerChain" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.agentname Chain
+
+											
+                                            <img alt="" src="~/Images/icon/52.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success   card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BrokerPaymentDetail" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.agentname Payment Details
+
+											
+                                            <img alt="" src="~/Images/icon/20.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="row row-cards">
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-warning  card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/Selfbusiness" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.agentname Business Details
+											
+                                            <img alt="" src="~/Images/icon/33.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary  card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BrokerAccount" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.agentname Account Details
+											
+                                            <img alt="" src="~/Images/icon/33.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success   card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BrokerwiseAccountDetail" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Datewise @mr.agentname Account Details
+
+											
+                                            <img alt="" src="~/Images/icon/16.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+          <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info   card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BrokerSelfCollection" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.agentname Self Collection
+
+											
+                                            <img alt="" src="~/Images/icon/11.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cards">
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BrokerChainCollection" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.agentname Chain Collection
+											
+                                            <img alt="" src="~/Images/icon/37.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-warning   card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BrokerSelfDueCollection" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.agentname Self Due Collection
+											
+                                            <img alt="" src="~/Images/icon/28.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary   card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BrokerChainDueCollection" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.agentname Chain Due Collection
+
+											
+                                            <img alt="" src="~/Images/icon/52.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+          <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success   card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/Voucher" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.agentname Monthly Payment
+
+											
+                                            <img alt="" src="~/Images/icon/36.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cards">
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BDCReport" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">TDS Report
+											
+                                            <img alt="" src="~/Images/icon/54.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

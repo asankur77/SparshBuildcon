@@ -1,0 +1,252 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.MaturityPaid>
+@using SPARSHBUILDCON.Models
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "MaturityPaidDetails";
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var a = 0;
+    var plan1 = db.Plans.Single(p1 => p1.Plancode == 1);
+    var plan2 = db.Plans.Single(p2 => p2.Plancode == 2);
+   
+    Double payment = 0, totalcon = 0, expectedraisablevalue = 0, maturityamount = 0;
+    
+}
+
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+
+<script>
+    $(function () {
+        $('#sdate').datepick();
+        $('#edate').datepick();
+        
+    });
+
+</script>
+<div class="my-3 my-md-5">
+    <div class="container"  id="divid1">
+        <div class="page-header" id="2">
+            <h4 class="page-title">Maturity Paid Details</h4>
+           
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Maturity Paid Details</h3>
+                </div>
+                <div class="card-body">
+                                    @using (Html.BeginForm())
+        {
+                        <div class="row" id="hide">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Select Start Date</label>
+                                     <input type="date" id="sdate" name="sdate" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Select End Date</label>
+                                      <input type="date" id="edate" name="edate" class="form-control" />
+                                </div>
+                            </div>
+                            
+
+                            <div class="card-footer text-right">
+                                <div class="d-flex">
+                                     <button id="submit" value="Search" class="btn btn-primary pull-right" type="submit">View</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+
+                    <div class="table-responsive">
+                        
+                        <table class="table table-striped table-bordered" style="width: 100%">
+
+                            @using (Html.BeginForm())
+                {
+                    foreach (var item in Model)
+                    {
+                        if (a == 0)
+                        {
+                            <tr><th colspan="4" style="text-align:center;"></th>
+                                <th colspan="3" style="text-align:center;" ><b>Maturity Paid Details</b></th>
+                                <th colspan="6" style="text-align:center;" ><b>Duration:@item.sdate.ToString("dd/MM/yyyy")-@item.edate.ToString("dd/MM/yyyy")</b></th>
+                            </tr>
+        
+    <tr>
+        <th style="width:3%;text-align:center;">
+           <label id="sn"><b>S.N.</b></label>
+            </th>
+         <th style="width:13%;text-align:center;">
+           <label id="option"><b>@mr.custname Id</b></label>
+        </th>
+        <th style="width:10%;text-align:center;">
+           <label id="planname"><b>Name</b></label>
+            </th>
+        
+        <th style="width:9%;text-align:center;">
+           <label id="term_plan"><b>Introducer Id</b></label>
+        </th>
+            
+        <th style="width:8%;text-align:center;">
+           <label id="mode"><b>@mr.planname</b></label>
+        </th>
+            
+        <th style="width:8%;text-align:center;">
+            <label id="amount" ><b>Term</b></label>
+        </th>
+             
+             
+        <th style="width:8%;text-align:center;">
+        <label id="latefine" ><b>Mode</b></label>
+        </th>
+            
+         <th style="width:8%;text-align:center;">
+         <label id="paymentdate"><b>Payment</b></label>
+        </th>
+
+         <th style="width:8%;text-align:center;">
+           <label id="expirydate"><b>Collection</b></label>
+        </th>
+      <th style="width:8%;text-align:center;">
+           <label id="payamount1"><b>ER Value</b></label>
+        </th>
+
+         <th style="width:8%;text-align:center;">
+           <label id="payamount"><b>Maturity Amount </b></label>
+        </th>
+        <th style="width:9%;text-align:center;">
+           <label id="payamount3"><b>Expiry Date</b></label>
+        </th>
+
+         <th style="width:9%;text-align:center;">
+           <label id="maturitydate"><b>Maturity Date</b></label>
+        </th>
+
+      
+    </tr>
+    }
+                        a = a + 1;
+                        
+
+    <tr style="text-align:center;">
+        <td>
+            @a
+        </td>
+          <td>
+             @Html.DisplayFor(modelItem => item.newbondid)
+        </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.newintroducerid)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.planname)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.term)
+        </td>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.mode)
+        </td>
+         
+        <td>
+            @Html.DisplayFor(modelItem => item.payment)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.totalcon)
+           
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.expectedraisablevalue)
+        </td>
+
+       <td>
+            @Html.DisplayFor(modelItem => item.maturityamount)
+        </td>
+        
+                        
+        <td>@item.expirydate.ToString("dd/MM/yyyy")</td>
+        <td>@item.maturitydate.ToString("dd/MM/yyyy")</td>
+        
+
+    </tr>
+                        payment = payment + Convert.ToDouble(item.payment);
+                        totalcon = totalcon + Convert.ToDouble(item.totalcon);
+                        expectedraisablevalue = expectedraisablevalue + Convert.ToDouble(item.expectedraisablevalue);
+                        maturityamount = maturityamount + Convert.ToDouble(item.maturityamount);
+                       
+                       
+                        
+                        
+    }
+    if(a>0)
+    {
+    <tr style="text-align:center;">
+        <td colspan="5">
+            
+        </td>
+          
+        <td colspan="2">
+            <b>GRAND TOTAL:</b>
+        </td>
+       
+        <td>
+           <b> @payment</b>
+        </td>
+         
+        <td>
+           <b> @totalcon</b>
+        </td>
+        
+        <td>
+           <b> @expectedraisablevalue</b>
+           
+        </td>
+         <td>
+           <b> @maturityamount</b>
+        </td>
+    
+        <td colspan="2">
+            
+        
+            </td>
+    </tr>
+    }
+                     
+    }
+    
+    
+    
+   
+</table>
+                       @if(a>0)
+        {
+         <a href="@Url.Action("PrintMaturityPaidDetails")" target="_blank">Get Report In PDF</a>
+        }
+             
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

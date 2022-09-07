@@ -1,0 +1,102 @@
+﻿@using SPARSHBUILDCON.Models;
+@using System;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout="~/Views/Shared/_AdminLayout.cshtml";
+ }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#AgentId").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteAgentid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.NewAgentId };
+                        }))
+                    }
+                })
+            }
+        });
+    })
+</script>
+
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">@mr.agentname Welcome Letter</h4>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form action="/Admin/AgentWelcomeLetter" method="post" target="_blank" class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">@mr.agentname Welcome Letter</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Enter the @mr.agentname Id :</label>
+                                    <div class="input-group">
+                                        <input type="text" name="AgentId" id="AgentId" class="form-control" />
+                                        <span class="input-group-append">
+                                            <button id="btn" type="submit" class="btn btn-primary btn-md" style="margin-top: 2px;">Print Welcome Letter</button>
+
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

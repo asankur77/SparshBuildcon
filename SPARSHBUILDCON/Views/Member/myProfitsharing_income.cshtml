@@ -1,0 +1,53 @@
+﻿ @model IEnumerable<SPARSHBUILDCON.Models.Memberlist>
+@{
+    ViewBag.Title = "mylevelincome";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    var b = 0;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" style="background-color: #00B356;">
+                <h4 class="title">Profit Sharing Income</h4>
+            </div>
+            <div class="card-content table-responsive">
+
+                <table class="table">
+                    @foreach (var item in Model)
+                    {
+
+                        b = b + 1;
+                        if (b == 1)
+                        {
+
+                        <thead class="text-primary">
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Member Id</th>
+                                <th>Name</th>
+                                <th>Amount</th>
+                                <th>Income Date</th>
+                                <th>Status</th>
+
+                            </tr>
+                        </thead>
+                                            }
+
+                        <tbody>
+                            <tr>
+                                <td>@b</td>
+                                <td>@item.AccountHolder</td>
+                                <td>@item.BankName</td>
+                                <td>@item.totalamt</td>
+                                <td>@item.JoinDate.ToString("dd/MM/yyyy")</td>
+                                <td>@item.PAN</td>
+                            </tr>
+                        </tbody>
+                                         
+                                        }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,490 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    var logo=string.Empty;
+    var companyname = string.Empty;
+    var incometype = string.Empty;
+   
+    UsersContext db=new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var br = db.Operators.Single(c => c.OperatorId == User.Identity.Name);
+    var r = db.CompanyInfos.Single(ci => ci.AdminId == br.companyid);
+    var plan1 = db.Plans.Single(p1 => p1.Plancode == 1);
+    var plan2 = db.Plans.Single(p2 => p2.Plancode== 2);
+    var plan3 = db.Plans.Single(p3 => p3.Plancode == 3);
+    var plan4 = db.Plans.Single(p4 => p4.Plancode == 4);
+    var f1 = db.VFormatTabs.Single(f => f.Id == 1);
+    var f2 = db.VFormatTabs.Single(f => f.Id == 2);
+    var f3 = db.VFormatTabs.Single(f => f.Id == 3);
+    DateTime date = DateTime.Now.Date;
+    var count = db.Formdates.Where(v => v.opid == User.Identity.Name).Count();
+    
+        logo = r.CompanyLogo;
+         companyname = r.CompanyName;
+         incometype = r.IncomeType;
+         var dcount = (from a in db.DailyDepositTabs where a.opid == User.Identity.Name && a.status == 0 select a).Count();
+ }
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="msapplication-TileColor" content="#0061da">
+    <meta name="theme-color" content="#1643a3">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+
+    <!-- Title -->
+    <title>@r.CompanyName-Operator Panel</title>
+    <link rel="stylesheet" href="~/Content/Admin/assets/fonts/fonts/font-awesome.min.css">
+    <!-- Font Family -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+    <!-- Dashboard Css -->
+    <link href="~/Content/Admin/assets/css/dashboard.css" rel="stylesheet" />
+    <!-- c3.js Charts Plugin -->
+    <link href="~/Content/Admin/assets/plugins/charts-c3/c3-chart.css" rel="stylesheet" />
+    <!-- select2 Plugin -->
+    <link href="~/Content/Admin/assets/plugins/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/Admin/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <!-- file Uploads -->
+    <link href="~/Content/Admin/assets/plugins/fileuploads/css/dropify.min.css" rel="stylesheet" type="text/css" />
+    <!---Font icons-->
+    <link href="~/Content/Admin/assets/plugins/iconfonts/plugin.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <!--Menu Content End-->
+
+    <script type="text/javascript" src="~/Scripts/js/plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/jquery/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;libraries=places"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/fancybox/jquery.fancybox.pack.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/js/plugins/rickshaw/d3.v3.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/rickshaw/rickshaw.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/flot/jquery.flot.js"></script>
+    <script type='text/javascript' src='~/Scripts/js/plugins/flot/jquery.flot.pie.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/plugins/flot/jquery.flot.resize.js'></script>
+
+    <script type='text/javascript' src='~/Scripts/js/plugins/knob/jquery.knob.js'></script>
+
+    <script type="text/javascript" src="~/Scripts/js/plugins/daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/daterangepicker/daterangepicker.js"></script>
+
+    <script type='text/javascript' src='~/Scripts/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/plugins/jvectormap/jquery-jvectormap-europe-mill-en.js'></script>
+
+    <script type="text/javascript" src="~/Scripts/js/plugins.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/demo.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/maps.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/charts.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/actions.js"></script>
+    <link rel="stylesheet" href="~/Content/width.css" />
+    <link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+    <script src="~/Content/datepicker/jquery.plugin.js"></script>
+    <script src="~/Content/datepicker/jquery.datepick.js"></script>
+    @if (count > 0)
+    {
+        var dd = db.Formdates.Single(v => v.opid == User.Identity.Name);
+        var days = (DateTime.Now.Date - dd.formdate.Date).TotalDays;
+
+        if (dd.status == 1)
+        {
+                 
+        <script>
+            $(document).ready(function () {
+                var monn = $("#mon").val();
+                $('.date').datepick({ dateFormat: 'mm/dd/yyyy', minDate: -monn, maxDate: 0 });
+                $('.datee').datepick({ dateFormat: 'mm/dd/yyyy' });
+
+            });
+
+
+        </script>
+        }
+        else if (dd.status == 0)
+        {
+        <script>
+            $(function () {
+                $('.date').datepick({ dateFormat: 'mm/dd/yyyy', minDate: 0, maxDate: 0 });
+                $('.datee').datepick({ dateFormat: 'mm/dd/yyyy' });
+            });
+        </script>
+         }
+        else if (dd.status == 2)
+        {
+        <script>
+            $(function () {
+                var monn = $("#mon").val();
+                $('.date').datepick({ dateFormat: 'mm/dd/yyyy', minDate: -monn, maxDate: -monn });
+                $('.datee').datepick({ dateFormat: 'mm/dd/yyyy' });
+            });
+
+
+        </script>
+         }
+    }
+    else
+    {
+        <script src="~/Content/datepicker/jquery.datepick.js"></script>
+        <script>
+            $(function () {
+                $('.date').datepick({ dateFormat: 'mm/dd/yyyy', minDate: 0, maxDate: 0 });
+                $('.datee').datepick({ dateFormat: 'mm/dd/yyyy' });
+                $(".month").datepick({ dateFormat: 'MM yyyy' });
+            });
+        </script>
+    }
+
+
+    <style type="text/css">
+        div.page-toolbar, .page-toolbar + div, .page-toolbar + form, .page-toolbar + form + div, .widget.stacked, .page-content .page-toolbar {
+            width: 97% !important;
+        }
+
+        .page-content .block {
+            width: 100% !important;
+        }
+    </style>
+    <style>
+        .admin-navbar .nav-link {
+            border: 0;
+            color: inherit;
+            color: #898989;
+            transition: .3s border-color;
+            font-weight: 500;
+            padding: 1rem 1rem;
+            font-size: 13px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right-width: 0;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body class="">
+
+    <div class="page">
+        <div class="page-main">
+            <div class="header py-1">
+                <div class="container">
+                    <div class="d-flex">
+                        <div style="float: left;">
+                            <div style="float: left;">
+                                <a href="~/Admin/Index" class="header-brand">
+                                    <img src="@Url.Content(r.CompanyLogo)" style="height:80px;width:80px;"/ >
+                                </a>
+                            </div>
+                            <div style="float: left; margin-left: 20px; margin-top: 20px;">
+                                <h2 style="color: white;"><b>@r.CompanyName </b></h2>
+                            </div>
+                        </div>
+
+                        <div class=" ">
+                        </div>
+                        <div class="d-flex order-lg-2 ml-auto">
+
+
+                            <div class="dropdown d-none d-md-flex mt-1">
+
+                                <h4 style="color: white"><b>Hello ,@User.Identity.Name</b></h4>
+
+
+                            </div>
+
+
+                            <div class="dropdown mt-1">
+                                <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
+                                    <img class="avatar avatar-md brround" src="@Url.Content(r.CompanyLogo)" />
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow ">
+
+                                    @*	<a class="dropdown-item" href="~/Operator/Profile">
+											<i class="dropdown-icon mdi mdi-account-outline "></i> Profile
+										</a>*@
+
+                                    <a class="dropdown-item" href="~/Operator/ChangePassword">
+                                        <i class="dropdown-icon mdi mdi-compass-outline"></i>Change Password
+                                    </a>
+                                    <a class="dropdown-item" href="~/Operator/Logout">
+                                        <i class="dropdown-icon mdi  mdi-logout-variant"></i>Sign out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
+                            <span class="header-toggler-icon"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="admin-navbar" id="headerMenuCollapse">
+                <div class="container">
+                    <ul class="nav" id="myHeader">
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Operator/Index">
+                                <i class="fa fa-home"></i>
+                                <span>Home</span>
+                            </a></li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Operator/Createmenu"><span>Create</span></a>
+                            <div class="sub-item">
+                                <ul>
+
+                                    @*  <li>
+                                        <a href="~/Operator/Member">Member </a>
+                                    </li>*@
+                                    <li>
+                                        <a href="~/Operator/NewAgent">@mr.agentname</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="~/Operator/NewAgreement">Customer</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/AddExpense">Add Expense</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/PrintId">ID Card</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+
+
+
+
+                        <li class="nav-item with-sub ">
+                            <a class="nav-link " href="~/Operator/UpdateMenu"><span>Update</span></a>
+                            <div class="sub-item">
+                                <ul>
+                                    <li>
+                                        <a href="~/Operator/AgentKYC">@mr.agentname KYC</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub ">
+                            <a class="nav-link " href="~/Operator/PaymentMenu"><span>Payment</span></a>
+                            <div class="sub-item">
+                                <ul>
+                                    <li>
+                                        <a href="~/Operator/PaymentRenewal">Payment Renewal</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/PartPayment">Part Payment</a>
+                                    </li>
+                                     <li>
+                                        <a href="~/Operator/SLPReturn">SLP Return</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item"><a class="nav-link " href="~/Operator/VisitorEntry"><span>Visitor Entry Form</span></a></li>
+
+
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Operator/Duplicatemenu"><span>Duplicate</span></a>
+                            <div class="sub-item">
+                                <ul>
+                                    <li>
+                                        <a href="~/Operator/DuplicateBond">Customer</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="~/Operator/ChequeDuplicateReceipt">Pending Customer</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/DuplicateReceipt">Renewal </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Operator/Fieldmenu"><span>Field Reports</span></a>
+                            <div class="sub-item" style="overflow-y: scroll; height: 350px">
+                                <ul>
+                                    <li>
+                                        <a href="~/Operator/BTree">Tree View</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/Broker">@mr.agentname List</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/DatewiseBroker">Datewise @mr.agentname List </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/BrokerChain">@mr.agentname Chain </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/BrokerPaymentDetail">@mr.agentname Payment Details</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/Selfbusiness">@mr.agentname Business Details</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/BrokerAccount">@mr.agentname Account Details</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/BrokerwiseAccountDetail">Datewise @mr.agentname  Account Details</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/BrokerSelfCollection">@mr.agentname Self Collection</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/BrokerChainCollection">@mr.agentname Chain Collection</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/BrokerSelfDueCollection">@mr.agentname Self Due Collection</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/BrokerChainDueCollection">@mr.agentname Chain Due Collection</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Operator/Officialmenu"><span>Official Reports</span></a>
+                            <div class="sub-item" style="overflow-y: scroll; height: 350px">
+                                <ul>
+                                    <li>
+                                        <a href="~/Operator/Customer">Customer List</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/DatewiseCustomer">Datewise Customer</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/MemberWiseAccountDetail">All Member List</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/RankList">Level List</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/CustumerInstallmentReport">Customer Ledger-Details</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/DailyExpense">Daily Expense Report</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/RPStatementReport">RP Statement Report</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/CompleteDailyCollection">Datewise Collection Details</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/DailyCollectionReport">Daily Collection</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/DateWiseChequeCollection">Datewise Cheque Collection</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/DateWiseCollection">Datewise Business</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/CsswiseCollection">CSS Wise Business</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/FundMobilisation">Fund Mobilisation</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/MaturityPaidDetails">Maturity Paid Details</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/Advancepaymentreport">Advance Payment Report</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="#"><span>Setting</span></a>
+                            <div class="sub-item">
+                                <ul>
+                                    <li>
+                                        <a href="~/Operator/ChangePassword">Change Password</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Operator/Logout">Logout</a>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="body">
+                @RenderSection("featured", required: false)
+                <section class="content-wrapper main-content clear-fix">
+                    @RenderBody()
+                </section>
+                @if (count > 0)
+                {
+                    var dd = db.Formdates.Single(v => v.opid == User.Identity.Name);
+                    var days = (DateTime.Now.Date - dd.formdate.Date).TotalDays;
+                    <input type="hidden" id="mon" value="@days" />  
+                }
+            </div>
+
+        </div>
+
+        <!--footer-->
+        <footer class="footer">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+                        Copyright © @r.RegDate.Year <a href="#">@r.CompanyName</a>.
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End Footer-->
+    </div>
+
+    <!-- Back to top -->
+    <a href="#top" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
+    
+    
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

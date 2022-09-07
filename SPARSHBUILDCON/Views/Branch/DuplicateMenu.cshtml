@@ -1,0 +1,150 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var br = db.Branchtabs.Single(b => b.BranchCode == User.Identity.Name);
+    var mr = db.Members.Single(m => m.Id == 1);
+ 
+    var plan1 = db.Plans.Single(p1 => p1.Plancode == 1);
+    var plan2 = db.Plans.Single(p2 => p2.Plancode == 2);
+    var plan3 = db.Plans.Single(p3 => p3.Plancode == 3);
+    var plan4 = db.Plans.Single(p4 => p4.Plancode == 4);
+    var f1 = db.VFormatTabs.Single(f => f.Id == 1);
+    var f2 = db.VFormatTabs.Single(f => f.Id == 2);
+    var f3 = db.VFormatTabs.Single(f => f.Id == 3);
+    Layout = "~/Views/Shared/_BranchLayout.cshtml"; 
+    ViewBag.Title = "DuplicateMenu";
+}
+<div class="my-3 my-md-5">
+					<div class="container">
+						<div class="page-header">
+							<h4 class="page-title">Welcome @br.BranchName</h4>
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Duplicate</a></li>
+							
+							</ol>
+						
+
+						</div>
+
+						<div class="row row-cards">
+                            <div class="col-sm-12 col-lg-3">
+								<div class="card bg-info card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/AgreementForm" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">Agreement Form
+											
+                                            <img alt="" src="~/Images/icon/agreement.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-lg-3">
+								<div class="card bg-primary  card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/DuplicateBond" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">@mr.custname
+											
+                                            <img alt="" src="~/Images/icon/2.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+                            <div class="col-sm-12 col-lg-3">
+								<div class="card bg-warning  card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/ChequeDuplicateReceipt" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">Pending @mr.custname
+
+											
+                                            <img alt="" src="~/Images/icon/2.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-lg-3">
+								<div class="card bg-success  card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/DuplicateReceipt" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">Single Renewal
+											
+                                            <img alt="" src="~/Images/icon/54.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+
+							
+
+							
+						</div>
+
+						<div class="row row-cards">
+                            <div class="col-sm-12 col-lg-3">
+								<div class="card bg-warning  card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/BulkReceipt" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">Bulk Renewal
+											
+                                            <img alt="" src="~/Images/icon/bulkreceipt.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-lg-3">
+								<div class="card bg-info  card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/DupliSpotCommission" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">Spot Commission
+											
+                                            <img alt="" src="~/Images/icon/spotcomm.jpg" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+                            
+							
+
+							
+						</div>
+					</div>
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

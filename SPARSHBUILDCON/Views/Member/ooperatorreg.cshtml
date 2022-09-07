@@ -1,0 +1,367 @@
+﻿@using SPARSHBUILDCON.Models; 
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "operatorreg";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    var regpin = ViewData["pinid"];
+   
+    var lastid = db.AgentDetails.Max(a=>a.AgencyCode);
+    var pp = db.AgentDetails.Single(a => a.AgencyCode == lastid);
+    var treeintro = ViewData["introtree"];
+
+
+    var pos = Convert.ToInt32(ViewData["side"]);
+}
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>  
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+
+<script type="text/javascript">
+    function JavascriptFunction() {
+        var url = '@Url.Action("PostMethod", "Admin")';
+        $("#divLoading").show();
+        $.post(url, null,
+                function (data) {
+                    $("#PID")[0].innerHTML = data;
+                    $("#divLoading").hide();
+                });
+    }
+</script>
+
+<script>
+    function ShowMsg(Id) {
+        debugger;
+        var spilid = 'Please Select Location Joining for this ' + $("#" + Id).val() + ' Id';
+        $('#lblmsg').text(spilid);
+    }
+</script>
+
+<script>
+    function checkposition(check_id) {
+
+        $('#dis').hide();
+        debugger;
+        var position = $("#Select1").val();
+        var introid = $("#spilid").val()
+        debugger;
+        var url = '@Url.Action("checkposition", "Operator")';
+
+            $.get(url, { position: position, introid: introid }, function data(t) {
+                debugger;
+                if (t == 1) {
+                 
+                    alert("This Position is already Exists");
+                  
+                    $("#lblmsg").prop('disabled', true);
+                }
+                else {
+                
+                    $("#btnaction").prop('disabled', false);
+                }
+            });
+
+        }
+</script>
+<style type="text/css">
+    .hide {
+        display:none;
+    }
+
+</style>
+
+
+<div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001; opacity: .8; filter: alpha(opacity=70); display: none">
+    <p style="position: absolute; top: 30%; left: 42%; color: White;">
+        <img src="~/Content/11.gif"><br />
+        <br />
+        <b style="margin-left: 50px;">Loading, please wait...</b>
+    </p>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("#introid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Operator/AutoCompleteintroid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.username, value: item.memberid };
+
+
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+
+
+    })
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("#spilid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Operator/AutoCompleteintroid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.username, value: item.memberid };
+
+
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+
+
+    })
+</script>
+
+
+
+
+
+
+
+
+<script>
+    function btn_divdis() {
+ 
+        $('#introducerid').val($('#introid').val());
+        $('#spilid1').val($('#spilid').val());
+        $('#dis').show();
+        
+    };
+
+
+    
+</script>
+
+
+<script>
+    function checkid(check_id) {
+
+
+        var intro = $("#" + check_id).val();
+        var url = '@Url.Action("SelectIntroName", "Admin")';
+            $.get(url, { intro: intro }, function data(name1) {
+                $('#introducername').text(name1)
+            });
+
+
+        }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#dob").change(function () {
+            $("#opdob").val($("#dob").val());
+        });
+        $("#india").change(function () {
+            debugger;
+            $("#country").val($(this).val());
+            $("#india").val("select");
+        });
+        $('input[type="date"]').change(function () {
+            $("#opdob").val(this.value);
+        });
+        $("#mf").change(function () {
+            debugger;
+            $("#gender").val($(this).val());
+            $("#mf").val("select");
+        });
+        $("#selrel").change(function () {
+            debugger;
+            $("#relation").val($(this).val());
+            $("#selrel").val("Select");
+        });
+        $("#name").change(function () {
+            $("#introducerid").val($(this).val());
+            $("#name").val("Select");
+        });
+    });
+</script>
+
+
+
+
+<h3 style="color:red;">@ViewData["msg"]</h3> 
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+
+             @using(Html.BeginForm("ooperatorreg","Member", FormMethod.Post))
+                {
+            <div class="card-header" style="background-color: #00B356;">
+                <h4 class="title">Check Location Available</h4>
+            </div>
+            <div class="card-content">
+  
+            <div class="row">
+                            @if (treeintro != null && treeintro != string.Empty)
+ {
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Introducer Id</label>
+                                <input type="text" required="required" value="@treeintro" class="form-control" id="introid"/>
+                           
+                            </div>
+                        </div>
+                            }
+
+                else
+                {
+                                <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Introducer Id</label>
+                                <input type="text" required="required" value="@pp.NewAgentId" class="form-control" id="introid"/>
+                           
+                            </div>
+                        </div>
+                            }
+
+               
+                            @if (treeintro != null && treeintro != string.Empty)
+ {
+     <div class="col-md-3">
+                            <div class="form-group label-floating">
+                             @*   <label class="control-label" style="font-weight:bold; color:black">Spil Id</label>*@
+                               <input type="hidden" id="spilid" name="spilid" value="@treeintro" class="form-control"/>
+                         
+                                  </div>
+                        </div>
+                            }
+                else
+                {
+                      <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Spil Id</label>
+                               <input type="text" id="spilid" name="spilid" value="@pp.NewAgentId" class="form-control" required />
+                         
+                                  </div>
+                        </div>          
+                            }
+
+                @if(pos==1)
+                {
+<div class="col-md-3">
+                            <div class="form-group label-floating">
+                   <select id="Select1" class="form-control" name="side" onchange="checkposition(this.value)">
+                                <option value="1">Left</option>
+                            </select>
+                                </div>
+                         </div>
+
+                }
+                else
+                {
+<div class="col-md-3">
+                            <div class="form-group label-floating">
+                   <select id="Select1" class="form-control" name="side" onchange="checkposition(this.value)">
+                                <option value="2">Right</option>
+                            </select>
+                                </div>
+                         </div>
+                }
+                      
+              
+                                                              <label style="color:red;font-size:12pt" id="lblmsg">   </label><br />
+                
+                    <button type="submit" id="btnaction" onclick="btn_divdis()" class="btn btn-primary pull-right">Check</button>
+                    <div class="clearfix"></div>
+                
+            </div>
+
+           
+                </div>
+            
+            <div id="dis" style="display:none">
+            <div class="card-header" style="background-color: #00B356;">
+                <h4 class="title">Associate Registration</h4>
+            </div>
+            <div class="card-content">
+               
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Name</label>
+                                <input type="text" required="required" name="name" class="form-control" >
+                                <input type="hidden" value="@regpin" name="regpin" />
+                            </div>
+                        </div>
+                        
+
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Introducer Id</label><br />
+                              <input type="text" required="required" onblur="checkid(this.id)" id="introducerid" name="introducerid" class="form-control" readonly="true">
+                            </div>
+                        </div>
+                 @*       <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Spil Id</label><br />
+                              <input type="text" required="required" onblur="checkid(this.id)" id="spilid1" name="spilid" class="form-control" readonly="true">
+                            </div>
+                        </div>*@
+                         <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Mobile</label>
+                                <input type="number" max-length="10" required="required" name="mobile" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                          <div class="row">
+                     <div class="col-md-3">
+                            <div class="form-group label-floating">
+                      <label class="control-label" style="font-weight:bold; color:black">Introducer Name</label><br />
+                                <label id="introducername" style="color:green;font-weight:800;"></label>
+                                </div>
+                         </div>
+                    </div>
+
+                  <div class="col-md-3">
+                            <div class="form-group label-floating">
+                      <label class="control-label" style="font-weight:bold; color:black">Associate Id</label><br />
+                               <input type="text" name="NewAgentId"  class="form-control" required />
+                                </div>
+                         </div>
+                              <div class="col-md-3">
+                            <div class="form-group label-floating">
+                      <label class="control-label" style="font-weight:bold; color:black">Password</label><br />
+                              <input type="text"  name="Password"  class="form-control" required />
+                                </div>
+                         </div>
+                            
+                    <button type="submit" onclick="JavascriptFunction()" class="btn btn-primary pull-right">Register</button>
+                    <div class="clearfix"></div>
+                    
+               
+        </div>
+                </div>
+                }
+    </div>
+</div>
+                    </div>

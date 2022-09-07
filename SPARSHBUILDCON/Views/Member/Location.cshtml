@@ -1,0 +1,142 @@
+﻿@using SPARSHBUILDCON.Models; 
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "Location";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    var regpin = ViewData["Pin"];
+    var spilid = ViewData["sid"];
+    var Regfrom= ViewData["Regfrom"];
+    var side = Convert.ToInt32(ViewData["side"]);
+
+}
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>  
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+
+
+
+<script>
+    function ShowMsg(Id) {
+        debugger;
+        var spilid = 'Please Select Location Joining for this ' + $("#" + Id).val() + ' Id';
+        $('#lblmsg').text(spilid);
+    }
+</script>
+
+
+<style type="text/css">
+    .hide {
+        display:none;
+    }
+
+</style>
+
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("#introid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Operator/AutoCompleteintroid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.NewAgentId };
+
+
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+
+
+    })
+</script>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+
+             @using (Html.BeginForm("Location", "Member", FormMethod.Post))
+                {
+            <div class="card-header" style="background-color: #00B356;">
+                <h4 class="title">Check Location Available</h4>
+            </div>
+            <div class="card-content">
+  
+            <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Introducer Id</label>
+                                <input type="text" required="required" value="" class="form-control" id="introid" name="Introducer"/>
+                           
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                              <input type="hidden"  name="Pin" value="@regpin" class="form-control" />
+                               <input type="hidden"  name="spilid" value="@spilid" class="form-control" />
+                             <input type="hidden"  name="Regfrom" value="@Regfrom" class="form-control" />
+                      
+                        </div>
+                @if(side==0)
+                {
+                      <div class="col-md-3">
+                            <div class="form-group label-floating">
+                   <select class="form-control" name="side" required>
+                                <option value="">Select Location</option>
+                                <option value="1">Left</option>
+                                <option value="2">Right</option>
+                            </select>
+                                </div>
+                         </div>
+                }
+                else{
+                    <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                @if(side==1)
+                                {
+                   <select class="form-control" name="side" required>   
+                       <option value="1">Left</option> 
+                      </select>
+                                }
+                                else
+                                {
+                                     <select class="form-control" name="side" required>   
+                       <option value="2">Right</option> 
+                      </select> 
+                                }
+                                </div>
+                         </div>
+                    
+                }
+                                                            
+                
+                    <button type="submit" id="btnaction" class="btn btn-primary pull-right">Fill Details</button>
+                    <div class="clearfix"></div>
+                
+            </div>
+
+           
+                </div>
+            
+            
+                }
+    </div>
+</div>
+                    </div>

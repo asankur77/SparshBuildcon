@@ -1,0 +1,79 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var d = db.CompanyInfos.Single(ci => ci.Id == 1);
+    ViewBag.Title = "team";  
+}
+  
+  <!--======= BANNER =========-->
+  <div class="sub-banner" style="background-image: url('../Content/Home/img/lyman-banner-agents.png')">
+    <div class="overlay">
+      <div class="container">
+        <h1>Team</h1>
+        <ol class="breadcrumb">
+          <li class="pull-left">Team</li>
+          <li><a href="index.php">Home</a></li>
+          <li class="active">Team</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!--======= WHAT WE DO =========-->
+<section class="properti-detsil">
+    <div class="container">
+        <div class="row">
+
+            <!--======= LEFT BAR =========-->
+            <div class="col-sm-12">
+                <div class="single-post">
+                    <!--======= CLIENTS FEEDBACK =========-->
+
+                    <div class="blog-page">
+                        <section class="blog no-padding">
+
+                            <!--======= TITTLE =========-->
+
+                            <div class="admin-info">
+                                <ul>
+                                    <!--======= ABOUT AUTHER =========-->
+                                    <li class="col-xs-12">
+                                        <h3>TEAM</h3>
+                                        <br>
+                                        <p>Working together is essential. Harmony and a positive attitude are critical to success. Without synergy and devoted teamwork our goals will remain unattainable. We at Sparsh Buildcon highly appreciate talent and we continuously work to explore personal potential and to reward outstanding achievement.</p>
+                                        <p>Our highly committed team is the company's backbone and the catalyst of its success, creating and driving the trust in the Sparsh Buildcon brand.</p>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+  
+
+  
+  <!--======= CALL US =========-->
+  
+  <section class="call-us">
+    <div class="overlay">
+      <div class="container">
+        <ul class="row">
+          <li class="col-sm-6">
+            <h4>Do you want to buy your property ?</h4>
+            <h6>Call us and get your property here</h6>
+          </li>
+          <li class="col-sm-4">
+            <h1>+91-@d.Contact </h1>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+ 

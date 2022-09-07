@@ -1,0 +1,151 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.wallettab> 
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "PayoutTransfer";
+    UsersContext db = new UsersContext();
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var a = 0;
+    double totNetIncome = 0;
+    var mr = db.Members.Single(m => m.Id == 1);
+
+}
+
+
+<script>
+    $(function () {
+        // Set 'Select All' to checked if all other boxes are already checked
+        $('#selectAll').prop('checked', $('.check').length == $('.check:checked').length);
+
+        // Add click function to 'Select All' to select all other boxes
+        $('#selectAll').click(function () {
+            $('.check').prop('checked', this.checked);
+        });
+
+        // Add click function to each child checkbox
+        $('.check').click(function () {
+            $('#selectAll').prop('checked', $('.check').length == $('.check:checked').length);
+        });
+    })
+
+    function banktransfer(uid) {
+        var c = $('#' + uid), amount = c.attr('data-amount');
+        $('#UserId').val(uid);
+        $('#balance').val(amount);
+    };
+
+    function checkamount(event) {
+        debugger;
+        var walval = parseFloat($('#balance').val());
+        var payamount = parseFloat($('#amount').val());
+        if (payamount > walval) {
+            event.preventDefault();
+            alert('Pay Amount should be less than or equal to Wallet Balance.');
+        }
+    };
+</script>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+
+        <div class="card form-group" style="width: 100%; margin-left: 0%;">
+            <div class="card-header" style="background-color: #03966d; text-align: center; color: white;">
+                @ViewBag.msg
+                <h5><i class="fa fa-ok-circle"></i><b style="font-weight: 800; text-transform: uppercase; color: white;">Wallet Summary</b> </h5>
+            </div>
+            <div class="card form-group" style="min-height: 100px; margin-right: 2px;">
+
+                @using (Html.BeginForm("PayoutTransfer", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "checkamount(event)" }))
+                {                                       
+                    <table class="table table-resposive table-striped table-bordered" style="text-align: center; width: 100%; margin-left: 0%;" id="myTable">
+                        @if (a == 0)
+                        {                            
+                            <tr style="background-color: #03966d; color: white;">
+                                <td>
+                                    <label style="color: white; font-weight: 800;">S.N.</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Member Name</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Member Id</label></td>
+                                 <td>
+                                    <label style="color: white; font-weight: 800;">Bank Name</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Bank A/c No</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">IFSC Code</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Wallet Balance</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Action</label></td>
+                            </tr>
+                        }
+                        @foreach (var d in Model)
+                        {
+                            var ar = db.AgentDetails.Single(c => c.NewAgentId == d.UserId);
+                            a = a + 1;
+                            totNetIncome = totNetIncome + d.amount;
+                            
+                            <tr>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@a</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@ar.name</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@ar.NewAgentId</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@ar.BankName</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@ar.BankAccountno</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@ar.IFCCode</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.amount</label></td>
+                                <td>
+                                    <button type="button" style="background-color:#03966d;color:white;font-weight:600;" class="btn btn-success btn-lg" data-toggle="modal" data-amount="@d.amount" data-target="#myModal" id="@ar.NewAgentId" onclick="banktransfer(this.id)">Bank Transfer</button></td>
+                            </tr>
+                            
+                            <!-- Modal -->
+                         
+                        }
+
+                    </table>
+                    
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #03966d; color: white; font-weight: 800;">
+                                    <h4 class="modal-title"><b>Wallet Summary</b></h4>
+                                    <button type="button" class="close" style="color: white;" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label class="form-label"><b>@mr.agentname Id</b></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="UserId" id="UserId" readonly="true" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label"><b>Wallet Balance</b></label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="balance" readonly="true" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label"><b>Pay Amount</b></label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" name="amount" id="amount" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" style="background-color: #03966d; color: white; font-weight: 600;" class="btn btn-default">Transfer</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>  
+                }
+            </div>
+        </div>
+    </div>
+</div> 

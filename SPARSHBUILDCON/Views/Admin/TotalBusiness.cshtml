@@ -1,0 +1,347 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<SPARSHBUILDCON.Models.temptotaldownline>
+@using SPARSHBUILDCON.Models
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "TotalBusiness";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var mr = db.Members.Single(m => m.Id == 1);
+    
+    var memberid = Convert.ToString(ViewData["memberid"]);
+    var position = Convert.ToInt32(ViewData["position"]);
+    var status = Convert.ToInt32(ViewData["status"]);
+    
+    var sr = 1;   
+    int g = 1;
+    int counting = Convert.ToInt32(ViewData["lastpage"]);
+    int pageno = Convert.ToInt32(ViewData["pageno"]);
+    int gets = Convert.ToInt32(ViewData["srno"]);
+    int sr3 = gets + 1;
+    int starts = gets + 1;
+    double totalbv = 0,totalRbv = 0;
+    
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#memid").autocomplete({
+            source: function (request, response) {
+                debugger;
+                    $.ajax({
+                        url: "/Operator/intro",
+                        type: "POST",
+                        dataType: "json",
+                        data: { introid: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.username, value: item.memberid };
+                            }))
+
+                        }
+                    })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+
+<style>
+    .row {
+        color: black!important;
+    }
+</style>
+
+
+<style>
+    #myRTable th {
+        font-size: 12px;
+    }
+
+    #myTable th {
+        font-size: 12px;
+    }
+
+    .ul.pagination {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul.pagination li {
+        display: inline;
+    }
+
+        ul.pagination li a {
+            color: black;
+            float: left;
+            padding: 0px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+        }
+
+            ul.pagination li a.active {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            ul.pagination li a:hover:not(.active) {
+                background-color: #ddd;
+            }
+</style>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">@mr.agentname Downline Business</h4>
+        </div>
+        
+        <br />
+         <div class="row card">
+            <div class="card-body" style="width: 100%">
+        
+           
+
+                    @if (TempData["erromsg22"] != null)
+                    {
+                        < ><label style="color:red;" id="lblmssg">@TempData["erromsg22"]&nbsp;&nbsp; (@TempData["newid2"])</label></> 
+                   }
+
+                    @using (Html.BeginForm("TotalBusiness", "Admin", FormMethod.Get, new { enctype = "multipart/form-data" }))
+                    {
+                        
+                        <div class="row">
+
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-label">Enter @mr.agentname Id</label>
+                                    <input type="text" onblur="checkid(this.id)" id="memid" name="memberid" class="form-control" value="@Request.QueryString["memberid"]" style="border-top: none; border-left: none; border-right: none;" onkeyup="sdateerror()" />
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-label">Start Date </label>
+                                    <input type="date" name="sdate" class="form-control" id="sdate1" onchange="sdateerror()" style="width: 89%;" value="@Request.QueryString["sdate"]" />
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-label">End Date </label>
+                                    <input type="date" name="edate" class="form-control" id="edate1" onchange="sdateerror()" style="width: 89%;" value="@Request.QueryString["edate"]" />
+                                </div>
+
+
+                            </div>
+
+                            <div class="card-footer text-right">
+                                <button type="submit" class="btn btn-primary pull-right" name="command" value="Search" id="btnsearch" disabled="disabled" >Search</button>
+                            </div>
+                            <span class="text-danger"></span>
+
+                        </div>
+                    }
+              
+       
+                </div>
+                </div>
+        @if (Model != null)
+        {
+            var llist = Model.Where(l => l.position == 1).ToList();
+            var rlist = Model.Where(l => l.position == 2).ToList();
+            <div>
+                <h4 style="text-align: center; font-weight: 700">Get Downline Report (<a href="@Url.Action("TotalBusiness", "Admin", new { excel = 1, page = 1, NewAgentId = ViewData["memberid"], pin = ViewData["pin"], status = ViewData["status"], sdate = ViewData["sdate"], edate = ViewData["edate"] })" target="_blank" style="color:green;">&nbsp;<i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp;GET EXCEL</a>)</h4>
+            </div>
+            <div class="container">
+                <div class="row card">
+                    <div class="card-body" style="width: 100%;">
+                        <div id="Div1" class="col-md-12" style="width: 100%;">
+                            <div class="col-sm-12" style="width: 100%;">
+
+                                <div class="table-responsive" style="margin-left: -20px; margin-right: -20px;">
+                                    <div class="col-sm-6" style="float: left;">
+                                        <table class="table table-striped table-bordered table-hover dataTables-example" id="myTable" style="font-size:12px;">
+
+                                            <thead>
+                                                <tr >
+                                                    <th>SN</th>
+                                                    <th>@mr.custname Id</th>
+                                                    <th>Name</th>
+                                                    <th>Position</th>
+                                                    <th>Business</th>
+                                                    <th>Date</th>
+
+                                                </tr>
+
+
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < llist.Count(); i++)
+                                                {
+                                                    var pinamount = (llist[i].pinamount);
+
+                                                    totalbv += pinamount;
+                                                    
+                                  
+                                     
+                                                    <tr>
+                                                        @if (pageno == 1)
+                                                        {
+                                                            <td>@sr</td>
+                                                            }
+                                                        else
+                                                        {
+                                                            <td>@sr3</td>
+                                                            }
+
+                                                        <td>@llist[i].introducerid</td>
+                                                        <td>@llist[i].introname</td>
+                                                        <td>LEFT</td>
+                                                        <td>@llist[i].pinamount</td>
+                                                        <td>@llist[i].joindate.ToString("dd/MM/yyyy")</td>
+                                                    </tr>
+                                     
+                                  
+                                                        sr++;
+                                                        sr3++;
+                                                    }
+                                            </tbody>
+                                            <tr>
+                                                <td colspan="4">Total</td>
+
+                                                <td>@totalbv</td>
+                                                <td></td>
+                                            </tr>
+
+
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-6" style="float: left;">
+                                        <table class="table table-striped table-bordered table-hover dataTables-example" id="myRTable" style="font-size:12px;">
+
+                                            <thead >
+                                                <tr >
+                                                    <th>SN</th>
+                                                    <th>@mr.custname Id</th>
+                                                    <th>Name</th>
+                                                    <th>Position</th>
+                                                    <th>Business</th>
+                                                    <th>Date</th>
+
+                                                </tr>
+
+
+                                            </thead>
+                                            <tbody >
+                                                @for (int i = 0; i < rlist.Count(); i++)
+                                                {
+                                                    var pinamount = (rlist[i].pinamount);
+
+                                                    totalRbv += pinamount;
+                                                    
+                                  
+                                     
+                                                    <tr>
+                                                        @if (pageno == 1)
+                                                        {
+                                                            <td>@sr</td>
+                                                            }
+                                                        else
+                                                        {
+                                                            <td>@sr3</td>
+                                                            }
+
+                                                        <td>@rlist[i].introducerid</td>
+                                                        <td>@rlist[i].introname</td>
+                                                        <td>RIGHT</td>
+                                                        <td>@rlist[i].pinamount</td>
+                                                        <td>@rlist[i].joindate.ToString("dd/MM/yyyy")</td>
+                                                    </tr>
+                                     
+                                  
+                                                        sr++;
+                                                        sr3++;
+                                                    }
+                                            </tbody>
+                                            <tr>
+                                                <td colspan="4">Total</td>
+
+                                                <td>@totalRbv</td>
+                                                <td></td>
+                                            </tr>
+
+
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="pagination">
+                    <label style="color: #a311dd;">
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                        of @Model.PageCount</label>&nbsp&nbsp @Html.PagedListPager(Model, page => Url.Action("TotalBusiness", new { page, memberid = ViewData["memberid"], pin = ViewData["pin"], status = ViewData["status"], sdate = ViewData["sdate"], edate = ViewData["edate"] }))
+                </div>
+            </div>
+        }
+                
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#btnsearch").click(function () {
+        debugger;
+        $("#wait").show();
+
+    })
+
+    $(".pagination").click(function () {
+        $("#wait").show();
+    });
+    function sdateerror() {
+        debugger;
+        var memberid = $("#memid").val();
+        var sdate = $("#sdate1").val();
+        var edate = $("#edate1").val();
+        var status = $("#status").val();
+        var pin = $("#pin").val();
+        var position = $("#position").val();
+
+        if (memberid == "" && position == "") {
+            $("#btnsearch").attr("disabled", "disabled");
+        }
+
+        if (sdate != "" && edate == "" && memberid == "") {
+            $("#edate1").attr("required", "required");
+            $("#btnsearch").attr("disabled", "disabled");
+            $("#position").attr("required", "required");
+        }
+        if (sdate == "" && edate != "" && memberid == "") {
+            $("#sdate1").attr("required", "required");
+            $("#btnsearch").attr("disabled", "disabled");
+            //$("#position").attr("required", "required");
+        }
+
+        if (memberid == "" && sdate == "" && edate == "" && status == "" && pin == "" && position == "") {
+            $("#btnsearch").attr("disabled", "disabled");
+        }
+        if (memberid != "" && status != "" && position != "" || memberid != "" && sdate != "" && edate != "" && status != "" && position != "")
+        { $("#btnsearch").removeAttr("disabled", "disabled"); }
+
+    }
+</script>

@@ -1,0 +1,356 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var br = db.CompanyInfos.Single(b => b.AdminId == User.Identity.Name);
+    var logo = string.Empty;
+    var companyname = string.Empty;
+    var incometype = string.Empty;
+    var mr = db.Members.Single(m => m.Id == 1);
+    var r = db.CompanyInfos.Single(ci => ci.AdminId == User.Identity.Name);
+
+ 
+    logo = r.CompanyLogo;
+    companyname = r.CompanyName;
+    incometype = r.IncomeType;
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Create";
+  
+}
+	<div class="my-3 my-md-5">
+					<div class="container">
+						<div class="page-header">
+							<h4 class="page-title">Welcome, @br.CompanyName</h4>
+							
+							</div>
+
+						<div class="row row-cards">
+                                       <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Create</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+							     <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary   card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/CreateBranch" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.branchname
+                             <img alt="" src="~/Images/icon/26.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+							     <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info   card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/CreateOperator" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Collection Point
+                             <img alt="" src="~/Images/icon/32.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            	     <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success   card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/CreateHr" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">HR
+                             <img alt="" src="~/Images/icon/16.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            	     <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/CreatePlan" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.planname Category
+                             <img alt="" src="~/Images/icon/21.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+							     <div class="col-sm-12 col-lg-3">
+                <div class="card bg-warning  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/ProjectTerm" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">New @mr.planname
+                             <img alt="" src="~/Images/icon/72.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+							     <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Branch/Member" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Member
+                             <img alt="" src="~/Images/icon/MemberIcon.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/CreatePhase" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">New Phase
+                             <img alt="" src="~/Images/icon/phase.png" style="height:63px" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/CreateBlock" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">New Block
+                             <img alt="" src="~/Images/icon/block.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/CreateRank" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">@mr.rankname
+                             <img alt="" src="~/Images/icon/rank.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                      @*        @if (incometype == "Commission")
+                    {
+                      
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info  card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Admin/FillCommission" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Fill Commission
+                             <img alt="" src="~/Images/icon/37.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success  card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Admin/FillSpotCommission" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Fill Spot Commission
+                             <img alt="" src="~/Images/icon/37.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                              }*@
+                               @if (incometype == "Salary")
+                    {
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/FillSalary" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Fill Salary
+                             <img alt="" src="~/Images/icon/37.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                               }
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/AddBonus" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Expense Head
+                             <img alt="" src="~/Images/icon/head.jpg" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/CreateRelation" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Relation
+                             <img alt="" src="~/Images/icon/images.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/SetTdsandLateFine" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Set Late Fine & TDS
+                             <img alt="" src="~/Images/icon/28.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-warning  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/AddExpense" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Add Expense
+                             <img alt="" src="~/Images/icon/36.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/AddBonus" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Add Bonus
+                             <img alt="" src="~/Images/icon/4.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/AddState" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Add State-City
+                             <img alt="" src="~/Images/icon/5.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                             <div class="col-sm-12 col-lg-3">
+                <div class="card bg-warning  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/Addbank" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Add Bank
+                             <img alt="" src="~/Images/icon/5.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                                <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/createid" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">ID Card(One)
+                             <img alt="" src="~/Images/icon/19.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/CreateAllId" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">ID Card(All)
+                             <img alt="" src="~/Images/icon/bulkidcard.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                                       <div class="col-sm-12 col-lg-3">
+                <div class="card bg-warning  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/LaunchScheme" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Launch Scheme
+                             <img alt="" src="~/Images/icon/46.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+						</div>
+
+                        </div>
+        </div>
+</div>
+                        </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

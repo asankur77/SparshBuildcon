@@ -1,0 +1,118 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.misdetails>
+@using SPARSHBUILDCON.Models;
+@{
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    ViewBag.Title = "SLPReturn";
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var a = 0;
+}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">SLP Return List</a></li>
+
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+                <div class="card-header">
+                    <h3 class="card-title">SLP Return List</h3>
+                </div>
+                
+                <div class="card">
+                    <table class="table-responsive table-striped table-bordered" >
+                        @using (Html.BeginForm())
+                        {
+                            foreach (var item in Model)
+                            {
+                                if (a == 0)
+                                {
+                            <tr>
+                                <th style="width: 10%; text-align: center;">
+                                    <label id="sn"><b>Installment No</b></label>
+                                </th>
+                                <th style="width: 10%; text-align: center;">
+                                    <label><b>@mr.custname Id</b></label>
+                                </th>
+                                <th style="width: 12%; text-align: center;">
+                                    <label id="spilid"><b>@mr.custname Name</b></label>
+                                </th>
+                                <th style="width: 6%; text-align: center;">
+                                    <label id="introducerid"><b>Receipt No</b></label>
+                                </th>
+                                <th style="width: 8%; text-align: center;">
+                                    <label><b>Pay Amount</b></label>
+                                </th>
+                                <th style="width: 6%; text-align: center;">
+                                    <label><b>Due Date</b></label>
+                                </th>
+                                <th style="width: 6%; text-align: center;">
+                                    <label><b>Expiry Date</b></label>
+                                </th>
+                                <th colspan="2" style="width: 6%; text-align: center;">
+                                    <label id="View"><b>Action</b></label>
+                                </th>
+
+                            </tr>
+                                }
+                                a = a + 1;
+
+
+                            <tr style="text-align: center;">
+                                <td>
+                                    @a
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.newbondid)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.name)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.receiptno)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.amount)
+                                </td>
+
+                                <td>
+                                    @item.duedate.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+                                    @item.expirydate.ToString("dd/MM/yyyy")
+                                </td>
+                              
+                                    <td colspan="2" >
+                                        @if (item.duedate > DateTime.Now)
+                                        {
+                                            <button type="button"  class="btn btn-md btn-info" disabled="disabled">Waiting</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="button"  class="btn btn-md btn-info" disabled="disabled">Pending</button>
+                                        }
+                                    </td>
+                               
+                               
+
+                            </tr>
+        
+                            }
+                        }
+                    </table>
+                    <h4>@ViewBag.msg</h4>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,456 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "newlayout";
+    Layout = "~/Views/Shared/View1.cshtml";
+    UsersContext db = new UsersContext();
+    var user = db.AgentDetails.Single(a => a.NewAgentId == User.Identity.Name);
+
+    var totalleft = (from a in db.genology_tabs where a.newid==User.Identity.Name &&  a.position == 1  &&  a.rs!=0 select a.rs).Distinct().Sum();
+    var totalright = (from a in db.genology_tabs where a.newid == User.Identity.Name && a.position == 2 && a.rs != 0 select a.rs).Distinct().Sum();
+
+    var totalvolume = totalleft + totalright;
+
+    var leftmember = (from a in db.genology_tabs where a.newid == User.Identity.Name && a.position == 1  select a).Count();
+    var righttmember = (from a in db.genology_tabs where a.newid == User.Identity.Name && a.position == 2  select a).Count();
+
+    var totalmember = leftmember + righttmember;
+
+    var activeleft = (from a in db.genology_tabs where a.newid == User.Identity.Name && a.position == 1 && a.rs != 0 select a).Count();
+    var activeright = (from a in db.genology_tabs where a.newid == User.Identity.Name && a.position == 2 && a.rs != 0 select a).Count();
+
+    var totalactive = activeleft + activeright;
+
+
+    var inactiveleft = (from a in db.genology_tabs where a.newid == User.Identity.Name && a.position == 1 && a.rs == 0 select a).Count();
+    var inactiveright = (from a in db.genology_tabs where a.newid == User.Identity.Name && a.position == 2 && a.rs == 0 select a).Count();
+
+    var totalinactive = inactiveleft + inactiveright;
+}
+
+
+
+
+<div id="main-content">
+            <div class="container-fluid">
+                
+<style>
+.text-red{color:Red;}
+.text-green{color:green;}
+</style>
+                <div class="row-fluid">
+        <div class="span12">
+            <h3 class="page-title">
+                 Hello! <span class="text-danger">@user.name</span> Welcome to Your Login Panel
+            </h3>
+            <ul class="breadcrumb">
+                <li><a href="#"><i class="icon-home"></i></a><span class="divider">&nbsp;</span>
+                
+                </li>
+                <li><a href="http://www.glcgroup.in/Main-dashboard#">
+                    DYNAMIC WAY REAL ESTATE PVT LTD(GLC)</a> <span class="divider">&nbsp;</span> </li>
+                <li><a href="http://www.glcgroup.in/Main-dashboard#">Dashboard</a><span class="divider-last">&nbsp;</span></li>
+            </ul>
+        </div>
+    </div>
+    <div id="page" class="dashboard">
+        <div class="row-fluid circle-state-overview">
+            <div class="responsive clearfix span2" data-tablet="span3" data-desktop="span2">
+                <div class="circle-wrap">
+                    <div class="stats-circle turquoise-color">
+                        <i class="icon-user"></i>
+                    </div>
+                    <p>
+                        <strong>
+                            <span id="ctl00_ContentPlaceHolder1_lblTtlvol">@totalvolume</span></strong>  Total Volume 
+                    </p>
+                </div>
+            </div>
+            <div class="responsive span2" data-tablet="span3" data-desktop="span2">
+                <div class="circle-wrap">
+                    <div class="stats-circle red-color">
+                        <i class="icon-tags"></i>
+                    </div>
+                    <p>
+                        <strong>
+                            <span id="ctl00_ContentPlaceHolder1_lblpinwallet">@totalmember</span></strong>  All Members
+                    </p>
+                </div>
+            </div>
+            <div class="responsive span2" data-tablet="span3" data-desktop="span2">
+                <div class="circle-wrap">
+                    <div class="stats-circle green-color">
+                        <i class="icon-sitemap text-green"></i>
+                    </div>
+                    <p>
+                        <strong>
+                            <span id="ctl00_ContentPlaceHolder1_lblpaidDirect">@totalactive</span></strong>All Active Members
+                    </p>
+                </div>
+            </div>
+            <div class="responsive span2" data-tablet="span3" data-desktop="span2">
+                <div class="circle-wrap">
+                    <div class="stats-circle gray-color">
+                        <i class="icon-sitemap text-red"></i>
+                    </div>
+                    <p>
+                        <strong>
+                            <span id="ctl00_ContentPlaceHolder1_lblunpaid">@totalinactive</span></strong> All InActive Member 
+                    </p>
+                </div>
+            </div>
+            <div class="responsive span2" data-tablet="span3" data-desktop="span2">
+                <div class="circle-wrap">
+                    <div class="stats-circle purple-color">
+                        <i class="icon-user"></i>
+                    </div>
+                    <p>
+                        <strong>
+                            <span id="ctl00_ContentPlaceHolder1_lbllftVol">@totalleft</span></strong>  Left Volume </p>
+                </div>
+            </div>
+            <div class="responsive span2" data-tablet="span3" data-desktop="span2">
+                <div class="circle-wrap">
+                    <div class="stats-circle blue-color">
+                        <i class="icon-user"></i>
+                    </div>
+                    <p>
+                        <strong>
+                            <span id="ctl00_ContentPlaceHolder1_lblrgtvol">@totalright</span></strong>    Right Volume
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="row-fluid metro-overview-cont">
+            <div data-desktop="span4" data-tablet="span2" class="span3 responsive span4">
+                <div class="metro-overview turquoise-color clearfix">
+                    <div class="display">
+                        <i class="icon-group"></i>
+                    </div>
+                    <div class="details">
+                        <div class="numbers">
+                            <span id="ctl00_ContentPlaceHolder1_lblrepurch">0.00</span>
+                        </div>
+                        <div class="title">
+                           LEDGER BALANCE <br>   Pin Wallet  </div>
+                    </div>
+                    <div class="progress progress-info">
+                        <div style="width: 50%" class="bar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-desktop="span4" data-tablet="span2" class="span3 responsive span4">
+                <div class="metro-overview red-color clearfix">
+                    <div class="display">
+                        <i class="icon-tags"></i>
+                    </div>
+                    <div class="details">
+                        <div class="numbers">
+                            <span id="ctl00_ContentPlaceHolder1_lblincmwalet">0.00</span>
+                        </div>
+                        <div class="title">
+                           LEDGER BALANCE <br>   Payout Wallet   </div>
+                    </div>
+                    <div class="progress progress-danger">
+                        <div style="width: 50%" class="bar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-desktop="span4" data-tablet="span2" class="span3 responsive span4">
+                <div class="metro-overview green-color clearfix">
+                    <div class="display">
+                        <i class="icon-tags"></i>
+                    </div>
+                    <div class="details">
+                        <div class="numbers">
+                            <span id="ctl00_ContentPlaceHolder1_lblBank">0.00</span>
+                        </div>
+                        <div class="title">
+                           LEDGER BALANCE <br>Performance Wallet  </div>
+                    </div>
+                    <div class="progress progress-success">
+                        <div style="width: 50%" class="bar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-desktop="span4" data-tablet="span2" class="span3 responsive span4">
+                <div class="metro-overview gray-color clearfix">
+                    <div class="display">
+                        <i class="icon-tags"></i>
+                    </div>
+                    <div class="details">
+                        <div class="numbers">
+                            <span id="ctl00_ContentPlaceHolder1_Lblshop">0.00</span>
+                        </div>
+                        <div class="title">
+                           LEDGER BALANCE <br> Autopool Wallet  </div>
+                    </div>
+                    <div class="progress progress-warning">
+                        <div style="width: 50%" class="bar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+       <div class="row-fluid">
+            <div class="span4">
+                <div class="widget">
+                    <div class="widget-title">
+                        <h4>
+                            <i class="icon-tags"></i>ACCOUNT DETAILS</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="span5">
+                            <div class="text-center profile-pic">
+                                   <img id="ctl00_ContentPlaceHolder1_imgmem" alt="Profile Picture" src="~/Content/MemebrContetnt/member/user.png" style="border-width:0px;border-radius: 50%;">
+                           </div>
+                        </div>
+                        <div class="span7">
+                            <h3> 
+                                  <span id="ctl00_ContentPlaceHolder1_lblmemname">Ms. Bala Devi</span><br> <span id="ctl00_ContentPlaceHolder1_lblmemlgncod">GL84150</span>
+                            </h3>
+                             <input type="file" name="ctl00$ContentPlaceHolder1$fupmem" id="ctl00_ContentPlaceHolder1_fupmem" style="height:32px;"> 
+                                    <a id="ctl00_ContentPlaceHolder1_lnkmem" class="btn btn-primary" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$lnkmem','')">upload</a> 
+                                     
+                                    <span id="ctl00_ContentPlaceHolder1_lblerr" class="err"></span>
+                            
+                        </div>
+                        <div class="span12">
+                            <table class="table table-borderless">
+                                <tbody style="font-weight: bold">
+                                    <tr>
+                                        <td class="span2">Account Date :
+                                        </td>
+                                        <td>
+                                            <span id="ctl00_ContentPlaceHolder1_lbldoj">11/25/2017</span>
+                                        </td>
+                                    </tr> 
+                                    <tr>
+                                        <td class="span2">Upgrade Date :
+                                        </td>
+                                        <td>
+                                             <span id="ctl00_ContentPlaceHolder1_lblgreedt">4/7/2018 7:47:00 PM</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="span2">Location :
+                                        </td>
+                                        <td>
+                                               <span id="ctl00_ContentPlaceHolder1_lblcity"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="span2">Mobile :</td>
+                                        <td>
+                                           <span id="ctl00_ContentPlaceHolder1_lblcntctno"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="span2">Email :
+                                        </td>
+                                        <td>
+                                           <span id="ctl00_ContentPlaceHolder1_lblemailid">surendrsaini867@gmail.com</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="span2">Country :
+                                        </td>
+                                        <td>
+                                             <span id="ctl00_ContentPlaceHolder1_lblcountry">India</span>
+                                        </td>
+                                    </tr> 
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="space7">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="span4">
+                <div class="widget">
+                    <div class="widget-title">
+                        <h4>
+                            <i class="icon-tags"></i>E-Wallet Summary
+                        </h4>
+                    </div>
+                    <div class="widget-body">
+                        <table class="table table-striped table-bordered table-hover">
+                            <tbody style="font-weight: bold">
+                               <tr>
+                                    <td class="highlight">
+                                        Matching Bonus
+                                    </td>
+                                    <td>
+                                        <span id="ctl00_ContentPlaceHolder1_lblpairinc">160800.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight">
+                                        Level Bonus
+                                    </td>
+                                    <td>
+                                        <span id="ctl00_ContentPlaceHolder1_lbllevelbonus">126500.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight">
+                                        Performance Bonus
+                                    </td>
+                                    <td>
+                                       <span id="ctl00_ContentPlaceHolder1_lblperfbonus">2250.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight">
+                                      Pool Income
+                                    </td>
+                                    <td>
+                                        <span id="ctl00_ContentPlaceHolder1_lblldshpinc">500.00</span>
+                                    </td>
+                                </tr>
+                                  <tr>
+                                    <td class="highlight">
+                                      Club Royality Bonus
+                                    </td>
+                                    <td>
+                                        <span id="ctl00_ContentPlaceHolder1_lblroybonus">0</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="widget">
+                    <div class="widget-title">
+                        <h4>
+                            <i class="icon-sitemap"></i>Network Details
+                        </h4>
+                    </div>
+                    <div class="widget-body">
+                        <table class="table table-striped table-bordered " style="background: #fff">
+                            <tbody style="font-weight: bold">
+                                <tr>
+                                    <td class="highlight text-center" width="50%">
+                                        <h4 class="text-center">Left Side <br>
+                                         <span style="text-align :center;font-size :10;">(<span id="ctl00_ContentPlaceHolder1_lbllsvol">2030000</span></span>
+                                        )
+                                        </h4> 
+                                    </td>
+                                    <td class="highlight text-center" width="50%">
+                                        <h4 class="text-center">Right Side <br>
+                                         <span style="text-align :center ;font-size :10;">  ( <span id="ctl00_ContentPlaceHolder1_lblrgtvolmul">16700000</span>)</span> 
+                                        </h4>
+                                       
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight text-center" style="text-align: center">Volume :
+                                        <span id="ctl00_ContentPlaceHolder1_lblleftcbv">406.00</span><br>
+                                        Bv :
+                                         <span id="ctl00_ContentPlaceHolder1_lblleftbv">1624000</span><br>
+                                        Total Join : <span id="ctl00_ContentPlaceHolder1_lblttllftjoin">670</span>
+                                    </td>
+                                    <td class="text-center" style="text-align: center">Volume :
+                                      <span id="ctl00_ContentPlaceHolder1_lblrightcbv">3340.00</span><br>
+                                        BV :
+                                        <span id="ctl00_ContentPlaceHolder1_lblrightbv">13360000</span><br>
+                                     
+                                       Total Join : <span id="ctl00_ContentPlaceHolder1_lblttlrgtjoin">3748</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="space7">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="span8">
+                <div class="widget">
+                    <div class="widget-title">
+                        <h4>
+                            <i class="icon-sitemap"></i>My Login Detail
+                        </h4>
+                    </div>
+                    <div class="widget-body">
+                       <div class="row-fluid">
+                                <div class="span4">
+                                    Last Login IP <strong>
+                                            1.22.122.0
+                                    </strong>
+                                </div>
+                                <div class="span4">
+                                    Last Login Date <strong>
+                                            7/15/2018 1:48:59 PM
+                                    </strong>
+                                </div>
+                                <div class="span4">
+                                    Current Login IP <strong>
+                                            1.22.122.0
+                                    </strong><br><br>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                
+                   <div class="square-state">
+                 <div class="row-fluid">
+                    <a class="icon-btn span3" href="http://www.glcgroup.in/Prof"><i class="icon-user"></i>
+                        <div>
+                            Profile
+                        </div>
+                    </a><a class="icon-btn span3" href="http://www.glcgroup.in/ChangePass"><i class="icon-key"></i>
+                        <div>
+                            Change Password
+                        </div>
+                    </a><a class="icon-btn span3" href="http://www.glcgroup.in/editaccount"><i class="icon-tasks"></i>
+                        <div>
+                            Bank Details
+                        </div>
+                    </a>
+                    <a class="icon-btn span3" href="http://www.glcgroup.in/MyTtlDwn"><i class="icon-sitemap"></i>
+                        <div>
+                            My Down line
+                        </div>
+                    </a>
+                </div>
+             <div class="row-fluid">
+                    <a class="icon-btn span3" href="http://www.glcgroup.in/ViewLdgr"><i class="icon-th"></i>
+                        <div>
+                            E-Wallet
+                        </div>
+                    </a><a class="icon-btn span3" href="http://www.glcgroup.in/support"><i class="icon-comments"></i>
+                        <div>
+                            Online Support
+                        </div>
+                    </a><a class="icon-btn span3" href="http://www.glcgroup.in/NewRegWithspsr" target="_blank"><i class="icon-book"></i>
+                        <div>
+                            Join Now
+                        </div>
+                    </a><a class="icon-btn span3" href="http://www.glcgroup.in/MemBnrytree"><i class="icon-group"></i>
+                        <div>
+                            Genealogy
+                        </div>
+                    </a>
+                </div>
+            </div>
+            </div>
+        </div>
+     
+        
+    </div>
+    
+
+            </div>
+        </div>
+

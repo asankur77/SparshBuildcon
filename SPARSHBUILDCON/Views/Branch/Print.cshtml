@@ -1,0 +1,165 @@
+﻿@using SPARSHBUILDCON.Models
+@{
+    ViewBag.Title = "Print";
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    UsersContext db = new UsersContext();   
+    var logo = string.Empty;
+    var companyname = string.Empty;
+    var incometype = string.Empty;
+    var mr = db.Members.Single(m => m.Id == 1);
+    var f1 = db.VFormatTabs.Single(f => f.Id == 1);
+    var f2 = db.VFormatTabs.Single(f => f.Id == 2);
+    var f3 = db.VFormatTabs.Single(f => f.Id == 3);
+    
+}
+<div class="my-3 my-md-5">
+					<div class="container">
+						<div class="page-header">
+							<h4 class="page-title">Welcome, @User.Identity.Name</h4>
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Duplicate</a></li>
+							
+							</ol>
+							<button type="button" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>@DateTime.Now</button>
+
+						</div>
+
+						<div class="row row-cards">
+                            <div class="col-sm-12 col-lg-3">
+								<div class="card bg-info card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/AgentWelcomeLetter" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">Agent Welcome Letter
+											
+                                            <img alt="" src="~/Images/icon/2.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-lg-3">
+								<div class="card bg-primary  card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/WelcomeLetter" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">@mr.custname Welcome Letter
+											
+                                            <img alt="" src="~/Images/icon/2.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+                            <div class="col-sm-12 col-lg-3">
+								<div class="card bg-warning  card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/AllotMentLetter" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">@mr.custname Allotment Letter
+
+											
+                                            <img alt="" src="~/Images/icon/74.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-lg-3">
+								<div class="card bg-success  card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/DuplicateBond" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">@mr.custname
+											
+                                            <img alt="" src="~/Images/icon/2.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+
+							
+
+							
+						</div>
+
+						<div class="row row-cards">
+                            <div class="col-sm-12 col-lg-3">
+								<div class="card bg-primary card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/ChequeDuplicateReceipt" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">Pending @mr.custname
+											
+                                            <img alt="" src="~/Images/icon/2.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-lg-3">
+								<div class="card bg-info  card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/DuplicateReceipt" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">Renewal
+											
+                                            <img alt="" src="~/Images/icon/54.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+                            <div class="col-sm-12 col-lg-3">
+								<div class="card bg-success  card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/ChequeDuplicateRenewalReceipt" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">Pending Renewal
+											
+                                            <img alt="" src="~/Images/icon/54.png" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-lg-3">
+								<div class="card bg-warning   card-img-holder text-white">
+									<div class="card-body">  
+                                        <a href="~/Branch/DupliSpotCommission" style="color:white">
+										<img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+										<h4 class="font-weight-normal  mb-3">Spont Commision
+											
+                                            <img alt="" src="~/Images/icon/spotcomm.jpg" class=" fs-30 float-right" />
+										</h4>
+										</a>
+        
+									</div>
+								</div>
+							</div>
+
+							
+
+							
+						</div>
+					</div>
+				</div>
+
+
+
+
+
+
+
+
+
+
+

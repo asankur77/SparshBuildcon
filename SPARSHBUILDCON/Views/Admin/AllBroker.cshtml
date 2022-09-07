@@ -1,0 +1,178 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.BrokerList>
+@using SPARSHBUILDCON.Models;
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "AllBroker";
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    
+    var a = 0;
+}
+
+	<div class="my-3 my-md-5">
+					<div class="container"  id="divid1">
+						<div class="page-header" id="2">
+							<h4 class="page-title">All @mr.agentname List</h4>
+						
+						
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+									<div class="card-header">
+										<h3 class="card-title">All @mr.agentname List</h3>
+									</div>
+									<div class="table-responsive" id="1">
+										<table class="table table-striped table-bordered" width="100%">
+                                            @using (Html.BeginForm())
+                {
+                    foreach (var item in Model)
+                    {
+                        var tp = "";
+                        var aa = db.NewLogins.Where(n => n.UserName == item.newagentid && n.type=="Agent").Count();
+                        if (aa == 1)
+                        { 
+                             var ng = db.NewLogins.Single(p => p.UserName == item.newagentid && p.type=="Agent");
+                             tp = ng.Password;
+                        }
+                        if (a == 0)
+                        {
+                            
+                            <tr style="text-align:center;"><th colspan="3" ></th>
+                                <th colspan="3" style="text-align:center;"><b>All @mr.agentname List</b></th>
+                                <th colspan="3" style="text-align:center;"><b>@DateTime.Now.ToString("dd/MM/yyyy")</b></th>
+                            </tr>
+    <tr>
+        <th style="width:5%;text-align:center;">
+           <label id="sn"><b>S.N.</b></label>
+            </th>
+        <th style="width:20%;text-align:center;">
+           <label id="newid"><b>@mr.agentname Id</b></label>
+            </th>
+        <th style="width:15%;text-align:center;">
+           <label id="spilid"><b>@mr.agentname Name</b></label>
+        </th>
+        <th style="width:15%;text-align:center;">
+           <label id="introducerid"><b>Introducer Id</b></label>
+        </th>
+            
+        
+       
+            
+        <th style="width:10%;text-align:center;">
+           <label id="position"><b>Mobile</b></label>
+        </th>
+         <th style="width:10%;text-align:center;">
+           <label ><b>Password</b></label>
+        </th>
+        
+            
+         <th style="width:10%;text-align:center;">
+<label id="email"><b>@mr.rankname </b></label>
+        </th>
+
+         <th style="width:10%;text-align:center;">
+           <label id="doj"><b>Date of Joining</b></label>
+        </th>
+        <th>
+            Status
+        </th>
+       <th>
+            Topup Amount
+        </th>
+      
+    </tr>
+    }
+                        a = a + 1;
+
+
+    <tr style="text-align:left;">
+        
+        <td>
+            @a
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.newagentid)
+        </td>
+
+           <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.introducerid)
+        </td>
+        
+       
+         
+        <td>
+            @Html.DisplayFor(modelItem => item.mobile)
+        </td>
+       
+         <td>
+          @tp
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.rankname)
+        </td>
+         <td>
+             @Convert.ToDateTime(item.doj).ToString("dd/MM/yyyy")
+           
+        </td>
+        <td>
+            @if(item.status==1)
+            {
+            @:Active
+            }
+            else
+            {
+            @:Deactive
+            }
+        </td>
+       <td>
+           @if(item.status==1)
+           {
+           @item.topupamount
+           }
+           else
+           {
+           @:0
+           }
+       </td>
+             
+    </tr>
+                   
+    }
+
+    }
+    
+    
+   
+</table>
+                                          @if(a>0)
+                         {
+                             <a href="@Url.Action("PrintAllBrokerList")"  class="btn btn-outline-primary" target="_blank">Get Report In PDF</a>
+                         }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

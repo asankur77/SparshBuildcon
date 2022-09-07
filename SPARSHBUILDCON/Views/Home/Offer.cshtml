@@ -1,0 +1,144 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    ViewBag.Title = "Offer";  
+} 
+ 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<style>
+  /* Tooltip */
+      .ashish + .tooltip > .tooltip-inner {  background-color: #f64b4b; 
+      color: #FFFFFF; 
+      border: 1px solid red; 
+      padding: 15px;
+      font-size: 20px;
+      width:250px;
+      
+      }      
+
+  .test + .tooltip > .tooltip-inner {
+      background-color: #73AD21; 
+      color: #FFFFFF; 
+      border: 1px solid green; 
+      padding: 15px;
+      font-size: 20px;
+      width:250px;
+    
+  }
+  /* Tooltip on top */
+  .test + .tooltip.top > .tooltip-arrow {
+      border-top: 5px solid green;
+  }
+  /* Tooltip on bottom */
+  .test + .tooltip.bottom > .tooltip-arrow {
+      border-bottom: 5px solid blue;
+  }
+  /* Tooltip on left */
+  .test + .tooltip.left > .tooltip-arrow {
+      border-left: 5px solid red;
+  }
+  /* Tooltip on right */
+  .test + .tooltip.right > .tooltip-arrow {
+      border-right: 5px solid black;
+  }
+
+    .love {
+        background-color:#def8e3;
+    }
+    input[type=text] {
+      padding:10px;
+    }
+    h4 {
+      
+      font-weight:bold;
+      color:#2f571c;
+    }
+
+  </style>
+
+<link href="../Content/Home/css/globalstyle.css" rel="stylesheet" />
+  <!--======= BANNER =========-->
+  <div class="sub-banner" style="background-image:url('../Content/Home/img/lyman-banner-agents.png')">
+    <div class="overlay">
+      <div class="container">
+        <h1>Our Offers</h1>
+        <ol class="breadcrumb">
+          <li class="pull-left">Our Offers</li>
+          <li><a href="../Home/Index">Home</a></li>
+          <li class="active">Our Offers</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  
+
+<section class="slice relative bg-white bb animate-hover-slide">
+    <div class="wp-section">
+        <div class="container">
+            <div class="section-title-wr">
+                <h3 class="section-title left"><span>Our Latest Offers</span></h3>
+            </div>
+            @*  @foreach(var p in plist)
+                {
+                    *@
+            
+
+            
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="wp-block inverse">
+                        <div class="figure">
+                            <img alt="" src="/Content/Home/img/o1.jpg" height="500" width="200">
+                            <div class="figcaption bg-base"></div>
+                            <div class="figcaption-btn">
+                                <a href="/Content/Home/img/o1.jpg" class="btn btn-xs btn-b-white theater"><i class="fa fa-plus-circle"></i>Zoom</a>
+                                <a href="#" class="btn btn-xs btn-b-white"><i class="fa fa-link"></i>View</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="wp-block inverse">
+                        <div class="figure">
+                            <img alt="" src="/Content/Home/img/o2.jpg" height="500" width="200">
+                            <div class="figcaption bg-base"></div>
+                            <div class="figcaption-btn">
+                                <a href="/Content/Home/img/o2.jpg" class="btn btn-xs btn-b-white theater"><i class="fa fa-plus-circle"></i>Zoom</a>
+                                <a href="#" class="btn btn-xs btn-b-white"><i class="fa fa-link"></i>View</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="wp-block inverse">
+                        <div class="figure">
+                            <img alt="" src="/Content/Home/img/o3.jpg" height="500" width="200">
+                            <div class="figcaption bg-base"></div>
+                            <div class="figcaption-btn">
+                                <a href="/Content/Home/img/o3.jpg" class="btn btn-xs btn-b-white theater"><i class="fa fa-plus-circle"></i>Zoom</a>
+                                <a href="#" class="btn btn-xs btn-b-white"><i class="fa fa-link"></i>View</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*}*@
+            <br />
+            <br />
+            
+            
+        </div>
+    </div>
+</section>
+
+

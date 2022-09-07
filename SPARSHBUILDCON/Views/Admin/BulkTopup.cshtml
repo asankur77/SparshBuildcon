@@ -1,0 +1,98 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var packlst = db.package_tabs.ToList();
+
+
+}
+
+
+<div class="main-body">
+    <div class="page-wrapper"> <br /><br /><br />
+          <h3 style="color:red; font-weight:800">@ViewData["msg"]</h3>
+    <h3 style="color:red; font-weight:800">@ViewData["msg2"]</h3>
+        <div class="page-header">
+            <div class="page-header-title">
+                <h4>Bulk TopUp</h4>
+                <span></span>
+            </div>
+            <div class="page-header-breadcrumb">
+                <ul class="breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">
+                            <i class="fa fa-university"></i>
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item"><a href="~/Operator/omember_list">Bulk TopUp</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="page-body">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-sm-10 col-md-10">
+                    <div class="card">
+                        <br />
+                            @using(Html.BeginForm("BulkTopup", "Admin", FormMethod.Post))
+                {
+                    <div class="row" style="margin-left: 2%; margin-right: 2%">
+                        @*<h4 style="background-color:#1abc9c;padding:5px;color:white;border-radius:2px;"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; BULK TOPUP</h4><hr />*@
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label"  style="font-weight:bold; color:black">Paste Memberid (Seprated with (,) Comma. Ex. ABC0001,ABC0002)</label><br />
+                                <textarea required="required" name="memberid" class="form-control" style="height:150px;background-color:#ebe9e9"></textarea>  
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label"  style="font-weight:bold; color:black">Remark</label><br /><br />
+                                <textarea required="required" name="comment" class="form-control" style="height:150px;background-color:#ebe9e9"></textarea>  
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label"  style="font-weight:bold; color:black">Top Up Date</label><br /><br />
+                                <input type="date" required="required" name="activedate" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating" style="margin-top:24px;">
+                                <label class="control-label" style="font-weight:bold; color:black">Package amount</label><br />
+                                <select class="form-control" name="package">
+                                    <option value="">Select Amount</option>
+                                    @foreach (var item in db.package_tabs.Where(a => a.status == 1).ToList())
+                                    { 
+                                        <option value="@item.packageamount">@item.packageamount</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                   <center> <button type="submit" class="btn btn-primary" style="margin-left: 2%; margin-right: 2%">Top Up</button></center>
+                    <div class="clearfix"></div>
+                                 <br />
+                                 <br />
+                }
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+@if (ViewData["alert"] != null)
+{ 
+<script>
+    var alert1='@ViewData["alert"]';
+alert(alert1);
+</script>
+}

@@ -1,0 +1,89 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    ViewBag.Title = "DuplicateBond";
+
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#newbond").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Branch/AutoCompleteBondId",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.newbondid };
+
+
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    @using (Html.BeginForm())
+                    {  <div class="card-header">
+                        <h3 class="card-title"><b>Duplicate @mr.custname Certificate</b></h3>
+                    </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label">@mr.custname Id : </label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="newbond" name="newbond" required />
+                                            <span class="input-group-append">
+                                                <button type="submit" class="btn btn-primary" onclick="target='_blank'">Get Certificate In PDF</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    }
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

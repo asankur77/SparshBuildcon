@@ -1,0 +1,226 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<SPARSHBUILDCON.Models.genology_tab>
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "leftmember";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    UsersContext db = new UsersContext();
+    int a = 1;
+    int counting = Convert.ToInt32(ViewData["lastpage"]);
+    int pageno = Convert.ToInt32(ViewData["pageno"]);
+    int gets = Convert.ToInt32(ViewData["srno"]);
+    int sr = gets + 1;
+    int starts = gets + 1;
+    var memberid = Convert.ToString(ViewData["NewAgentId"]);
+
+    int leftmebber = Convert.ToInt32(TempData["left"]);
+
+    var leftbusiness = (from d in db.genology_tabs where d.newid == User.Identity.Name && d.rs != 0 && d.position==1 select d.rs).DefaultIfEmpty(0).Sum();
+}
+<script src="~/Content/Autosearch/jquery.min.js"></script>
+<link href="~/Content/Autosearch/jquery-ui.css" rel="stylesheet" />
+<script src="~/Content/Autosearch/jquery-1.10.2.js"></script>
+<script src="~/Content/Autosearch/jquery-ui.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#memid").autocomplete({
+            source: function (request, response) {
+                debugger;
+                $.ajax({
+                    url: "/Operator/intro",
+                    type: "POST",
+                    dataType: "json",
+                    data: { introid: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.username, value: item.memberid };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<script>
+    function checkid(check_id) {
+
+        var intro = $("#" + check_id).val();
+        var url = '@Url.Action("SelectIntroName", "Admin")';
+        $.get(url, { intro: intro }, function data(name1) {
+            $('#introducername').val(name1)
+        });
+
+    }
+</script>
+
+<div class="row">
+
+     @using (Html.BeginForm())
+     {
+        <input type="hidden" name="command" value="search" />
+        <div class="col-md-12">
+        
+            <div class="card">
+                <div class="card-header" style="background-color: #00B356;">
+                    
+                        <h4 class="title">Left Active Members &nbsp;(@leftmebber)</h4>
+                    
+                   
+                        <h4 class="title" style="float:right;margin-top:-29px;">Left Business &nbsp;(@leftbusiness)</h4>
+                    
+                    
+                </div>
+                <div class="card-content">
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">MemberId Or Name</label>
+                            <input type="text" onblur="checkid(this.id)" required="required" id="memid" name="memki_id" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <input style="color:green;font-weight:800" required="required" id="introducername" name="memki_id" class="form-control" readonly="true">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating" style="margin-top:-2px;">
+                            <button type="submit" class="btn btn-primary pull-right">Get Detail</button>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+     }
+
+
+    @if(@memberid!="")
+    {
+        var member = db.AgentDetails.Single(bb => bb.NewAgentId == memberid);
+    <div class="col-md-12" style="margin-top:-40px;">
+
+        <div class="card form-group" style="width: 100%;">
+            
+
+            <div>
+
+                @using (Html.BeginForm())
+                {
+                
+                    <div class="form-group has-iconed" style="color: black;">
+
+                        <div style="overflow-x: scroll;text-align:center;">
+                           
+                                <label class="label label-primary lavel-lg" style="color:white;">Total Member: @leftmebber</label><br />
+
+                            @member.name (@member.memberid)<br />
+                           <div class="col-md-3"></div>
+                           <center> <div class="col-md-6" style="height: auto;">
+                               <table border="1" style="width: 100%; text-align: center; height: auto;">
+                                    <tr>
+                                        <td colspan="6" style="background-color:#9d08c3;color:white;">
+                                            <label style="color:white;">Left Sales Group</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <label style="color: black;">Total: @leftmebber</label></td>
+                                        <td colspan="4">
+                                            <label style="color: black;">You Receive Left No of Member : @leftmebber</label></td>
+                                    </tr>
+                                   
+                                        <tr>
+                                            <td><label style="color: black;">Sr No.</label></td>
+                                            <td>
+                                                <label style="color: black;">Member Id</label></td>
+                                            <td style="text-align: left">
+                                                <label style="color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name</label></td>
+                                            @*<td>
+                                                <label style="color: black;">Package</label></td>*@
+                                            <td>
+                                                <label style="color: black;">Join Date</label></td>
+                                        </tr>
+                                        @for (int i = 0; i < Model.Count(); i++)
+                                    {
+                                        
+                                        
+                                        var meber_id = Model[i].cust_id;
+                                        var user = db.AgentDetails.Single(q => q.uid == meber_id);
+                                        //var packamount = db.pintabs.Single(q => q.pin == user.pinused).pinamount;
+                                        if (user.Status == 1)
+                                        {
+                                            leftmebber = leftmebber + 1;
+                                        }
+                                        <tr>
+                                             @if(pageno==1)
+                                            {
+                                            <td>
+                                                <label style="color: black;">@a</label></td>
+                                             }
+                                            else
+                                            {
+                                                  <td>
+                                                <label style="color: black;">@sr</label></td>
+                                             }
+                                            <td>
+                                                <label style="color: black;">@user.NewAgentId</label></td>
+                                            <td style="text-align: left">
+                                                <label style="color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@user.name</label></td>
+                                           
+                                            <td>
+                                                <label style="color: black;">@user.Doj.ToString("dd/MM/yyyy")</label></td>
+                                        </tr>
+                                        a++;
+                                        sr++;
+                                    }
+                                    
+                                </table>
+
+
+                            </div>
+                          </center>
+
+                        </div>
+
+                         <center> <div id="container" >
+        <p></p>
+        <p></p>
+        <div class="pagination">
+           <label style="color:#a311dd;"> Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+            of @Model.PageCount</label>&nbsp&nbsp @Html.PagedListPager(Model, page => Url.Action("leftmember", new { page, memberid=memberid }))
+        </div>
+    </div></center>
+
+                    </div>
+           
+                    <label style="color: black;">@ViewBag.msg2</label>
+            
+            
+                }
+            </div>
+
+
+  
+                  
+                  
+            
+                     
+                
+
+ 
+
+
+
+        </div>
+
+    </div>
+        
+    }
+
+                    </div>

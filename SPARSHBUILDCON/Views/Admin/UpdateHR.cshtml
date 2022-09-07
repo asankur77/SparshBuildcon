@@ -1,0 +1,156 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.HRTab>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "UpdateHR";
+    var a = 0;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#hrid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteHRId",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.HRName, value: item.HRId };
+                        }))
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Update HR</h4>
+            <button type="button" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>@DateTime.Now</button>
+        </div>
+       @using (Html.BeginForm("UpdateHR", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                      {
+            <div class="row">
+                <div class="col-12 card">
+
+
+                    <div class="card-header">
+                        <h3 class="card-title">Update HR</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Enter HR Id or Name</label>
+                                    <div class="input-group">
+                                        <input type="text" id="hrid" class="form-control" required name="hrid">
+                                        <span class="input-group-append">
+                                            <button id="btnsearch" name="command" type="submit" class="btn btn-primary" value="Search">Search</button>        
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                          foreach (var item in Model)
+                          {
+                              if (a == 0)
+                              {
+            <div class="row">
+                <div class="col-12 card">
+
+
+                    <div class="card-header">
+                        <h3 class="card-title">HR Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">HR ID</label>
+                                 <input type="text" class="form-control"  required  name="nhrid" id="bnid" value="@Html.DisplayFor(modelItem => item.HRId)" readonly="true" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label"> HR Name</label>
+                                     <input type="text" class="form-control" name="hrname" id="opname" value="@Html.DisplayFor(modelItem => item.HRName)" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Address</label>
+                                 <input type="text" class="form-control" required  name="address" id="address" value="@Html.DisplayFor(modelItem => item.Address)" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                      <input type="text" class="form-control" name="email" id="email" value="@Html.DisplayFor(modelItem => item.emailid)" />      
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Mobile</label>
+                                   <input type="number" class="form-control" required  name="mobile" id="mobile" value="@Html.DisplayFor(modelItem => item.Mobile)">
+                                </div>
+                            </div>
+
+                        </div>
+                        	<div class="card-footer text-right">
+										<div class="d-flex">
+											
+										 <button id="btnupdate" name="command" type="submit" class="btn btn-primary" value="Update" formnovalidate="formnovalidate">Update</button> 
+										</div>
+									</div>
+
+                    </div>
+
+                </div>
+            </div>
+                }
+            }
+                                   
+            <p style="color: maroon;"><b>@ViewBag.msg</b></p>     
+                               
+                           
+                         
+        }
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
+

@@ -1,0 +1,186 @@
+﻿
+@using SPARSHBUILDCON.Models
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "DirectReferal";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    var ActiveLeft = db.AgentDetails.Where(a => a.NewIntroducerId == User.Identity.Name && a.position == 1).Count();
+    var ActiveRight = db.AgentDetails.Where(a => a.NewIntroducerId == User.Identity.Name && a.position == 2).Count();
+    var left = db.AgentDetails.Where(a => a.NewIntroducerId == User.Identity.Name && a.position == 1).ToList();
+    var Right = db.AgentDetails.Where(a => a.NewIntroducerId == User.Identity.Name && a.position == 2).ToList();
+    var TotalActiveleft = ActiveLeft;
+    var TotalActiveright = ActiveRight;
+    var sr = 0;
+    var sr2 = 0;
+    
+
+ 
+}
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>  
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+<style>
+
+    .row {
+        color:black!important;
+    }
+</style>
+
+
+
+
+<div class="row">
+   
+
+ 
+
+        <div class="card form-group" style="width: 100%;">
+            <div class="card-header"  style="background-color: #00B356;" style="color:white;">
+            
+                <h5><i class="fa fa-ok-circle"></i><b style=" text-transform:uppercase;color:white;">  Direct Referal</b></h5>               
+            </div>
+         
+
+               
+                          
+                         @using (Html.BeginForm())
+                {
+                
+                    <div class="form-group has-iconed" style="overflow-x:scroll;">
+
+                        <div>
+                            <div class="col-md-6" style="height: auto;">
+                                <table class="table table-hover"  border="1" style="width: 100%; text-align: center; height: auto;">
+                                    <tr>
+                                        <td colspan="6">
+                                            <label style="color:black;">Left Side Distribution</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <label style="color:black;">Total: @left.Count()</label></td>
+                                        <td colspan="3">
+                                            <label style="color:black;">Total Active: @TotalActiveleft</label></td>
+                                    </tr>
+                                    @foreach (var s in left)
+                                    {
+                                        if (sr == 0)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <label style="color:black;">Sr No.</label></td>
+                                            <td>
+                                                <label style="color:black;">Member Id</label></td>
+                                            <td>
+                                                <label style="color:black;">Name</label></td>
+                                            <td>
+                                                <label style="color:black;">Package</label></td>
+                                            <td>
+                                                <label style="color:black;">Join Date</label></td>
+                                        </tr>
+                                   }
+                                   sr = sr + 1;
+                                        <tr>
+                                            <td>
+                                                <label style="color:black;">@sr</label></td>
+                                            <td>
+                                                <label style="color:black;">@s.memberid</label></td>
+                                            <td>
+                                                <label style="color:black;">@s.name</label></td>
+                                            <td>
+                                            <img src="~/Images/star/newprofile.png" style="height:30px;width:30px" /></td>
+                                            <td>
+                                                <label style="color:black;">@s.Doj.ToString("dd/MM/yyyy")</label></td>
+                                        </tr>
+                               }
+                                </table>
+                        
+
+                            </div>
+                            <div  class="col-md-6" style="width: 50%;">
+                                <table class="table table-hover"  border="1" style="width: 100%; text-align: center;">
+                                    <tr>
+                                        <td colspan="6">
+                                            <label style="color:black;">Right Side Distribution</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <label style="color:black;">Total: @Right.Count()</label></td>
+                                        <td colspan="3">
+                                            <label style="color:black;">Total Active: @TotalActiveright</label></td>
+                                    </tr>
+                                    @foreach (var s in Right)
+                                    {
+                                        if (sr2 == 0)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <label style="color:black;">Sr No.</label></td>
+                                            <td>
+                                                <label style="color:black;">Member Id</label></td>
+                                            <td>
+                                                <label style="color:black;">Name</label></td>
+                                            <td>
+                                                <label style="color:black;">Package</label></td>
+                                            <td>
+                                                <label style="color:black;">Join Date</label></td>
+                                        </tr>
+                                   }
+                                    sr2 = sr2 + 1;
+                                        <tr>
+                                            <td>
+                                                <label style="color:black;">@sr2</label></td>
+                                            <td>
+                                                <label style="color:black;">@s.memberid</label></td>
+                                            <td>
+                                                <label style="color:black;">@s.name</label></td>
+                                            <td>
+                                                <img src="~/Images/star/newprofile.png" style="height:30px;width:30px" /></td>
+                                            <td>
+                                                <label style="color:black;">@s.Doj.ToString("dd/MM/yyyy")</label></td>
+                                        </tr>
+                               }
+                                </table>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+           
+                    <label style="color:black;">@ViewBag.msg2</label>
+            
+            
+      }
+                  
+                  
+            
+                     
+                
+
+ 
+
+
+
+        </div>
+
+   
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+    

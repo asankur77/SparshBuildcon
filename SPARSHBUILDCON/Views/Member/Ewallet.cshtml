@@ -1,0 +1,178 @@
+﻿@using SPARSHBUILDCON.Models
+@{
+    ViewBag.Title = "Ewallet";
+    UsersContext db = new UsersContext();
+    Layout = "~/Views/Shared/_member_new_layout.cshtml";
+    var memberinfo = db.AgentDetails.Single(a => a.NewAgentId == User.Identity.Name);
+    var introid = db.AgentDetails.Single(b => b.NewAgentId == memberinfo.spilid);
+    Double ewalletbalance = (from a in db.wallettabs where a.UserId == memberinfo.NewAgentId select a.amount).DefaultIfEmpty(0).Sum();
+    var charge = db.SetDeductions.Single(a => a.Id == 1);
+    int panlength = 0;
+    if (memberinfo.Panno != null || memberinfo.Panno == "")
+    {
+        panlength = memberinfo.Panno.Length;
+    }
+    var r = db.CompanyInfos.Single(ci => ci.Id == 1);
+}
+<script type="text/javascript" language="javascript">
+    function JavascriptFunction() {
+        var url = '@Url.Action("PostMethod", "Customer")';
+        $("#divLoading").show();
+        $.post(url, null,
+                function (data) {
+                    $("#PID")[0].innerHTML = data;
+                    $("#divLoading").hide();
+                });
+    }
+</script>
+<script type="text/javascript">
+
+    function checkit(clicked_id) {
+        debugger;
+        $('input:radio[name="productstatus"]').change(function () {
+            if ($(this).is(':checked') && $(this).val() == 1) {
+
+                var productstatus = $("#" + clicked_id).val();
+                var url = '@Url.Action("GetProList", "Customer")';
+                $.get(url, { productstatus: productstatus }, function data(d) {
+                    var select = $("#productid");
+                    $("#pid").removeClass("hide");
+                    select.children().remove();
+                    select.append('<option value="NA">Select</option>');
+                    for (var i = 0; i < d.length; i++) {
+                        select.append('<option value="' + d[i].ProductName + '">' + d[i].ProductName + '</option>');
+                    }
+
+                });
+            }
+            else if ($(this).is(':checked') && $(this).val() == 0) {
+                $("#pid").addClass("hide");
+                //$("#pins").addClass("hide");
+                //var container = $('#rblist').html('');
+                select.children().remove();
+                select.append('<option value="NA">Select</option>');
+            }
+        });
+
+    }
+
+</script>
+<script>
+    $(document).ready(function () {
+        {
+            $("#pid").addClass("hide");
+            $("#pins").addClass("hide");
+        }
+    })
+</script>
+
+
+
+
+<style type="text/css">
+    .hide {
+        display:none;
+    }
+
+    .deco {
+        background-color:#e0dbdb;
+    }
+
+</style>
+
+
+
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">E-Wallet
+                </h3>
+                <i style="font-weight: 800; color: green; text-align: center;"> @ViewData["msg"] </i>
+                <ul class="breadcrumb">
+                    <li><a href="~/Member/Dashboard"><i class="icon-home"></i></a><span class="divider">&nbsp;</span>
+
+                    </li>
+                    <li><a href="#">@r.CompanyName</a><span class="divider">&nbsp;</span> </li>
+                    <li><a href="#">My E-Wallet</a><span class="divider-last">&nbsp;</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget">
+                    <div class="widget-title">
+                        <h4>
+                            <i class="icon-reorder"></i>My E-Wallet</h4>
+                        <span id="ctl00_ContentPlaceHolder1_Label2" class="control-label"></span>
+                    </div>
+                    <div class="widget-body form">
+                        <div class="form-horizontal">
+                            @using(Html.BeginForm())
+                            {
+                            <div id="ctl00_ContentPlaceHolder1_pnlmain">
+
+
+                                <div class="control-group">
+                                  <div class="span9">
+                                    <div class="controls">
+                                        <table class="table table-hover well" style="overflow-y:scroll;font-size:15px;">
+                            <tr>
+                                <th>Associate Id:</th>
+                                <td>@memberinfo.NewAgentId</td>
+                                <th>Associate Id:</th>
+                                <td>@memberinfo.name</td>
+                            </tr>
+
+                            <tr>
+                                <th>Sponser Id:</th>
+                                <td>@introid.spilid</td>
+                                <th>Sponser Name:</th>
+                                <td>@introid.name</td>
+                            </tr>
+
+                            <tr>
+                                <th>Date of Joining:</th>
+                                <td>@memberinfo.Doj.ToString("dd-MMM-yyyy")</td>
+                                <th>Mobile</th>
+                                <td>@memberinfo.Mobile</td>
+                            </tr>
+                            <tr>
+                                <th>Email Id:</th>
+                                <td>@memberinfo.Email</td>
+                                <th>XXXXX</th>
+                                <td>XXXXX</td>
+                                
+                            </tr>
+                        </table>
+                                        
+                                    </div>
+                                      </div>
+                                </div>
+                               
+
+                                <br />
+                                 <div class="widget-title">
+                        <h4>
+                            <i class="icon-reorder"></i>E-wallet Balance</h4>
+                        <span id="ctl00_ContentPlaceHolder1_Label2" class="control-label"></span>
+                    </div>
+                               <table class="table table-hover well" style="overflow-y:scroll;background-color:#f6efe5;text-align:center;">
+                                
+                                <tr style="background-color:#086523;color:white;font-weight:800;font-size:20px;text-align:center;">
+                                    <th style="text-align:center;"> <i class="material-icons">account_balance_wallet</i> &nbsp;Account Balance</th>
+                                    <td>Rs. @ewalletbalance /-</td>
+                                </tr>
+
+                               
+                            </table> 
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,172 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.CustomerDeactiveList>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "DeactiveList";
+    var a = 0;
+}
+<div class="my-3 my-md-5">
+    <div class="container" id="divid">
+
+        <div class="page-header">
+            <h4 class="page-title">@mr.custname Deactive List</h4>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">@mr.custname Deactive List</h3>
+                         @if (a > 0)
+        {
+                        	 <a href="@Url.Action("PrintDeactiveList")" target="_blank" class="btn btn-outline-primary">Get List In PDF</a>
+                         }
+                    </div>
+                    <div class="card-body">
+
+
+                        <div class="table-responsive" >
+                            <table class="table table-striped table-bordered" style="width: 100%;">
+  @foreach (var item in Model)
+            {
+                if (a == 0)
+                {
+                <tr>
+                    <th style="width: 5%; text-align: center;">
+                        <label id="sn"><b>S.N.</b></label>
+                    </th>
+                    <th style="width: 10%; text-align: center;">
+                        <label id="newid"><b>@mr.custname Id</b></label>
+                    </th>
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="introducerid"><b>@mr.custname Name</b></label>
+                    </th>
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="spilid"><b>Introducer Id</b></label>
+                    </th>
+
+
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="position"><b>@mr.planname Name</b></label>
+                    </th>
+                    <th style="width: 5%; text-align: center;">
+                        <label id="mode"><b>Mode</b></label>
+                    </th>
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="Payment"><b>Installment Amount </b></label>
+                    </th>
+                    <th style="width: 5%; text-align: center;">
+                        <label><b>Late Fine</b></label>
+                    </th>
+
+                    <th style="width: 10%; text-align: center;">
+                        <label><b>Total Amount </b></label>
+                    </th>
+                    <th style="width: 10%; text-align: center;">
+                        <label id="email"><b>Mobile No</b></label>
+                    </th>
+
+                    <th style="width: 5%; text-align: center;">
+                        <label id="doj"><b>Date of Joining</b></label>
+                    </th>
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="Action"><b>Action</b></label>
+                    </th>
+                </tr>
+                }
+
+                a = a + 1;
+                <tr style="text-align: center;">
+                    <td>
+                        @a
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.newbondid)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.newintroducerid)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.planname)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.payment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.latefine)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totalsum)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mobileno)
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.formdate).ToString("dd/MM/yyyy")
+                    </td>
+
+                    @if (item.status == 0)
+                    {
+                        <td>
+                            @Html.ActionLink("Active", "DeactiveList", new { newbondid = item.newbondid, status = 0 }, new { onclick = "return confirm('Are you sure to Active this " + mr.custname + "?');" })
+                        </td>
+                    }
+                    @if (item.status == 1)
+                    {
+                        <td>
+                            <button type="button" class="btn btn-danger" disabled="disabled">Expired</button>
+                        </td> 
+                    }
+
+                </tr>
+            }
+
+        </table>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

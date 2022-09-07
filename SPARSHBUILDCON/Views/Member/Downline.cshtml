@@ -1,0 +1,92 @@
+﻿@using SPARSHBUILDCON.Models;
+@model IEnumerable<SPARSHBUILDCON.Models.Downline>
+@{
+    ViewBag.Title = "Downline";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    UsersContext db = new UsersContext();
+    var b=0;
+    var mactive=0;
+    var minactive=0;
+    foreach(var i in Model)
+    {
+        var usinfo = db.AgentDetails.Single(a => a.NewAgentId == i.MemberId);
+        if(usinfo.Status==1)
+        {
+           mactive+=1;
+        }
+        else
+        {
+
+            minactive += 1;
+        }
+    }
+    
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" style="background-color: #00B356;">
+                <h4 class="title">Total Downline - @Model.Count() &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total Active - @mactive &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total Inactive - @minactive </h4>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table">
+                    @foreach (var item in Model)
+                    {
+                        var paidstatus = db.AgentDetails.Single(a => a.NewAgentId == item.MemberId).Status;
+                        var packamount = db.pintabs.Single(a => a.usedby == item.MemberId).pinamount;
+                        b = b + 1;
+                        if (b == 1)
+                        {
+
+                        <thead class="text-primary">
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Member Id</th>
+                                <th>Member Name</th>
+                                <th>Introducer Id</th>
+                                <th>Introducer Name</th>
+                                <th>Package amount</th>
+                                <th>Joining Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                                            }
+
+                        <tbody>
+                            @if (paidstatus == 1)
+                            {
+
+                                <tr>
+                                    <td>@b</td>
+                                    <td>@item.MemberId</td>
+                                    <td>@item.MemberName</td>
+                                    <td>@item.Introducer</td>
+                                    <td>@item.IntroducerName</td>
+                                    <td>@packamount</td>
+                                    <td>@item.JoinDate.ToString("dd-MMM-yyyy")</td>
+                                    <td style="font-weight: bold">Acive</td>
+                                </tr>
+                                               }
+                            else
+                            {
+
+                                <tr style="color: red">
+                                    <td>@b</td>
+                                    <td>@item.MemberId</td>
+                                    <td>@item.MemberName</td>
+                                    <td>@item.Introducer</td>
+                                    <td>@item.IntroducerName</td>
+                                    <td>@packamount</td>
+                                    <td>@item.JoinDate.ToString("dd-MMM-yyyy")</td>
+                                    <td style="font-weight: bold">Inacive</td>
+                                </tr>
+                                                }
+
+                        </tbody>
+                                        }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

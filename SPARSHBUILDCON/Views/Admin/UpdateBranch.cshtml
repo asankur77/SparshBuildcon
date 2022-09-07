@@ -1,0 +1,141 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Branchtab>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "UpdateBranch";
+    var a = 0;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#bcode").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteBrachcode",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.BranchName, value: item.BranchCode };
+                        }))
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Update @mr.branchname Details</h4>
+            <button type="button" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>@DateTime.Now</button>
+        </div>
+        @using (Html.BeginForm("UpdateBranch", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="row">
+                <div class="col-12 card">
+
+
+                    <div class="card-header">
+                        <h3 class="card-title">Update @mr.branchname Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Enter @mr.branchname Code or Name</label>
+                                    <div class="input-group">
+                                        <input type="text" id="bcode" class="form-control" required name="bcode">
+                                        <span class="input-group-append">
+                                            <button id="btnsearch" name="command" type="submit" class="btn btn-primary" value="Search">Search</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            foreach (var item in Model)
+            {
+                if (a == 0)
+                {
+            <div class="row">
+                <div class="col-12 card">
+
+
+                    <div class="card-header">
+                        <h3 class="card-title">@mr.branchname Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Branch Code</label>
+                                    <input type="text" class="form-control"  required  name="bnid" id="bnid" value="@Html.DisplayFor(modelItem => item.BranchCode)" readonly="true" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="bname" id="bname" value="@Html.DisplayFor(modelItem => item.BranchName)" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">District</label>
+                                    <input type="text" class="form-control" required  name="district" id="district" value="@Html.DisplayFor(modelItem => item.BranchDistrict)" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Address</label>
+                                    <input type="text" class="form-control" name="address" id="address" value="@Html.DisplayFor(modelItem => item.branchaddress)" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Mobile</label>
+                                    <input type="number" class="form-control" name="mobile" id="mobile" value="@Html.DisplayFor(modelItem => item.mobile)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                }
+            }
+                                   
+            <p style="color: maroon; margin-left: 15px;"><b>@ViewBag.msg</b></p>     
+                               
+                           
+                         
+        }
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

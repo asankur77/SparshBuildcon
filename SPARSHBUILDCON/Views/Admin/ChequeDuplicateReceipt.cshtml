@@ -1,0 +1,82 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "ChequeDuplicateReceipt";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+}
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#newbond").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompletetempBondId",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.newbondid };
+
+
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Pending @mr.custname Certificate</h4>
+        </div>
+        @using (Html.BeginForm())
+        {
+            <div class="row">
+                <div class="col-12 card">
+
+
+                    <div class="card-header">
+                        <h3 class="card-title">Pending @mr.custname Certificate</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">@mr.custname Id :</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="newbond" name="newbondid" />
+                                        <span class="input-group-append">
+                                            <button type="submit" class="btn btn-primary" onclick="target='_blank'"><i class="fa fa-cog"></i>Get Bond</button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+}
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,202 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Expense>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "UpdateExpense";
+    int pagesize = 0;
+    pagesize = (from r in db.Expenses select r).Count();
+    if(pagesize==0)
+    {
+        pagesize = 1;
+    }
+    var grid = new WebGrid(null,
+             defaultSort: "",
+             rowsPerPage: pagesize,
+             selectionFieldName: "SearchString",
+             ajaxUpdateContainerId: "agrid",
+             sortFieldName: "SortColumn",
+             sortDirectionFieldName: "SortOrder");
+    grid.Bind(Model, autoSortAndPage: true, rowCount: pagesize);
+   
+}
+
+
+
+<script type="text/javascript" >
+    $(function () {
+        $('.edit-mode').hide();
+        $('.edit-user, .cancel-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        $('.save-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+
+            var Id = tr.find("#lblId").html();
+            var amount = tr.find("#amount").val();
+            var Remark = tr.find("#Remark").val();
+            var head = tr.find("#head").val();
+           
+           
+            tr.find("#lblamount").text(amount);
+            tr.find("#lblRemark").text(Remark);
+            tr.find("#lblhead").text(head);
+
+            
+            tr.find('.edit-mode, .display-mode').toggle();
+            var Expense =
+            {
+                "Id": Id,
+                "amount": amount,
+                "Remark": Remark,
+                "head": head
+               
+            };
+            $.ajax({
+                url: '/Admin/EditExpense/',
+                data: JSON.stringify(Expense),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                   
+                }
+            });
+
+        });
+    })
+</script>  
+
+<style type="text/css">
+    .dd {
+        height:50px;
+        width:70%;
+        float:left;
+        font-family:'Arial Rounded MT';
+        font-size:20px;
+    }
+    .d {
+        height:50px;
+        width:30%;
+        float:left;
+        font-family:'Arial Rounded MT';
+        font-size:20px;
+    }
+
+</style>
+
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Update Expense</h4>
+        </div>
+               
+            <div class="row">
+                <div class="col-12 card">
+
+
+                    <div class="card-header">
+                        <h3 class="card-title">Update Expense</h3>
+                    </div>
+                       
+                    <div class="card-body">
+                                       @using (Html.BeginForm())
+                                       {
+                          	<div class="row">
+                       
+											<div class="col-md-12 col-lg-12">
+											<div class="form-group">
+													<label class="form-label">Select Date </label>
+													<div class="input-group">
+														  <input type="text" class="form-control datepicker" name="date" required >
+														<span class="input-group-append">
+         <button  type="submit" class="btn btn-primary pull-right" id="search" onclick="showDiv()"> Search</button>   
+														</span>
+													</div>
+												</div>
+
+                                                </div>
+                                             <input type="hidden"  id="pcode" value="@ViewData["projectid"]" />
+                                    
+                                  </div>
+                                       }
+                           @if (Convert.ToInt32(ViewData["count"]) >0)
+                 {
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12" id="comm">
+                        
+                                   
+
+                                        <div id="gridContent">
+                         @grid.GetHtml(
+        tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        mode: WebGridPagerModes.All,
+        columns:
+             grid.Columns(
+             grid.Column("SN", format: @<text> <span  class="display-mode" style="width:100%">@item.Id </span> <label id="lblId" class="edit-mode" style="width:100%;">@item.Id</label> </text>, style: "col2Width"),
+             grid.Column("amount", "Amount", format: @<text> <span  class="display-mode" style="width:100%;"> <label id="lblamount">@item.amount</label> </span>  <input type="text" id="amount" value="@item.amount" class="edit-mode" style="width:100%;" /> </text>, style: "col2Width"),
+             grid.Column("Remark", "Remark", format: @<text> <span  class="display-mode" style="width:100%;"> <label id="lblRemark">@item.Remark</label> </span>  <input type="text" id="Remark" value="@item.Remark" class="edit-mode" style="width:100%;" /> </text>, style: "col2Width"),
+             grid.Column("head", "Head", format: @<text> <span  class="display-mode" style="width:100%;"> <label id="lblhead">@item.head</label> </span>  <input type="text" id="head" value="@item.head" class="edit-mode" style="width:100%;" /> </text>, style: "col2Width"),
+
+             grid.Column("Action", format: @<text>  
+                                <button class="edit-user display-mode" >Edit</button>  
+                                <button class="save-user edit-mode"  >Save</button>  
+                                <button class="cancel-user edit-mode" >Cancel</button>  
+                            </text>, style: "col3Width", canSort: false)
+           ))  
+
+
+
+                                        </div>
+                                
+                      
+                            </div>
+                        </div>
+                         }
+                    </div>
+                    
+                                      
+                </div>
+            </div>
+                     
+             </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

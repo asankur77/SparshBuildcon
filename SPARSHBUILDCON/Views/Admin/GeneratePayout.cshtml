@@ -1,0 +1,127 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.payoutdetail> 
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "GeneratePayout";
+    UsersContext db = new UsersContext();
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var a = 0;
+    var b = 1;
+}
+
+<link href="~/Content/css/modalcss.css" rel="stylesheet" />
+<script>
+    function blinker() {
+        $('.blinking').fadeOut(500);
+        $('.blinking').fadeIn(500);
+    }
+    setInterval(blinker, 1000);
+</script>
+
+<script>
+    function kr() {
+
+        var saja = $("#dt").val();
+        $("#dt1").val(saja);
+    };
+
+</script>
+<div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001; opacity: .8; filter: alpha(opacity=70); display: none">
+    <p style="position: absolute; top: 30%; left: 42%; color: White;">
+        <img src="~/Content/11.gif"><br />
+        <br />
+        <b style="margin-left: 50px;">Loading, please wait...</b>
+    </p>
+</div>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="card form-group" style="padding: 25px;">
+            <div class="card-header" style="background-color: #03966d;">
+                <h3><i class="fa fa-ok-circle"></i><b style="color: white;">Generate Payout-</b>
+                    <label class="blinking" style="font-size: 25px; color: antiquewhite">Please Select Date Carefully To Generate Payout</label></h3>
+            </div>
+            <br />
+            <div class="col-md-3 well" style="min-height: 100px;">
+                @using (Html.BeginForm())
+                {
+                    <div class="form-group has-iconed">
+                        <h4 style="font-weight: 800;">SELECT PAYOUT DATE</h4>
+                        <div>
+                            <input type="date" id="dt1" class="form-control" name="payout_date" />
+                        </div>
+
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+
+                        <button type="submit" class="btn btn-primary btn-sm">Generate</button>
+                    </div>
+                    @ViewBag.msg
+                    }
+
+
+            </div>
+
+            <div class="col-md-9" style="min-height: 100px;">
+                <table class="table table-resposive table-striped table-bordered" border="1" style="width: 100%; text-align: center; font-size: 15px;">
+
+                    @foreach (var d in Model)
+                    {
+
+                        if (a == 0)
+                        {
+                        <tr style="background-color: #03966d; color: white; font-weight: 900;">
+                            <td style="width: 20%; color: white;">
+                                <h6 style="font-weight: 800;">Sr no.</h6>
+                            </td>
+                            <td style="width: 20%; color: white;">
+                                <h6 style="font-weight: 800;">Date</h6>
+                            </td>
+                            <td style="width: 20%; color: white;">
+                                <h6 style="font-weight: 800;">Month</h6>
+                            </td>
+                            <td style="width: 20%; color: white;">
+                                <h6 style="font-weight: 800;">Year</h6>
+                            </td>
+                            <td colspan="2" style="width: 20%; color: white;">
+                                <h6 style="font-weight: 800;">Action</h6>
+                            </td>
+                        </tr>
+                        }
+                        string dayname = d.date.ToString("dd/MM/yyyy");
+
+                        //if (d.status == 1)
+                        //{   
+                        <tr style="color: red;">
+                            <td>
+                                <h6 style="font-weight: 700;">&nbsp; @b</h6>
+                            </td>
+                            <td>
+                                <h6 style="font-weight: 700;">&nbsp; @d.date.ToString("dd/MM/yyyy")</h6>
+                            </td>
+                            <td>
+                                <h6 style="font-weight: 700;">&nbsp; @d.month</h6>
+                            </td>
+                            <td>
+                                <h6 style="font-weight: 700;">&nbsp; @d.year</h6>
+                            </td>
+                            <td>
+                                <h6 style="font-weight: 700;">@Html.ActionLink("View", "PayoutSummary", new { edate = d.date, sdate = d.date, month = d.month, year = d.year })</h6>
+                            </td>
+
+                        </tr>
+@*
+                        }*@
+                        a = a + 1;
+                        b = b + 1;
+                    }
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+</div> 

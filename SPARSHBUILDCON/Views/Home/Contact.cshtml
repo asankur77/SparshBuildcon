@@ -1,0 +1,118 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext(); 
+    var r = db.CompanyInfos.Single(ci => ci.Id == 1);
+    ViewBag.Title = "Contact";
+}
+
+
+  <!--======= BANNER =========-->
+  <div class="sub-banner" style="background-image:url('../Content/Home/img/real-banner.jpg')">
+    <div class="overlay">
+      <div class="container">
+        <h1>Contact Us</h1>
+        <ol class="breadcrumb">
+          <li class="pull-left">Contact Us</li>
+          <li><a href="../Home/Index">Home</a></li>
+          <li class="active">Contact Us</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  
+<!--======= CONTACT =========-->
+  <section class="contact"> 
+    
+    <!--======= CONTACT INFORMATION =========-->
+    <div class="contact-info">
+      <div class="container"> 
+        <!--======= CONTACT =========-->
+        <ul class="row con-det">
+          
+          <!--======= ADDRESS =========-->
+          <li class="col-md-4"> <i class="fa fa-map-marker"></i>
+            <p>@r.Address</p>
+            </li>
+          
+          <!--======= EMAIL =========-->
+          <li class="col-md-4"> <i class="fa fa-phone"></i>
+            <p>Mob  :  +91- @r.Contact </p>
+          </li>
+          
+          <!--======= ADDRESS =========-->
+          <li class="col-md-4"> <i class="fa fa-clock-o"></i>
+            <p>Working Hours  :     10:00 Am to 6:00 PM</p>
+@*            <p>Sunday     :     Holiday</p>*@
+          </li>
+        </ul>
+        
+        <!--======= CONTACT FORM =========--> 
+        
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="container"> 
+        
+        <!--======= TITTLE =========-->
+        <div class="tittle"> <img src="~/Content/Home/img/head-top.png" alt="">
+          <h3>feel free to communicate with us</h3>
+          <p>We firmly believe that the prosperity of any business depends on successfully developing an integrated community of motivated and innovative employees.</p>
+        </div>
+        <div id="contact_message" class="success-msg"> <i class="fa fa-paper-plane-o"></i>Thank You. Your Message has been Submitted</div>
+        <form role="form" id="contact_form" method="post" onSubmit="return false">
+          <ul class="row">
+            <li class="col-sm-6">
+              <label class="font-montserrat">your name *
+                <input type="text" class="form-control" name="name" id="name" placeholder="">
+              </label>
+            </li>
+            <li class="col-sm-6">
+              <label class="font-montserrat">your e-mail *
+                <input type="text" class="form-control" name="email" id="email" placeholder="">
+              </label>
+            </li>
+            <li class="col-sm-6">
+              <label class="font-montserrat">Phone *
+                <input type="text" class="form-control" name="company" id="company" placeholder="">
+              </label>
+            </li>
+            <li class="col-sm-6">
+              <label class="font-montserrat">Subject
+                <input type="text" class="form-control" name="website" id="website" placeholder="">
+              </label>
+            </li>
+            <li class="col-sm-12">
+              <label class="font-montserrat">message
+                <textarea class="form-control" name="message" id="message" rows="5" placeholder=""></textarea>
+              </label>
+            </li>
+            <li class="col-sm-12">
+              <button type="submit" value="submit" class="btn font-montserrat" id="btn_submit" onClick="proceed();">Send message</button>
+            </li>
+          </ul>
+        </form>
+      </div>
+    </div>
+  </section>
+  
+
+  
+  <!--======= CALL US =========-->
+  
+  @*<section class="call-us">
+    <div class="overlay">
+      <div class="container">
+        <ul class="row">
+          <li class="col-sm-6">
+            <h4>Do you want to buy your property ?</h4>
+            <h6>Call us and get your property here</h6>
+          </li>
+          <li class="col-sm-4">
+            <h1>+91-7408579797 </h1>
+          </li>
+          <li class="col-sm-2 no-padding"> <a href="#" class="btn">Book Now</a> </li>
+        </ul>
+      </div>
+    </div>
+  </section>*@
+

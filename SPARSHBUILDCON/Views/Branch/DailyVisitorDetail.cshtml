@@ -1,0 +1,110 @@
+﻿@using SPARSHBUILDCON.Models
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "DailyVisitorDetail";
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    var name = db.NewLogins.Single(o => o.UserName == User.Identity.Name).type;
+    var SelfGeneratedId = "RES/" + DateTime.Now.Date.ToString("ddMMyyyy") + Guid.NewGuid().ToString().Substring(0, 4);
+}
+
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+<script>
+    $(function () {
+        $('#date').datepick();
+
+    });
+</script>
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<script type="text/javascript" src="~/Scripts/autosearch.js"></script>
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Generate I Card</a></li>
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    @using (Html.BeginForm())
+                    {
+                        <div class="card-header">
+                            <h3 class="card-title">Generate I Card</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Branch Code</label>
+                                      <input type="text" class="form-control"  name="OfficeCode" id="OfficeCode" style="font-weight:bold;color:#CE2008" value="@User.Identity.Name" readonly="true" required>
+                                    
+                                    </div>
+                                     <div class="form-group">
+                                        <label class="form-label">Creating By</label>
+                                      <input type="text" class="form-control"  name="CreaderBy" id="Creater" style="font-weight:bold;color:#CE2008" value="@name" readonly="true" required>
+                                  
+                                    </div>
+                                     <div class="form-group">
+                                        <label class="form-label">Today's Date</label>
+                                       <input type="text" class="form-control"  name="CreatedDate" id="cdate" style="font-weight:bold;color:#CE2008" value="@DateTime.Now.Date.ToString("dd/MM/yyyy")" readonly="true" required>
+                                   
+                                    </div>
+                                     <div class="form-group">
+                                        <label class="form-label">ReceptionistId</label>
+                                        <input type="text" class="form-control"  name="ReceptionistId" id="rid" style="font-weight:bold;color:#CE2008" required value="@SelfGeneratedId" readonly="true">
+                                   
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">ReceptionistName</label>
+                                        <input type="text" class="form-control" style="text-transform: uppercase" name="ReceptionistName" id="rname" pattern=".{3,}" title="3 characters minimum" required>
+                                   
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Mobile No</label>
+                                         <input type="tel" class="form-control" pattern="[789][0-9]{9}" title="Mobile no is not correct format" maxlength="10" name="MobileNo" id="rmobile" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Email Id</label>
+                                          <input type="email" class="form-control" title="Enter Correct Email Id.." name="EmailId"></div>
+                                         <div class="form-group">
+                                        <label class="form-label">Address</label>
+                                           <textarea class="form-control" name="Address" id="raddress" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                 
+
+                </div>
+<div class="card-footer text-right">
+										<div class="d-flex">
+										
+											      <button type="submit" class="btn btn-primary pull-right">Create Receptionist</button>
+                                              <p style="color: #369B07; margin-left: 30px;"><b>@ViewBag.msg</b></p>
+										</div>
+									</div>
+                    }
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#submit').click(function () {
+            @Html.ValidationSummary(true)
+        });
+    });
+</script>

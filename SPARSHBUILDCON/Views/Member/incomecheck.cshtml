@@ -1,0 +1,223 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.PayoutSummary>
+@using SPARSHBUILDCON.Models
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "incomecheck";
+    Layout = "~/Views/Shared/_member_new_layout.cshtml";
+    var sr = 1;
+    var ar = db.AgentDetails.Single(a => a.NewAgentId == User.Identity.Name);
+    var empid = Convert.ToString(TempData["memberid"]);
+    var r = db.CompanyInfos.Single(ci => ci.Id == 1);
+    var lteamlist = (from gt in db.genology_tabs where gt.newid == User.Identity.Name && gt.position == 1 select gt.cust_id).Distinct();
+    var rteamlist = (from gt in db.genology_tabs where gt.newid == User.Identity.Name && gt.position == 2 select gt.cust_id).Distinct();
+
+    var Selfbusiness = (from it in db.Installmenttabs where it.payamount > 0 && it.uid == ar.uid select it.amount).DefaultIfEmpty(0).Sum();
+    var LREbusiness = (from it in db.Installmenttabs where it.payamount > 0 && lteamlist.Contains(it.uid) select it.amount).DefaultIfEmpty(0).Sum();
+    var RREbusiness = (from it in db.Installmenttabs where it.payamount > 0 && rteamlist.Contains(it.uid) select it.amount).DefaultIfEmpty(0).Sum();
+
+    var totalleft = (from a in db.genology_tabs where a.newid == empid && a.position == 1 && a.rs != 0 select a.rs).DefaultIfEmpty(0).DefaultIfEmpty(0).Sum();
+    var totalright = (from a in db.genology_tabs where a.newid == empid && a.position == 2 && a.rs != 0 select a.rs).DefaultIfEmpty(0).DefaultIfEmpty(0).Sum();
+
+    totalleft = totalleft + LREbusiness;
+    totalright = totalright + RREbusiness;
+    
+    var leftactive = db.genology_tabs.Where(x => x.newid == empid && x.position == 1 && x.rs != 0).Count();
+    var rightactive = db.genology_tabs.Where(x => x.newid == empid && x.position == 2 && x.rs != 0).Count();
+
+    var leftdirct = db.AgentDetails.Where(x => x.NewIntroducerId == empid && x.position == 1 && x.Status != 0).Count();
+    var rightdirct = db.AgentDetails.Where(x => x.NewIntroducerId == empid && x.position == 2 && x.Status != 0).Count();
+
+   }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#memid").autocomplete({
+            source: function (request, response) {
+                debugger;
+                $.ajax({
+                    url: "/Admin/intro",
+                    type: "POST",
+                    dataType: "json",
+                    data: { introid: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.username + ' (' + item.memberid + ')', value: item.memberid };
+                        }))
+
+                    }
+                })
+            }, close: function () {
+                
+                var v = $("#memid").val();
+                if (v != '') {
+                    $.ajax({
+                        url: '/member/getincomelist/', type: 'get', data: { memberid: v }, success: function (d) {
+                            debugger;
+                            var pdlist = '<option value=""  selected="selected">--Select Payout Date--</option>';
+                            for (var k = 0; k < d.length; k++) {
+                                pdlist += '<option value="' + d[k] + '">' + d[k] + '</option>';
+                            }
+                            $('#incomedate').html(pdlist);
+                        }
+                    });
+
+                    $('#incomedate').removeAttr('disabled');
+                }
+
+            }
+        
+        });
+    })
+</script>
+
+<div id="main-content">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">Check Income
+                </h3>
+                <i style="font-weight: 800; color: green; text-align: center;">@ViewData["msg"] </i>
+                <ul class="breadcrumb">
+                    <li><a href="~/Member/Dashboard"><i class="icon-home"></i></a><span class="divider">&nbsp;</span></li>
+                    <li><a href="#">@r.CompanyName</a><span class="divider">&nbsp;</span> </li>
+                    <li><a href="#">Check Income</a><span class="divider-last">&nbsp;</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-title">
+                    <h4>
+                        <i class="icon-reorder"></i>Check Income</h4>
+                </div>
+            </div>
+        </div><br />
+   <div class="panel panel-primary">
+            <div class="panel-body">
+                <div id="sidebar-main" class="col-md-12 table-responsive">
+                    @using (Html.BeginForm("incomecheck", "Member", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                    <div id="content" class="wrapper clearfix table-responsive">
+                        <table class="table-responsive">
+                            <tr>
+
+                                <td>Payout Date</td>
+                                <td>
+                                    <select name="paydate" required="required">
+                                        <option value="" selected="selected">--Select Payout Date--</option>
+                                        @foreach (var item in db.PayoutSummarys.Where(x => x.Newintroid == User.Identity.Name).ToList())
+                                        {
+                                            <option value="@item.edate" >@item.edate.ToString("dd/MM/yyyy")</option>
+                                    }
+                                    </select>
+
+
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary pull-right" name="command" value="Submit">Submit</button>
+                                    <span class="text-danger"></span>
+                                </td>
+
+                            </tr>
+                        </table> 
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+       
+       
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div id="Div1" class="col-md-12"><div class="col-lg-12">
+                    
+                   @if (Model != null)
+                   {
+                            <div class="col-sm-12">
+                                <div class="card-box table-responsive">
+                                    <div class="table-responsive" style="width:100%; overflow-x:auto;">
+
+                                        <table class="table table-striped table-bordered table-hover dataTables-example" id="myTable">
+
+                                            <thead>
+                                                <tr>
+                                                    <th>Srno.</th>
+                                                    <th>MemberId</th>
+                                                    <th>Member Name</th>
+                                                    <th>Intro.Id</th>
+                                                    <th>Intro.Name</th>
+                                                    <th>Joining Date</th>
+                                                    <th>Toppup Date</th>
+                                                    <th>Left Active</th>
+                                                    <th>Right Active</th>
+                                                    <th>Left Direct</th>
+                                                    <th>Right Direct</th>
+                                                    <th>Left Business</th>
+                                                    <th>Right Business</th>
+                                                    <th>1st Direct ID</th>
+                                                    <th>1st Direct Name</th>
+                                                    <th>1st Direct ActiveDate</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            @foreach (var i in Model)
+                                            {
+                                                var fsd = (from a in db.AgentDetails where a.spilid == User.Identity.Name && a.Status == 1 select a.Doj).Min();
+                                                DateTime fstdirect = Convert.ToDateTime(fsd);
+                                                var user = db.AgentDetails.Single(x => x.NewAgentId == i.Newintroid);
+                                                var introname = db.AgentDetails.Single(x => x.NewAgentId == user.spilid);
+                                                var user1 = db.AgentDetails.FirstOrDefault(x => x.Doj == fstdirect && x.spilid == User.Identity.Name);
+                                                
+                                                <tbody>
+                                                    <tr>
+                                                        <td>@sr</td>
+                                                        <td>@i.Newintroid</td>
+                                                        <td>@i.IntroName</td>
+                                                        <td>@user.spilid</td>
+                                                        <td>@introname.name</td>
+                                                        <td>@user.Doj.ToString("dd/MM/yyyy")</td>
+                                                        @if (user.Status != 0)
+                                                        {
+                                                            <td>@user.Doj.ToString("dd/MM/yyyy")</td>
+                                                    }
+                                                        else
+                                                        {
+                                                            <td style="color: red;">No Topupdate</td>
+                                                    }
+                                                        <td>@leftactive</td>
+                                                        <td>@rightactive</td>
+                                                        <td>@leftdirct</td>
+                                                        <td>@rightdirct</td>
+                                                        <td>@totalleft</td>
+                                                        <td>@totalright</td>
+                                                        <th>@user1.memberid</th>
+                                                        <th>@user1.name</th>
+                                                        <th>@user1.activationdate.ToString("dd/MM/yyyy")</th>
+                                                        @if (user.Status != 0)
+                                                        {
+                                                            <td style="color: green;">Active</td>
+                                                    }
+                                                        else
+                                                        {
+                                                            <td style="color: red;">Inactive</td>
+                                                    }
+                                                    </tr>
+
+                                                </tbody>
+                                                        sr++;
+                                            }
+                                        </table>
+                                        </div>
+                                    </div>
+                                </div>
+                   }
+                    </div>
+                    </div>
+                </div>
+            </div>
+      
+    </div>
+</div>
+
+
+

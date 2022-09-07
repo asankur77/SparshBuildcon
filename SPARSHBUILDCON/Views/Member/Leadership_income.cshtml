@@ -1,0 +1,54 @@
+﻿ @model IEnumerable<SPARSHBUILDCON.Models.Memberlist>
+@{
+    ViewBag.Title = "Leadership_income";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    var b = 1;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" style="background-color: #00B356;">
+                <h4 class="title">Scholarship Income</h4>
+            </div>
+            <div class="card-content table-responsive">
+                @*     <a href="@Url.Action("Printmylevelincome", "Member")" target="_blank">Get Record in Pdf</a>*@
+                <table class="table">
+                    @if (b == 1)
+                    {
+                        <thead class="text-primary">
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Member Id</th>
+                                <th>Name</th>
+                                @* <th>Level</th>*@
+                                <th>Amount</th>
+                                <th>Income Date</th>
+                                <th>Status</th>
+
+                            </tr>
+                        </thead>
+                                            }
+                    @foreach (var item in Model)
+                    {
+                                           
+                                          
+                                           
+                        <tbody>
+                            <tr>
+                                <td>@b</td>
+                                <td>@item.AccountHolder</td>
+                                <td>@item.BankName</td>
+                                @*     <td>@item.point</td>*@
+                                <td>@item.totalamt</td>
+                                <td>@item.JoinDate.ToString("dd/MM/yyyy")</td>
+                                <td>@item.PAN</td>
+                            </tr>
+                        </tbody>
+                                            b = b + 1;
+                                        }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,102 @@
+﻿@model SPARSHBUILDCON.Models.Operator
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    ViewBag.Title = "CreateOperator";
+
+    var dt = DateTime.Now;
+   
+}
+
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+<script>
+    $(function () {
+        $('#date').datepick();
+
+    });
+</script>
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<script type="text/javascript" src="~/Scripts/autosearch.js"></script>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Create Collection Point</a></li>
+
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form class="card">
+
+                    @using (Html.BeginForm())
+                    {
+    
+                        <div class="card-header">
+                            <h3 class="card-title">Create Collection Point</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">@mr.branchname Code </label>
+                                        <input type="text" class="form-control"  name="BranchCode" id="BranchCode" value="@User.Identity.Name" readonly="true" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Collection Point Name</label>
+                                        <input type="text" class="form-control" name="OperatorName" id="oname" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Collection Point Id </label>
+                                        <input type="text" class="form-control" style="text-transform: uppercase" name="OperatorId" id="oid" required>
+                                    </div>
+                                            </div>
+                                    <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Mobile No</label>
+                                        <input type="tel" class="form-control" pattern="[789][0-9]{9}" title="Mobile no is not correct format" maxlength="10" name="OperatorMobile" id="omob" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Address</label>
+                                        <textarea class="form-control" name="OperatorAddress" id="oadd" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Date</label>
+                                        <input type="text" class="form-control"name="Cdate" value="@dt" id="date" required>
+                                    </div>
+                                       </div>
+                        
+
+                            </div>
+                        </div>
+                        <div class="card-footer text-right">
+                            <div class="d-flex">
+
+                                <button type="submit" class="btn btn-primary pull-right">Create Collection Point</button>
+                                <p style="color: maroon;"><b>@ViewBag.msg</b></p>
+                            </div>
+                        </div>
+                    }
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#submit').click(function () {
+            @Html.ValidationSummary(true)
+        });
+    });
+</script>

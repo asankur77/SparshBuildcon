@@ -1,0 +1,176 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Plotregistry>
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "PreSurrenderReport";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    UsersContext db = new UsersContext();
+    int a = 0;
+}
+
+<script>
+    $(function () {
+        $("#sdate").datepick();
+        $("#edate").datepick();
+    });
+</script>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Pre Surrender List</h4>
+            <button type="button" class="btn btn-outline-primary">@DateTime.Now</button>
+
+
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Pre Surrender List</h3>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm())
+                    {
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Select Start Date</label>
+                                      <input type="date" class="form-control date" name="sdate" id="sdate"  required / >
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Select End Date</label>
+                                   <input type="date" class="form-control date" name="edate" id="edate"  required / >
+                                </div>
+                            </div>
+
+                            
+                            <div class="card-footer text-right">
+                                <div class="d-flex">
+                                           <button id="btnsearch" name="command" type="submit" class="btn btn-primary" value="Search">Search</button>  
+
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" style="width: 100%">
+                         
+      
+    @foreach (var item in Model)
+    {
+        if (a == 0)
+        {
+  <tr>
+        <th style="width:5%;text-align:center;">
+           <label id="sn"><b>S.N.</b></label>
+            </th>
+      <th style="width:10%;text-align:center;">
+           <label id="Custid"><b>Customer ID</b></label>
+            </th>
+        <th style="width:10%;text-align:center;">
+           <label id="OperatorId"><b>Name</b></label>
+            </th>
+         <th style="width:10%;text-align:center;">
+           <label id="name"><b>Booking Amount</b></label>
+            </th>
+       <th style="width:10%;text-align:center;">
+           <label id="introducer"><b>plot No.</b></label>
+            </th>
+        <th style="width:10%;text-align:center;">
+           <label id="OperatorName"><b>Block</b></label>
+        </th>
+             
+        <th style="width:10%;text-align:center;">
+           <label id="BranchCode"><b>Total paid Amount</b></label>
+        </th>
+               <th style="width:10%;text-align:center;">
+           <label id="commission"><b>Commission</b></label>
+        </th>
+        <th style="width:10%;text-align:center;">
+            <label id="OperatorMobile" ><b>Deduction Amount</b></label>
+        </th>
+       <th style="width:10%;text-align:center;">
+            <label id="branch" ><b>Remaining Amount</b></label>
+        </th>
+    </tr>
+        }
+
+        a = a + 1;
+        var deduct = item.deductionamount + item.commission;
+        var remainingamt = item.amount - deduct;
+    <tr style="text-align:center;">
+        <td>
+            @a
+        </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.newbondid)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.bookingamount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.plotno)
+        </td>
+     
+        <td>
+            @Html.DisplayFor(modelItem => item.block)
+        </td>
+     
+        <td>
+            @Html.DisplayFor(modelItem => item.amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.commission)
+        </td>
+       <td>
+            @Html.DisplayFor(modelItem => item.deductionamount)
+        </td>
+         <td>
+            @remainingamt
+        </td>
+    </tr>
+    } 
+
+</table>
+ 
+ @*   @if (a > 0)
+    {
+        <a href="@Url.Action("PrintOperatorList")" target="_blank">Get Report In PDF</a>
+    }
+      *@   
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

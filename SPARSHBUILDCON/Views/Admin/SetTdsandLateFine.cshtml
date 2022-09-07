@@ -1,0 +1,124 @@
+﻿@model SPARSHBUILDCON.Models.TDSLF_tab
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var tr = db.TDSLF_tabs.Single(f => f.Id == 1);
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "SetTdsandLateFine";
+}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Set TDS and Late Fine</h4>
+         
+            
+        </div>
+          @using (Html.BeginForm())
+                  {
+        <div class="row">
+            <div class="col-12 card">
+                 <div class="card-header">
+                        <h3 class="card-title">Set TDS and Late Fine</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                           
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">TDS(%) With PAN</label>
+                                   <input type="text" class="form-control"  name="TDS" id="tds" value="@tr.TDS" required/>
+                                </div>
+
+                                </div>
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">TDS(%) Without PAN</label>
+                                    <input type="text" class="form-control"  name="NPCTDS" id="NPCTDS" value="@tr.NPCTDS" required/>
+                                </div>
+
+                                </div>
+                                    <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label"> Late Fine(%)</label>
+                                      <input type="text" class="form-control"  name="latefine" id="latefine" value="@tr.latefine" required/>
+                                </div>
+
+                                </div>  
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Processing Fee(%)  </label>
+                                      <input type="text" class="form-control"  name="processingfee" id="processingfee" value="@tr.processingfee" required/>
+                                </div>
+
+                                </div>   
+                                          <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Member Fee</label>
+                                         <input type="text" class="form-control"  name="memberfee" id="memberfee" value="@tr.memberfee" required/>
+                                </div>
+
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Set @mr.agentname Form Fee</label>
+                                        <input type="text" class="form-control"  name="agencyformfee" id="agencyformfee" value="@tr.agencyformfee" required/>
+                                </div>
+
+                                </div>    
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Set @mr.custname Form Fee</label>
+                                       <input type="text" class="form-control"  name="applicationfee" id="applicationfee" value="@tr.applicationfee" required/>
+                                </div>
+
+                                </div> 
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Set A/C Form Fee</label>
+                                          <input type="text" class="form-control"  name="accountformfee" id="accountformfee" value="@tr.accountformfee" required/>
+                                </div>
+
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Set A/C Opening Amount</label>
+                                      <input type="text" class="form-control"  name="accountopeningfee" id="accountopeningfee" value="@tr.accountopeningfee" required/>
+                                </div>
+
+                                </div> 
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Set Revival Fee(Rs.)</label>
+                                     <input type="text" class="form-control"  name="revivalfee" id="revivalfee" value="@tr.revivalfee" required/>
+                                </div>
+
+                                </div>              
+                            	<div class="card-footer text-right">
+										<div class="d-flex">
+							     <button  type="submit" class="btn btn-primary pull-right"> Set</button>   
+                                </div>
+                                             </div>
+         
+     <p style="color:maroon;"><b> @ViewBag.msg</b></p>
+                       
+                    </div>
+                        </div>
+            
+                
+            </div>
+        </div>
+                  }
+    </div>
+
+     </div>
+
+
+
+
+
+
+
+
+
+

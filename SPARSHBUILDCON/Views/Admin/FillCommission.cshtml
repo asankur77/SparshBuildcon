@@ -1,0 +1,255 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Commission>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "FillCommission";
+    
+   var pagesize = (from r in db.Ranktabs select r).Count();
+   var grid = new WebGrid(null,
+            defaultSort: "",
+            rowsPerPage: pagesize,
+            selectionFieldName:"SearchString",
+            ajaxUpdateContainerId:"agrid",
+            sortFieldName:"SortColumn",
+            sortDirectionFieldName:"SortOrder");
+   grid.Bind(Model, autoSortAndPage: true, rowCount: pagesize);
+   
+   
+}
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#plancode").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteplan",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.projectname + (item.Id), value: item.Id };
+
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<script type="text/javascript" >
+    $(function () {
+        $('.edit-mode').hide();
+        $('.edit-user, .cancel-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        $('.save-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            var rankcode = tr.find("#rankcode").html();
+            var plancode = tr.find("#placode").html();
+            var commyear = tr.find("#commyear").val();
+            var commyear2 = tr.find("#commyear2").val();
+            var commyear3 = tr.find("#commyear3").val();
+            var commyear4 = tr.find("#commyear4").val();
+            var commyear5 = tr.find("#commyear5").val();
+           
+            tr.find("#lblcommyear").text(commyear);
+            tr.find("#lblcommyear2").text(commyear2);
+            tr.find("#lblcommyear3").text(commyear3);
+            tr.find("#lblcommyear4").text(commyear4);
+            tr.find("#lblcommyear5").text(commyear5);
+            tr.find('.edit-mode, .display-mode').toggle();
+            var Commission =
+            {
+                "rankcode": rankcode,
+                "plancode": plancode,
+                "commyear": commyear,
+                "commyear2": commyear2,
+                "commyear3": commyear3,
+                "commyear4": commyear4,
+                "commyear5": commyear5
+            };
+            $.ajax({
+                url: '/Admin/EditCommission/',
+                data: JSON.stringify(Commission),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    alert(data);
+                }
+            });
+
+        });
+    })
+</script>  
+
+<style type="text/css">
+    .dd {
+        height:50px;
+        width:70%;
+        float:left;
+        font-family:'Arial Rounded MT';
+        font-size:20px;
+    }
+    .d {
+        height:50px;
+        width:30%;
+        float:left;
+        font-family:'Arial Rounded MT';
+        font-size:20px;
+    }
+
+</style>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Fill Commission</h4>
+    
+                            
+ @if(a>0)
+     {
+       <a href="@Url.Action("PrintPaidVoucherBranch")"  class="btn btn-outline-primary" target="_blank">Get Report In PDF</a>
+     }
+          
+         
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Fill Commission</h3>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm())
+                    {
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Select @mr.planname Code or Name</label>
+                              <div class="input-group">
+														  <input type="text" class="form-control" name="plancode" id="plancode" required />
+														<span class="input-group-append">
+															    <button type="submit" class="btn btn-primary pull-right" id="search" onclick="showDiv()">Search</button>
+														</span>
+													</div>
+                                        <p style="color: maroon;"><b>@ViewBag.msg</b></p>
+
+                                </div>
+                            </div>
+                          </div>
+                    }
+              
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" style="width: 100%">
+     
+   
+                        @if (Convert.ToInt32(ViewData["count"]) > 0)
+                        {  
+                            <div id="comm">
+                                <div id="pn" style="float: left; margin-left: 20px;">
+                                    <div style="float: left;">
+                                        <label id="pname"><b>@mr.planname Name:</b></label></div>
+                                    <div style="float: left;">
+                                        <p style="color: black;"><b>@ViewData["planname"]</b></p>
+                                    </div>
+                                </div>
+                                <div id="gridContent" style="padding: 20px;">
+                                    @grid.GetHtml(
+        tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        mode: WebGridPagerModes.All,
+        columns:
+             grid.Columns(
+             grid.Column(mr.rankname + " Code", format: @<text> <span class="display-mode" style="width: 20px;">@item.rankcode </span>
+                                    <label id="rankcode" class="edit-mode" style="width: 20px;">@item.rankcode</label>
+                                    </text>, style: "col2Width"),
+             grid.Column(format: @<text> <b style="display: none;" id="placode">@item.plancode</b> </text>),
+             grid.Column("commyear", "1st_Yr Comm(%)", format: @<text> <span class="display-mode">
+                 <label id="lblcommyear">@item.commyear</label>
+             </span>
+                                    <input type="text" id="commyear" value="@item.commyear" class="edit-mode" style="width:50px;" />
+                                    </text>, style: "col2Width"),
+             grid.Column("commyear2", "2nd_Yr Comm(%)", format: @<text> <span class="display-mode">
+                 <label id="lblcommyear2">@item.commyear2</label>
+             </span>
+                                    <input type="text" id="commyear2" value="@item.commyear2" class="edit-mode" style="width:50px;" />
+                                    </text>, style: "col2Width"),
+             grid.Column("commyear3", "3rd_Yr Comm(%)", format: @<text> <span class="display-mode">
+                 <label id="lblcommyear3">@item.commyear3</label>
+             </span>
+                                    <input type="text" id="commyear3" value="@item.commyear3" class="edit-mode" style="width:50px;" />
+                                    </text>, style: "col2Width"),
+             grid.Column("commyear4", "4th_Yr Comm(%)", format: @<text> <span class="display-mode">
+                 <label id="lblcommyear4">@item.commyear4</label>
+             </span>
+                                    <input type="text" id="commyear4" value="@item.commyear4" class="edit-mode" style="width:50px;" />
+                                    </text>, style: "col2Width"),
+             grid.Column("commyear5", "5th_Yr Comm(%)", format: @<text> <span class="display-mode">
+                 <label id="lblcommyear5">@item.commyear5</label>
+             </span>
+                                    <input type="text" id="commyear5" value="@item.commyear5" class="edit-mode" style="width:50px;" />
+                                    </text>, style: "col2Width"),
+             grid.Column("Action", format: @<text>
+                                    <button class="edit-user display-mode">Edit</button>
+                                    <button class="save-user edit-mode">Save</button>
+                                    <button class="cancel-user edit-mode">Cancel</button>
+                                    </text>, style: "col3Width", canSort: false)
+                    ))
+
+
+                                </div>
+                          </div>
+                        }
+
+
+</table>
+
+                      
+                    </div>
+               
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,425 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var ids = db.NewLogins.Single(a => a.UserName == User.Identity.Name);
+    var user = db.AgentDetails.Single(a => a.NewAgentId == User.Identity.Name);
+    var comp = db.CompanyInfos.Single();
+    var levelcount = db.LevelDetails.Count();
+
+    var wcamt = (from a in db.wallettabs where a.UserId == User.Identity.Name select a.amount).DefaultIfEmpty(0).Sum();
+}
+<!doctype html>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="../Content/Member/img/apple-icon.png" />
+    <link rel="icon" type="image/png" href="../Content/Member/img/favicon.png" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Member :: @comp.CompanyName</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width"/>
+    <!-- Canonical SEO -->
+    <link rel="canonical" href="https://www.creative-tim.com/product/material-dashboard" />
+    <!--  Social tags      -->
+    <meta name="keywords" content="material dashboard, bootstrap material admin, bootstrap material dashboard, material design admin, material design, creative tim, html dashboard, html css dashboard, web dashboard, freebie, free bootstrap dashboard, css3 dashboard, bootstrap admin, bootstrap dashboard, frontend, responsive bootstrap dashboard">
+    <meta name="description" content="Material Dashboard is a Free Material Bootstrap Admin with a fresh, new design inspired by Google's Material Design.">
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="Material Dashboard by Creative Tim | Free Material Bootstrap Admin">
+    <meta itemprop="description" content="Material Dashboard is a Free Material Bootstrap Admin with a fresh, new design inspired by Google's Material Design.">
+    <meta itemprop="image" content="../../../s3.amazonaws.com/creativetim_bucket/products/50/opt_md_thumbnail.jpg">
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="creativetim">
+    <meta name="twitter:title" content="Material Dashboard by Creative Tim | Free Material Bootstrap Admin">
+    <meta name="twitter:description" content="Material Dashboard is a Free Material Bootstrap Admin with a fresh, new design inspired by Google's Material Design.">
+    <meta name="twitter:creator" content="creativetim">
+    <meta name="twitter:image" content="../../../s3.amazonaws.com/creativetim_bucket/products/50/opt_md_thumbnail.jpg">
+    <!-- Open Graph data -->
+    <meta property="fb:app_id" content="655968634437471">
+    <meta property="og:title" content="Material Dashboard by Creative Tim | Free Material Bootstrap Admin" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="dashboard.html" />
+    <meta property="og:image" content="../../../s3.amazonaws.com/creativetim_bucket/products/50/opt_md_thumbnail.jpg" />
+    <meta property="og:description" content="Material Dashboard is a Free Material Bootstrap Admin with a fresh, new design inspired by Google's Material Design." />
+    <meta property="og:site_name" content="Creative Tim" />
+    <!-- Bootstrap core CSS     -->
+    <link href="../Content/Member/css/bootstrap.min.css" rel="stylesheet" />
+    <!--  Material Dashboard CSS    -->
+    <link href="../Content/Member/css/material-dashboard5438.css?v=1.2.0" rel="stylesheet" />
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="../Content/Member/css/demo.css" rel="stylesheet" />
+    <!--     Fonts and icons     -->
+    <link href="../../../maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+
+     <!-- Auto Search-->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                    <!--Auto Search  --> 
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar" data-color="purple" data-image="../Content/Member/img/sidebar-1.jpg">
+            <!--
+        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+        Tip 2: you can also add an image using data-image tag-->s
+            
+            <div class="logo">
+              @*  <a href="dashboard.html" class="simple-text">@comp.CompanyNameShort</a> <center><img src="~/Images/default_man.jpg" class="img-circle img-responsive"  style="width:100px;height:100px"/></center>*@
+               <center>
+                 
+              @if(user.Photo!=null)
+               {
+                <a href="#">
+                  
+                    <img src="@Url.Content(user.Photo)" id="IMG1" style="width:120px;height:100px;" class="img-circle img-responsive" ></a>
+               }
+                else
+                
+               {
+                <a href="#">   <img src="~/Images/default_man.jpg" id="IMG1" style="width:90px;height:90px;" class="img-circle img-responsive"  ></a>  
+               }
+              
+                    <input type="file" id="input_file" accept="Image/*" name="photo" value="" style="display:none"  onchange="imgupload(this,IMG1)"/> 
+            @*    <a href="#"><span class=" name-caret" />fdsaspan></a>*@
+                    <img src="~/Images/camera.jpg" id="btn_upload" class="img-responsive"  style="width:30px;height:20px; margin-left:120px;margin-top:-30px"/>
+                     
+                   </center>
+
+            </div>
+            <div class="sidebar-wrapper">
+                <ul class="nav" style="font-weight:800;">
+                    <li class="active">
+                        <a href="dashboard">
+                            <i class="material-icons">dashboard</i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="businessplan">
+                            <i class="material-icons">label</i>
+                            <p>Business Plan</p>
+                        </a>
+                    </li>
+                    @if(user.Status==1)
+                    {
+                      <li>
+                        <a href="Ebook">
+                            <i class="material-icons">label</i>
+                            <p>E-book</p>
+                        </a>
+                    </li>
+                    }
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons">perm_identity</i>
+                            <p>My Profile</p>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/Member/WelcomeNote">Welcome Letter</a></li>
+                            <li><a href="~/Member/profilestatus">Profile Status</a></li>
+                            <li><a href="~/Member/Update_Profile">Profile Update</a></li>
+                            <li><a href="~/Member/Bank_Update">KYC Update</a></li>
+                        </ul>
+                    </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons">supervisor_account</i>
+                            <p>My Team</p>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/Member/Mydirect">My Direct</a></li>
+                            <li><a href="~/Member/Btree">My Tree</a></li>
+                             <li><a href="~/Member/TotalBinary">Genology</a></li>
+                            <li><a href="~/Member/team">Team</a></li>
+                            
+                        </ul>
+                    </li>
+                     <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons">device_hub</i>
+                            <p>My Income</p>
+                        </a>
+                        <ul class="dropdown-menu">
+                          
+                           @* <li><a href="mylevelincome">Auto Sharing Income</a></li>
+                            <li><a href="Carry_forword_Report">Matching  Income</a></li>*@
+                            
+                            <li><a href="matching_income"> Matching Income</a></li>
+                              @*<li><a href="Levelbonus_income">Direct Income</a></li>
+                              <li><a href="Performance_income">Scholarship Income </a></li>
+                            <li><a href="~/Member/Leadership_income">Leadership Income</a></li>
+                              <li><a href="~/Member/Clubroyalty_income">Reward Income</a></li>
+                            <li><a href="MyAllincome">Summary</a></li>*@
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons">vpn_key</i>
+                            <p>My pins</p>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @*<li><a href="~/Member/BulkTopup">Bulk Topup</a></li>*@
+                            @*<li><a href="pinwallet">Pins Wallet</a></li>*@
+                            <li><a href="~/Member/Pintransfer">Pins Transfer</a></li>
+                            <li><a href="~/Member/Pintransferhistory">Pin History</a></li>
+                              <li><a href="~/Member/Create_Pin">Create Pin History</a></li>
+                             <li><a href="~/Member/Transfer_Pin_Report"> Pin Transfer History</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons">account_balance_wallet</i>
+                            <p>My Fund</p>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @*<li><a href="~/Member/Ewallet">E Wallet</a></li>
+                            <li><a href="~/Member/EwalletWithdrawalHistory">Ewallet Withdrawal History</a></li>*@
+                            <li><a href="~/Member/Ewallet">E Wallet</a></li>
+                            <li><a href="~/Member/EwalletWithdrawal">Ewallet Withdrawal Request</a></li>
+                            <li><a href="~/Member/EwalletWithdrawalHistory">Ewallet Withdrawal History</a></li>
+                            <li><a href="~/Member/e_walletincome">Wallet Deduction</a></li>
+                         @*   <li><a href="~/Member/DatewiseTransaction">Datewise Transaction</a></li>*@
+                        </ul>
+                    </li>
+
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons">build</i>
+                            <p>Setting</p>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="~/Member/ochange_pwd">Change Password</a>
+                            </li>
+                            <li>
+                                <a href="../Member/Logout">Logout</a>
+                            </li>
+                        </ul>
+
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="main-panel">
+            <nav class="navbar navbar-transparent navbar-absolute">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">dashboard</i>
+                                    <p class="hidden-lg hidden-md">Dashboard</p>
+                                </a>
+                            </li>
+                            @*<li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">notifications</i>
+                                    <span class="notification">5</span>
+                                    <p class="hidden-lg hidden-md">Notifications</p>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#">Mike John responded to your email</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">You have 5 new tasks</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">You're now friend with Andrew</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Another Notification</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Another One</a>
+                                    </li>
+                                </ul>
+                            </li>*@
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="material-icons">person</i>
+                                    <p class="hidden-lg hidden-md">Profile</p>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="../Member/ochange_pwd">Change Password</a>
+                                    </li>
+                                    <li>
+                                        <a href="../Member/Logout">Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        @*<form class="navbar-form navbar-right" role="search">
+                            <div class="form-group  is-empty">
+                                <input type="text" class="form-control" placeholder="Search">
+                                <span class="material-input"></span>
+                            </div>
+                            <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                                <i class="material-icons">search</i>
+                                <div class="ripple-container"></div>
+                            </button>
+                        </form>*@
+                    </div>
+                </div>
+            </nav>
+            <div class="content" style="margin-top:-20px">
+                <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+               <div>
+                        
+                        @foreach (var i in db.Newstabs.ToList())
+                        {
+                            if(i.fromdate.Date<=DateTime.Now.Date && i.todate.Date>=DateTime.Now.Date)
+                            {
+                            <img src="~/Images/NewAlt.gif" style="width:50px;height:25px"/>
+<b style="color:red;font-weight:bolder;font-size:15px";>@i.News_sub</b><i>&nbsp;&nbsp;&nbsp;</i> <i style="color:black;font-size:15px;font-family:Arial"> @i.News_Msg</i><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                        }
+                        }
+                    </div>
+                     </marquee> 
+                <div class="content-fluid">
+                    <div class="row">
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                            <div class="card card-stats">
+                                <div class="card-header" data-background-color="orange">
+                                    <i class="material-icons">verified_user</i>
+                                </div>
+                                <div class="card-content">
+                                    <div class="col-md-3">
+                                        <p class="category">Login Name</p>
+                                        <h5 class="title">@user.name</h5>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="category">Login Id</p>
+                                        <h5 class="title">@ids.UserName</h5>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="category">Joing Date</p>
+                                        <h5 class="title">@user.Doj.ToString("dd-MMM-yyyy")</h5>
+                                    </div>
+                                   
+                            </div>
+                                   
+                                </div>
+                            </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-2 pull-right">
+                            <div class="card card-stats">
+                             
+                                   <div class="col-md-12" style="height:65px">
+                                     
+                                        <p class="category">E-Wallet</p>
+                                        <h5 class="title"> @wcamt</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        
+
+                        </div>
+                    
+                    </div>
+                    @RenderBody()
+                    <footer class="footer">
+                        <div class="container-fluid">
+                            <p class="copyright pull-bottom">
+                             @* <h4 style="font-weight:400;text-transform:uppercase;">Designed & Developed By: <a href="http://xpertgroup.org/" target="_blank"> XPERT GROUP PVT. LTD.</a></h4>*@
+                            </p>
+                        </div>
+                    </footer>
+                    
+                </div>
+            </div>
+         </div>
+</body>
+<!--   Core JS Files   -->
+
+        <script type="text/javascript">
+
+            $('#btn_upload').click(function () {
+                debugger;
+                $('#input_file').trigger('click');
+            });
+
+    </script>
+    <script>
+        function imgupload(f, i) {
+            debugger;
+
+            var filePath = $('#' + f.id).get(0);
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#' + i.id).attr('src', e.target.result);
+            };
+            reader.readAsDataURL(f.files[0]);
+            var id = $("#member").val();
+            var url = '@Url.Action("Imagepost", "Member")';
+            var filedata = new FormData();
+            filedata.append("Image", filePath.files[0]);
+            filedata.append("id", id);
+            $.ajax({
+                type: "Post",
+                url: url,
+                contentType: false,
+                processData: false,
+                data: filedata,
+                success: function (d) {
+                    if (e == "success") {
+                        $('#msg').html("<h1>Successfull...</h1>").css("color", "Green");
+                    } else {
+                        $('#msg').html("<h1>" + d + "</h1>").css("color", "Red");
+
+                    }
+
+                },
+                error: function (a) { alert("Successfull...:-" + a.statusText); }
+
+            });
+
+        }
+    </script>
+@*<script src="../Content/Member/js/jquery-3.2.1.min.js" type="text/javascript"></script>*@
+<script src="../Content/Member/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../Content/Member/js/material.min.js" type="text/javascript"></script>
+<!--  Charts Plugin -->
+<script src="../Content/Member/js/chartist.min.js"></script>
+<!--  Dynamic Elements plugin -->
+<script src="../Content/Member/js/arrive.min.js"></script>
+<!--  Sharrre Plugin -->
+<script src="../Content/Member/js/jquery.sharrre.js"></script>
+<!--  PerfectScrollbar Library -->
+<script src="../Content/Member/js/perfect-scrollbar.jquery.min.js"></script>
+<!--  Notifications Plugin    -->
+<script src="../Content/Member/js/bootstrap-notify.js"></script>
+<!--  Google Maps Plugin    -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSaSxv01RBLnlu5EyBHLs57s-IquPaows"></script>
+<!-- Material Dashboard javascript methods -->
+<script src="../Content/Member/js/material-dashboard5438.js?v=1.2.0"></script>
+<!-- Material Dashboard DEMO methods, don't include it in your project! -->
+<script src="../Content/Member/js/demo.js"></script>
+
+   @* <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>*@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
+
+    });
+</script>
+
+
+<!-- Mirrored from demos.creative-tim.com/material-dashboard/examples/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 14 Nov 2017 08:26:32 GMT -->
+</html>

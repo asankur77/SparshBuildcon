@@ -1,0 +1,157 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    //var pins = db.pintabs.Where(a => a.status == 0 && a.assignto == User.Identity.Name && a.usedby==null ).ToList();
+    var pins = db.Database.SqlQuery<pintab>("select * from pintab where status=0 and assignto ='" + User.Identity.Name + "' and usedby is null ").ToList();
+    //var pack = db.package_tabs.Where(a=>a.status==1).ToList();
+    var pack = db.Database.SqlQuery<package_tab>("select * from package_tab where status=1").ToList();
+    int b = 1;
+    ViewBag.Title = "pinwallet";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#packamt").change(function () {
+            debugger;
+            $("#pinamt").val($(this).val());
+            $("#packamt").val("select");
+        });
+    });
+</script>
+
+@if (TempData["msg"] != null)
+{
+    <script>
+        alert('@TempData["msg"]');
+    </script>
+}
+
+<style>
+    .colorwhite {
+    color:white;
+    }
+</style>
+<div class="main-body">
+    <div class="page-wrapper">
+         <br /><br /><br />
+     @*   <div class="page-header">
+            <div class="page-header-title">
+                <h4>Create Pin</h4>
+                <span></span>
+            </div>
+            <div class="page-header-breadcrumb">
+                <ul class="breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">
+                            <i class="fa fa-university"></i>
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item"><a href="~/Operator/omember_list">Create Pin</a>
+                    </li>
+                </ul>
+            </div>
+        </div>*@
+
+
+        <div class="page-body">
+           
+            @using (Html.BeginForm("pinwallet", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-sm-10 col-md-10">
+                        <div class="card">
+                            <div class="panel-heading"><h3>Create Pins</h3></div>
+                            <br />
+                            <div class="row" style="margin-left: 2%; margin-right: 2%">
+                                <div class="col-md-3">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" style="font-weight: bold; color: black">Pin Amount</label>
+                                        <input type="text" required="required" readonly="readonly" name="pinamount" id="pinamt" class="form-control">
+                                        <select id="packamt" class="form-control">
+                                            <option>select</option>
+                                            @foreach (var item in pack)
+                                            {
+                                                <option>@item.packageamount</option>
+                                }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group label-floating">
+                                        <label class="control-label" style="font-weight: bold; color: black">No. Of Pin</label>
+                                        <input type="text" required="required" id="nopin" name="noofpin" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group" style="margin-right: 2%; margin-top: 5%">
+                                        <button type="submit" class="btn btn-primary btn-md pull-left">Create Pin</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+
+                </div>
+}
+
+            @if (pins.Count() > 0)
+            {      
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="card">
+                            <div class="card-header" style="background-color: #1abc9c;margin-left:1%;margin-right:1%;border-radius:5px">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 class="title colorwhite">Pins Detail</h4>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 class="title colorwhite">Balance Till Today(@pins.Count())</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="card-content table-responsive">
+                                <table class="table" style="margin-left:2%;margin-right:2%">
+                                    <thead class="text-primary">
+                                        <tr>
+                                            <th><b>Sr. No.</b></th>
+                                            <th><b>Pin</b></th>
+                                            <th><b>Amount</b></th>
+                                            @*<th><b>Send Pin</b></th>*@
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var it in pins)
+                                        {
+                                            <tr>
+                                                <td>@b</td>
+                                                <td>@it.pin</td>
+                                                <td>@it.pinamount</td>
+                                                @*<td><a href="@Url.Action("sendpin", "Admin", new { pin = @it.pin })" class="btn btn-primary">Send Pin</a></td>*@
+                                            </tr>
+                                b++;
+                            }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+
+                </div>
+}
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+

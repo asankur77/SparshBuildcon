@@ -1,0 +1,78 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.matching_income_detail>
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "Carry_forword_Report";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    UsersContext db = new UsersContext();
+ 
+
+    var a = 1;
+}
+
+
+@if(Model.Count()>0)
+{
+    <div class="row">
+        <h3 style="color: red; font-weight: 800">@ViewData["msg"]</h3>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" style="background-color: #00B356;">
+                    <h4 class="title">Matching Income Report-:&nbsp;&nbsp;&nbsp;Total: &nbsp;&nbsp;@Model.Count()</h4>
+                </div>
+                <div class="card-content">
+
+                    <div class="row" style="overflow-x: auto">
+                        <div class="col-md-12">
+
+
+                            <table class="table table-responsive ">
+
+                                <tr style="color: blue">
+                                    <th>SrNo</th>
+                                    <th>Member id</th>
+                                    <th>Member Name</th>
+                                    <th>Amount</th>
+                                    <th>Actual Amount</th>
+                                    <th>Left Bus.</th>
+                                    <th>right Bus.</th>
+                                    <th>Carry Left</th>
+                                    <th>Carry Right</th>
+                                    <th>Date</th>
+
+                                </tr>
+
+                                @foreach (var i in Model)
+                                {
+                                    var mdetail = db.AgentDetails.Single(aa => aa.NewAgentId == i.newmemberid);
+                                     
+                                    <tr>
+                                        <td>@a</td>
+                                        <td>@i.newmemberid</td>
+                                        <td>@mdetail.name</td>
+                                        <td>@i.amount</td>
+                                        <td>@i.actualamount</td>
+                                        <td>@i.leftbusiness</td>
+                                        <td>@i.rightbusiness</td>
+                                        <td>@i.carryleft</td>
+                                        <td>@i.carryright</td>
+                                        <td>@i.payout_date.ToString("dd/MM/yyyy")</td>
+
+                                    </tr>
+                                        
+                                        a = a + 1;
+                                    }
+
+
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

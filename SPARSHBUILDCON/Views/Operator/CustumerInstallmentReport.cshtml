@@ -1,0 +1,371 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.CustomerInstallment>
+@using SPARSHBUILDCON.Models;
+@{
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+    ViewBag.Title = "CustumerInstallmentReport";
+
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var a = 0;
+    Double payamount = 0, amount = 0, lafefee = 0, rebate = 0, lateday = 0;
+}
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#newbondid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Operator/AutoCompleteBWBondid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.newbondid, value: item.newbondid };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+
+
+
+
+
+<div class="my-3 my-md-5">
+    <div class="container" id="divid1">
+        <div class="page-header" id="2">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">@mr.custname Ledger-Details</a></li>
+            </ol>
+            @if (a > 0)
+            {
+                <a href="@Url.Action("PrintCustumerInstallment")" target="_blank">Get Report In PDF</a>
+            }
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">@mr.custname Ledger-Details</h3>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        @using (@Html.BeginForm())
+                        {
+                            <div class="row" id="hide">
+                                <div class="col-md-12 col-lg-12">
+                                    <form method="post">
+                                        <div class="form-group">
+
+                                            <label class="form-label">Enter @mr.custname Id</label>
+                                            <div class="input-group">
+                                                <input type="text" id="newbondid" class="form-control" required name="newbondid">
+                                                <span class="input-group-append">
+                                                    <button id="submit" value="Search" class="btn btn-primary pull-right" type="submit">View</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        }
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered" style="width: 100%;">
+                                @using (Html.BeginForm())
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        if (a == 0)
+                                        {
+                                    <tr>
+                                        <th colspan="4" style="text-align: center;"><b>@mr.custname Id: @item.newbondid</b></th>
+                                        <th colspan="5" style="text-align: center;"><b>@mr.custname Installment List</b></th>
+                                        <th colspan="6" style="text-align: center;"><b>Dated:@DateTime.Now.ToString("dd/MM/yyyy")</b></th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 5%; text-align: center;">
+                                            <label id="sn"><b>S.N.</b></label>
+                                        </th>
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="planname"><b>@mr.planname Name</b></label>
+                                        </th>
+
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="term_plan"><b>Term</b></label>
+                                        </th>
+
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="mode"><b>Mode</b></label>
+                                        </th>
+
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="amount"><b>Amount</b></label>
+                                        </th>
+
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="payamount"><b>Pay Amount</b></label>
+                                        </th>
+
+                                        <th style="width: 8%; text-align: center;">
+                                            <label id="payamount1"><b>Late Days</b></label>
+                                        </th>
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="bank"><b>Bank Name</b></label>
+                                        </th>
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="chequeno"><b>Cheque No</b></label>
+                                        </th>
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="trno"><b>Transaction No</b></label>
+                                        </th>
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="trty"><b>Transaction Type</b></label>
+                                        </th>
+                                        <th style="width: 8%; text-align: center;">
+                                            <label id="latefine"><b>Late Fine</b></label>
+                                        </th>
+                                        <th style="width: 8%; text-align: center;">
+                                            <label id="rebate"><b>Rebate</b></label>
+                                        </th>
+
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="paymentdate"><b>Payment Date</b></label>
+                                        </th>
+
+                                        <th style="width: 5%; text-align: center;">
+                                            <label><b>CSS No.</b></label>
+                                        </th>
+
+                                        <th style="width: 10%; text-align: center;">
+                                            <label id="expirydate"><b>Due Date</b></label>
+                                        </th>
+                                        <th style="width: 10%; text-align: center;">
+                                            <label><b>@mr.branchname</b></label>
+                                        </th>
+
+                                    </tr>
+                                        }
+                                        a = a + 1;
+
+
+                                    <tr style="text-align: center;">
+                                        <td>
+                                            @a
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.planname)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.term_plan)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.mode)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.amount)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.payamount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.latedays)
+                                        </td>
+                                        <td>
+                                            @if (item.paymethod == "Cheque")
+                                            {
+                                                @Html.DisplayFor(modelItem => item.bank) 
+                                            }
+                                            else if (item.paymethod == null)
+                                            {
+                                                <label></label>
+                                            }
+                                            else if (item.paymethod == "banktransaction")
+                                            {
+                                                <label>@item.paymethod</label>
+                                            }
+                                            else
+                                            {
+                                                <label>NA</label>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.paymethod == "Cheque")
+                                            {
+                                                @Html.DisplayFor(modelItem => item.chequeno) 
+                                            }
+                                            else if (item.paymethod == null)
+                                            {
+                                                <label></label>
+                                            }
+                                            else
+                                            {
+                                                <label>NA</label>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.paymethod == "banktransaction")
+                                            {
+                                                @Html.DisplayFor(modelItem => item.chequeno) 
+                                            }
+                                            else if (item.paymethod == null)
+                                            {
+                                                <label></label>
+                                            }
+                                            else
+                                            {
+                                                <label>NA</label>
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.transactiontype)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.latefine)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.reliefrs)
+                                        </td>
+
+                                        <td>
+                                            @Convert.ToDateTime(item.paymentdate).ToString("dd/MM/yyyy")
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.cssno)
+                                        </td>
+
+                                        <td>
+                                            @Convert.ToDateTime(item.expirydate).ToString("dd/MM/yyyy")
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.branchname)
+                                        </td>
+                                    </tr>
+            
+                                            rebate = rebate + Convert.ToDouble(item.reliefrs);
+                                            lafefee = lafefee + Convert.ToDouble(item.latefine);
+                                            payamount = payamount + Convert.ToDouble(item.payamount);
+                                            amount = amount + Convert.ToDouble(item.amount);
+                                            lateday = lateday + Convert.ToDouble(item.latedays);
+
+
+                                    }
+                                    if (a > 0)
+                                    {
+                                    <tr style="text-align: center;">
+
+                                        <td colspan="4">
+                                            <b>GRAND TOTAL:</b>
+                                        </td>
+
+
+                                        <td>
+                                            <b>@amount</b>
+                                        </td>
+
+                                        <td>
+                                            <b>@payamount</b>
+                                        </td>
+
+                                        <td>
+                                            <b>@lateday</b>
+                                        </td>
+                                        <td>
+                                            <b></b>
+                                        </td>
+                                        <td>
+                                            <b></b>
+                                        </td>
+                                        <td>
+                                            <b></b>
+                                        </td>
+                                        <td>
+                                            <b></b>
+                                        </td>
+                                        <td>
+                                            <b>@lafefee</b>
+                                        </td>
+
+                                        <td>
+                                            <b>@rebate</b>
+
+                                        </td>
+                                        <td>
+                                            <b></b>
+                                        </td>
+                                        <td>
+                                            <b></b>
+                                        </td>
+
+                                        <td>
+                                            <b></b>
+                                        </td>
+
+                                        <td>
+                                            <b></b>
+                                        </td>
+
+                                    </tr>
+                                    }
+
+                                }
+
+
+
+                            </table>
+                            @if (a > 0)
+                            {
+                                <a href="@Url.Action("PrintCustumerInstallment")" target="_blank">Get Report In PDF</a>
+                            }
+
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

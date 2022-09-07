@@ -1,0 +1,63 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext(); 
+    var r = db.CompanyInfos.Single(ci => ci.Id == 1);
+    ViewBag.Title = "Service";
+}
+
+  <!--======= BANNER =========-->
+<div class="sub-banner" style="background-image: url('../Content/Home/img/real-banner.jpg')">
+    <div class="overlay">
+        <div class="container">
+            <h1>Service</h1>
+            <ol class="breadcrumb">
+                <li class="pull-left">Service</li>
+                <li><a href="../Home/Index">Home</a></li>
+                <li class="active">Service</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<section class="slice bg-white">
+    <div class="wp-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="listing-image">
+                        <img src="~/Content/Home/img/girl.jpg" style="height: 300px; width: 100%" alt="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h3><a href="#">Plot</a></h3>
+
+                    <p style="text-align: justify">
+                        @r.CompanyName is a selling plot in efficient cost at EMI or One time payment in Kanpur.
+                    </p>
+
+
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h3><a href="#">Flat</a></h3>
+
+                    <p style="text-align: justify">
+                        @r.CompanyName is a selling Flat in efficient cost at EMI or One time payment in Kanpur.
+                    </p>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="listing-image">
+                        <img src="~/Content/Home/img/service.png" style="height: 300px; width: 100%" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

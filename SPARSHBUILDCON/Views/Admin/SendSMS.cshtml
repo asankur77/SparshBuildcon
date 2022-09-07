@@ -1,0 +1,59 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "SendSMS";
+}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Send SMS for Due RD Collection</h4>
+ @*           <div id="reportrange" class="dtrange">
+                <span></span><b class="caret"></b>
+            </div>*@
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+                @using (Html.BeginForm())
+                {
+                    <div class="card-header">
+                        <h3 class="card-title">Send SMS for Due RD Collection</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Select Till Days</label>
+                                    <div class="input-group">
+                                        <input type="Number" class="form-control" id="day" name="day" required />
+                                        <span class="input-group-append">
+                                            <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure to Send RD SMS?')" name="command" value="send">Send SMS</button>
+                                        </span>
+                                        <div>&nbsp;@ViewBag.msg</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                  
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

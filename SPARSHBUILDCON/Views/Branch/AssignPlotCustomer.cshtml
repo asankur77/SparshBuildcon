@@ -1,0 +1,235 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.DatewiseCustomerList>
+@using SPARSHBUILDCON.Models
+@{
+    ViewBag.Title = "AssignPlotCustomer";
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    var a = 0;
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(c => c.Id == 1);
+    
+}
+
+
+
+
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet">
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+<script>
+    $(function () {
+        $('#popupDatepicker').datepick();
+        $('#popupDatepicker1').datepick();
+        $('#inlineDatepicker').datepick({ onSelect: showDate });
+    });
+
+    function showDate(date) {
+        alert('The date chosen is ' + date);
+    }
+</script>
+<div class="my-3 my-md-5">
+    <div class="container" id="divid">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Assign Plot @mr.custname List</a></li>
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Assign Plot @mr.custname List</h3>
+
+                    </div>
+                     
+                    <div class="card-body">
+                         @using (@Html.BeginForm())
+                      {
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+													<label class="form-label">Start Date</label>
+													  <input type="text" class="form-control" id="popupDatepicker" name="sdate" required>
+												</div>
+
+                            </div>
+                             <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+													<label class="form-label">End Date</label>
+													  <input type="text" class="form-control" id="popupDatepicker1" name="edate" required>
+												</div>
+
+                            </div>
+                            <div class="card-footer text-right">
+										<div class="d-flex">
+										    <button class="btn btn-primary"><i class="fa fa-cog"></i>Search</button>
+										</div>
+									</div>
+
+                        </div>
+                         }
+                    </div>
+                          <div class="card-body">
+                                	<div class="table-responsive">
+									<table  class="table table-striped table-bordered" style="width:100%">
+				    @using (Html.BeginForm())
+        {
+            foreach (var item in Model)
+            {
+                if (a == 0)
+                {
+                            
+                <tr>
+
+                    <th colspan="12">
+                        <a href="@Url.Action("PrintAssignPlotCustomer")" target="_blank">Get Report In PDF</a>
+                    </th>
+
+
+                </tr>
+                            
+                <tr>
+                    <th colspan="4" style="text-align: center;">@mr.branchname Name:@User.Identity.Name</th>
+                    <th colspan="4" style="text-align: center;"><b>@mr.custname List</b></th>
+                    <th colspan="4" style="text-align: center;"><b>Dated:@DateTime.Now.Date.ToString("dd/MM/yyyy")</b></th>
+                </tr>
+                <tr>
+                    <th style="width: 5%; text-align: center;">
+                        <label id="sn"><b>S.N.</b></label>
+                    </th>
+                    <th style="width: 10%; text-align: center;">
+                        <label id="newid"><b>@mr.custname Id</b></label>
+                    </th>
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="introducerid"><b>Name</b></label>
+                    </th>
+
+                    <th style="width: 10%; text-align: center;">
+                        <label id="spilid"><b>Introducer Id</b></label>
+                    </th>
+                   
+                        <th style="width: 10%; text-align: center;">
+                                <label><b>Booking Amount</b></label>
+                            </th>
+
+                           <th style="width: 10%; text-align: center;">
+                                <label><b>Phase</b></label>
+                            </th>
+                      <th style="width: 10%; text-align: center;">
+                                <label><b>Block</b></label>
+                            </th>
+                      <th style="width: 8%; text-align: center;">
+                                <label><b>Plot Size</b></label>
+                            </th>
+                     <th style="width: 10%; text-align: center;">
+                        <label ><b>Plot No</b></label>
+                    </th>
+                    <th style="width: 8%; text-align: center;">
+                        <label id="doj"><b>Payment </b></label>
+                    </th>
+                 
+                    <th style="width: 8%; text-align: center;">
+                        <label id="email"><b>Mobile No</b></label>
+                    </th>
+
+                    <th style="width: 8%; text-align: center;">
+                        <label><b>Date of Joining</b></label>
+                    </th>
+                  
+                </tr>
+                }
+                a = a + 1;
+
+
+                <tr style="text-align: left;">
+                    <td>
+                        @a
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.newbondid)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.newintroducerid)
+                    </td>
+                   
+                     <td>
+                        @Html.DisplayFor(modelItem => item.bookingamount)
+                    </td>
+                         <td>
+                        @Html.DisplayFor(modelItem => item.plan)
+                    </td>
+                     <td>
+                        @Html.DisplayFor(modelItem => item.block)
+                    </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.plotsize)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.plotno)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.payment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mobile)
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.formdate).ToString("dd/MM/yyyy")
+                    </td>
+                  
+
+                </tr>
+                   
+            }
+
+        }
+
+
+
+
+
+        </table>
+
+    
+									
+								</div>
+                                </div>
+               
+
+
+                </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

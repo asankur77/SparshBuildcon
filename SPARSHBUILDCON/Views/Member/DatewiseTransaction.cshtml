@@ -1,0 +1,125 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "DatewiseTransaction";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    UsersContext db = new UsersContext();
+ var a = 0;
+    var b = 0;
+    var c = 0;
+    Double creditsum = (from cc in db.TransactionTabs where cc.type == "Credit" && cc.accountno == User.Identity.Name select cc.credit).DefaultIfEmpty(0).Sum();
+    Double debitsum = (from cc in db.TransactionTabs where cc.type == "Debit" && cc.accountno == User.Identity.Name select cc.credit).DefaultIfEmpty(0).Sum();
+
+    Double pintotalused = (from cc in db.pintabs where cc.Createdby == User.Identity.Name && cc.status==1 select cc).Count();
+    Double pintotalunused = (from cc in db.pintabs where cc.Createdby == User.Identity.Name && cc.status == 0 select cc).Count();
+
+    Double pinamountused =(pintotalused) * 2500;
+    Double pinamountunused = (pintotalunused) * 2500;
+
+    Double amountreceived = (from cc in db.PayoutSummarys where cc.Newintroid == User.Identity.Name select cc.netamount).DefaultIfEmpty(0).Sum();
+}
+
+<div class="outter-wp">
+    
+
+    <div class="sub-heard-part">
+        <ol class="breadcrumb m-b-0">
+            <li><a href="index.html">Home</a></li>
+            <li class="active">Datewise Transaction</li>
+        </ol>
+    </div>
+    <div class="row">
+
+    <div class="graph-visual tables-main">
+<div class="graph">
+    <div class="tables table-responsive">
+                <table class="table">
+                        @foreach(var item in db.TransactionTabs.Where(d=>d.type=="Credit" && d.accountno==User.Identity.Name).ToList())
+                        {
+                            a=a+1;
+                            var firsttrans = db.TransactionTabs.FirstOrDefault(t => t.transactionid == item.transactionid);
+                            var transname = db.AgentDetails.Single(tt => tt.NewAgentId == firsttrans.accountno);
+                            
+                            if(a==1)
+                            {
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Name</th>
+                                <th>MemberId</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                            }
+                            <tr>
+                                <td>@a</td>
+                                <td>@transname.name</td>
+                                <td>@item.remark</td>
+                                <td>Rs. @item.credit/-</td>
+                                <td>@item.pdate.ToString("dd/MMM/yyyy")</td>
+                            </tr>
+                        }
+                    </table>
+            </div>
+    <div class="tables table-responsive">
+                <table class="table">
+                        @foreach(var item2 in db.pintabs.Where(d=>d.Createdby == User.Identity.Name && d.status==1).ToList())
+                        {
+                            var usedname = db.AgentDetails.Single(kk => kk.NewAgentId == item2.usedby);
+                            b=b+1;
+                            if(b==1)
+                            {
+                           
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Used By</th>
+                                <th>MemberId</th>
+                                <th>Pin</th>
+                                <th>Pin Amount</th>
+                                <th>Create Date</th>
+                                <th>Used Date</th>
+                            </tr>
+                            }
+                            <tr>
+                                <td>@b</td>
+                                <td>@item2.usedby</td>
+                                <td>@usedname.name</td>
+                                <td>@item2.pin</td>
+                                <td>@item2.pinamount</td>
+                                <td>@item2.timeofgeneration.ToString("dd/MMM/yyyy")</td>
+                                 <td>@item2.Assigndate.ToString("dd/MMM/yyyy")</td>
+                            </tr>
+                        }
+                    </table>
+            </div>
+    <div class="tables table-responsive">
+                <table class="table">
+                        @foreach(var item3 in db.PayoutSummarys.Where(d=>d.Newintroid == User.Identity.Name).ToList())
+                        {
+                            var usedname = db.AgentDetails.Single(kk => kk.NewAgentId == item3.Newintroid);
+                            c=c+1;
+                            if(c==1)
+                            {
+                           
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Single Leg Income</th>
+                                <th>Auto Sharing Income</th>
+                                <th>Charges Fee</th>
+                                <th>Net Amount</th>
+                                <th>Received Date</th>
+                            </tr>
+                            }
+                            <tr>
+                                <td>@c</td>
+                                <td>@item3.LevelIncome</td>
+                                <td>@item3.PoolIncome</td>
+                                <td>@item3.AdminFee</td>
+                                <td>@item3.netamount</td>
+                                <td>@item3.paydate.ToString("dd/MMM/yyyy")</td>
+                            </tr>
+                        }
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

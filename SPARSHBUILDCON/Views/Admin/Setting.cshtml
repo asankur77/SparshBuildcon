@@ -1,0 +1,160 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var br = db.CompanyInfos.Single(b => b.AdminId == User.Identity.Name);
+    var logo = string.Empty;
+    var companyname = string.Empty;
+    var incometype = string.Empty;
+    var mr = db.Members.Single(m => m.Id == 1);
+    var r = db.CompanyInfos.Single(ci => ci.AdminId == User.Identity.Name);
+
+    logo = r.CompanyLogo;
+    companyname = r.CompanyName;
+    incometype = r.IncomeType;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Setting";
+}
+
+<div class="page-content">
+
+    <div class="container" style="width: 775px; padding-left: 0px; padding-right: 0px;">
+
+        <div class="page-toolbar" style="width: 770px;">
+
+            <div class="page-toolbar-block">
+                <div class="page-toolbar-title"></div>
+
+
+                <h4><b>Welcome, @br.CompanyName</b></h4>
+            </div>
+            <div style="margin-top: 0px; float: right; margin-right: 10px;">
+            </div>
+
+        </div>
+
+
+        <div class="widget stacked">
+
+            <div class="widget-header">
+                <i class="icon-cog"></i>
+                <h3>Setting</h3>
+            </div>
+            <!-- /widget-header -->
+
+            <div class="widget-content">
+
+                <div class="shortcuts">
+                    <a href="~/Admin/ApproveDisapproveLeave" class="shortcut">
+                        <img alt="" src="~/Images/icon/15.png" />
+                        <span class="shortcut-label">Employee Leave Request</span>
+                    </a>
+
+                    <a href="~/Admin/Loginouttime" class="shortcut">
+                        <img alt="" src="~/Images/icon/28.png" />
+                        <span class="shortcut-label">Set Log In-Out Time</span>
+                    </a>
+
+                    <a href="~/Admin/ChangeMacAddress" class="shortcut">
+                        <img alt="" src="~/Images/icon/21.png" />
+                        <span class="shortcut-label">Change MacAddress</span>
+                    </a>
+                    <a href="~/Admin/Approvewebsite" class="shortcut">
+                        <img alt="" src="~/Images/icon/pc.jpg" />
+                        <span class="shortcut-label">Assign PC</span>
+                    </a>
+                    <a href="~/Admin/AllowRenewal" class="shortcut">
+                        <img alt="" src="~/Images/icon/permission.png" />
+                        <span class="shortcut-label">Permission of Renewal </span>
+                    </a>
+                    <a href="~/Admin/Renewalsms" class="shortcut">
+                        <img alt="" src="~/Images/icon/32.png" />
+                        <span class="shortcut-label">Send Renewal SMS</span>
+                    </a>
+
+
+                    <a href="~/Admin/VoucherFormat" class="shortcut">
+                        <img alt="" src="~/Images/icon/4.png" />
+                        <span class="shortcut-label">Active Voucher Format</span>
+                    </a>
+
+                    <a href="~/Admin/ActiveDeactivePlan" class="shortcut">
+                        <img alt="" src="~/Images/icon/10.png" />
+                        <span class="shortcut-label">Active-Deactive @mr.planname</span>
+                    </a>
+
+                    <a href="~/Admin/BlockUnblockBranch" class="shortcut">
+                        <img alt="" src="~/Images/icon/5.png" />
+                        <span class="shortcut-label">Block-Unblock @mr.branchname</span>
+                    </a>
+                    <a href="~/Admin/BlockUnblockOperator" class="shortcut">
+                        <img alt="" src="~/Images/icon/64.png" />
+                        <span class="shortcut-label">Block-Unblock Collection Point</span>
+                    </a>
+
+
+
+                    <a href="~/Admin/BlockUnblockHR" class="shortcut">
+                        <img alt="" src="~/Images/icon/62.png" />
+                        <span class="shortcut-label">Block-Unblock HR</span><br />
+                    </a>
+                    <a href="~/Admin/BlockUnblockBroker" class="shortcut">
+                        <img alt="" src="~/Images/icon/67.png" />
+                        <span class="shortcut-label">Block-Unblock @mr.agentname</span>
+                    </a>
+
+
+                    <a href="~/Admin/BlockUnblockCustomer" class="shortcut">
+                        <img alt="" src="~/Images/icon/63.png" />
+                        <span class="shortcut-label">Block-Unblock @mr.custname</span>
+                    </a>
+                    <a href="~/Admin/DeactiveList" class="shortcut">
+                        <img alt="" src="~/Images/icon/deactive.png" />
+                        <span class="shortcut-label">Deactive @mr.custname List</span>
+                    </a>
+
+                    <a href="~/Admin/ResetBranch" class="shortcut">
+                        <img alt="" src="~/Images/icon/5.png" />
+                        <span class="shortcut-label">Reset Panelwise Password</span>
+                    </a>
+                    <a href="~/Admin/ResetAll" class="shortcut">
+                        <img alt="" src="~/Images/icon/45.png" />
+                        <span class="shortcut-label">Reset All Password</span>
+                    </a>
+                    <a href="~/Admin/AgentPrmote" class="shortcut">
+                        <img alt="" src="~/Images/icon/29.png" />
+                        <span class="shortcut-label">Promote</span>
+                        <br />
+                    </a>
+
+                    <a href="~/Admin/Approvecheque" class="shortcut">
+                        <img alt="" src="~/Images/icon/69.png" />
+                        <span class="shortcut-label">Approve Cheque Print</span>
+                        <br />
+                    </a>
+
+                    <a href="~/Admin/SendSMS" class="shortcut">
+                        <img alt="" src="~/Images/icon/sendsms.jpg" />
+                        <span class="shortcut-label">Send SMS For Due RD Collection</span>
+                    </a>
+                    <a href="~/Admin/Updateformdate" class="shortcut">
+                        <img alt="" src="~/Images/icon/5.png" />
+                        <span class="shortcut-label">Set Business Date</span>
+                    </a>
+                    <a href="~/Admin/SetAdvanceDeduction" class="shortcut">
+                        <img alt="" src="~/Images/icon/5.png" />
+                        <span class="shortcut-label">Advance Deduction</span>
+                    </a>
+                </div>
+                <!-- /shortcuts -->
+
+            </div>
+            <!-- /widget-content -->
+
+        </div>
+
+
+    </div>
+
+</div> 
+
+

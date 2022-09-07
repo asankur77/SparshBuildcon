@@ -1,0 +1,94 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Emp_Reg>
+@{
+    Layout = "~/Views/Shared/_HRLayout.cshtml";
+    ViewBag.Title = "EmployeeAtten";
+    var a = 0;
+}
+
+
+
+
+
+
+                    <div class="page-content">
+
+                <div class="container">
+
+<div class="page-toolbar">
+                        
+                        <div class="page-toolbar-block">
+                            <div class="page-toolbar-title">Employee Attendance</div>
+                            <div class="page-toolbar-subtitle"></div>
+                        </div>
+                        
+                      
+
+                    </div>
+                   
+ 
+  
+                  <div id="1">
+<table border="1" style="margin-left:1%; margin-right:1px; width:98%; margin-bottom:30px; ">
+    @using (Html.BeginForm())
+                {
+                    foreach (var item in Model)
+                    {
+                        if (a == 0)
+                        {
+                         
+    <tr>
+        <th style="width:10%;text-align:center;">
+           <label id="sn" ><b>S.N.</b></label>
+            </th>
+        <th style="width:20%;text-align:center;">
+           <label id="empid"><b>Emp ID</b></label>
+            </th>
+         <th style="width:20%;text-align:center;">
+           <label id="name"><b>Name</b></label>
+        </th>
+       
+      <th style="width:20%;text-align:center;">
+           <label ><b>Action</b></label>
+        </th>
+   
+         <th style="width:20%;text-align:center;">
+           <label ><b>Action</b></label>
+        </th>
+    </tr>
+    }
+                        a = a + 1;
+
+
+    <tr style="text-align:center;">
+        <td>
+            @a
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.empid)
+        </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+       
+         <td>
+          @Html.ActionLink("Present", "EmployeeAtten", new {empid=item.empid, mark = "P" }, new { onclick = "return confirm('Are you sure to Present this Employee?');" })  
+             </td>
+        <td>
+             @Html.ActionLink("Absent", "EmployeeAtten", new {empid=item.empid, mark = "A" }, new { onclick = "return confirm('Are you sure to Absent this Employee?');" })  
+        </td>
+        
+    </tr>
+                        
+    }
+
+    
+    }
+    
+    
+  
+</table>
+              </div> 
+                   
+         
+                    </div>
+                        </div>

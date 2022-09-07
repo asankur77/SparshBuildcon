@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "eventupload";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<script>
+
+    function geturl()
+    {
+        debugger;
+        var url = $("#videourl").val();
+        var newurl = url.replace("/watch?v=", "/embed/");
+        $("#iframeid").show();
+        $("#iframeid").attr("src", newurl);
+        $("#videourllll").val(newurl);
+    }
+
+</script>
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Add Video</h4>
+         
+            
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+
+      @using (Html.BeginForm("eventupload", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                          
+    <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+             <div class="form-group">
+                 <label>Upload video </label>
+                                        <div class="form-group">
+                                            <input type="Text"  id="videourl" onchange="geturl()" class="form-control" style="width: 100%;">
+                                             <iframe width="250" height="250"  style="display:none" src="https://www.youtube.com/embed/OFj0N5MGejo" id="iframeid" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                            <input type="hidden" id="videourllll" name="Video" />
+                                        </div>    
+   </div>
+</div> 
+        @* 
+           <div class="col-md-6">
+           <div class="form-group">
+       <h6 style="color: red; font-weight: 800;">Size of file should be between 500kb–2084 kb </h6><br />
+       <h6 style="color: red; font-weight: 800">Please Upload  1080 pixels wide x 1920 pixels height</h6>
+                               
+        </div>
+      </div>*@
+               </div>
+         
+          <div class="row">
+                    <div class="col-md-9">
+      <div class="form-group">
+      <label class="form-label">Description :</label>
+           <input type="text" class="form-control" name="Heading" placeholder="Achievers Name" />
+        </div>
+      </div>
+               </div> 
+           <div class="row">
+             
+      <div class="col-md-9">
+          <div class="form-group">
+
+          <button type="submit" name="command"  value="Upload" class="btn btn-primary btn-sm">Upload</button>
+      </div>
+        </div>
+               </div>
+                 
+         
+     <p style="color:maroon;"><b> @ViewBag.msg</b></p>
+        </div>
+     }
+                                </div >
+                              </div>
+        </div>
+    </div>

@@ -1,0 +1,203 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var br = db.CompanyInfos.Single(b => b.AdminId == User.Identity.Name);
+    var logo = string.Empty;
+    var companyname = string.Empty;
+    var incometype = string.Empty;
+    var mr = db.Members.Single(m => m.Id == 1);
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+ 
+    logo = br.CompanyLogo;
+    companyname = br.CompanyName;
+    incometype = br.IncomeType;
+
+
+    ViewBag.Title = "Vehicle";
+  
+}
+
+
+
+<div class="my-3 my-md-5">
+					<div class="container">
+						<div class="page-header">
+							<h4 class="page-title"><b>Welcome, @br.CompanyName</b></h4>
+							
+							</div>
+
+						<div class="row row-cards">
+                             <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Vehicle</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+							     <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary   card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/AgentVehicleRequest" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Vehicle Request
+                             <img alt="" src="~/Images/icon/26.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+							     <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info   card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/AgentVehicleRequestHistory" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Agent VehicleRequest History
+                             <img alt="" src="~/Images/icon/32.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                            	     <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success   card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/ReceptionistList" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Receptionist List
+                             <img alt="" src="~/Images/icon/16.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+                                               	     <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info  card-img-holder text-white">
+                    <div class="card-body" style="height:130px">
+                        <a href="~/Admin/SendCredential" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Send Credentials
+                             <img alt="" src="~/Images/icon/21.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+</div>
+                        </div>
+    </div>
+
+</div>
+                        </div>
+    </div>
+@*<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title"><b>Welcome, @br.CompanyName</b></h4>
+         
+            
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+                 <div class="card-header">
+                        <h3 class="card-title">Extra</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="widget-content">
+
+                <div class="shortcuts">
+                    <a href="/Admin/AgentVehicleRequest" class="shortcut">
+                        <img alt="" src="~/Images/icon/26.png" />
+                        <span class="shortcut-label">Vehicle Request</span>
+                    </a>
+
+                    <a href="/Admin/AgentVehicleRequestHistory" class="shortcut">
+                        <img alt="" src="~/Images/icon/32.png" />
+                        <span class="shortcut-label">Agent Vehicle Request History</span>
+                    </a>
+
+                     <a href="/Admin/ReceptionistList" class="shortcut">
+                        <img alt="" src="~/Images/icon/32.png" />
+                        <span class="shortcut-label">Receptionist List</span>
+                    </a>
+
+                       <a href="/Admin/SendCredential" class="shortcut">
+                      <img src="~/Photo/credentials.png"  width="60%" />
+                        <span class="shortcut-label">Send Credentials</span>
+                    </a>
+
+                </div>
+                <!-- /shortcuts -->
+
+            </div>
+            <!-- /widget-content -->
+
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+@*<div class="page-content">
+
+    <div class="container" style="width: 775px; padding-left: 0px; padding-right: 0px;">
+
+        <div class="page-toolbar" style="width: 770px;">
+
+            <div class="page-toolbar-block">
+                <div class="page-toolbar-title"></div>
+
+
+                <h4><b>Welcome, @br.CompanyName</b></h4>
+            </div>
+            <div style="margin-top: 0px; float: right; margin-right: 10px;">
+            </div>
+
+        </div>
+
+        <div class="widget stacked">
+
+            <div class="widget-header">
+                <i class="icon-plus"></i>
+                <h3>Extra</h3>
+            </div>
+            <!-- /widget-header -->
+
+            <div class="widget-content">
+
+                <div class="shortcuts">
+                    <a href="/Admin/AgentVehicleRequest" class="shortcut">
+                        <img alt="" src="~/Images/icon/26.png" />
+                        <span class="shortcut-label">Vehicle Request</span>
+                    </a>
+
+                    <a href="/Admin/AgentVehicleRequestHistory" class="shortcut">
+                        <img alt="" src="~/Images/icon/32.png" />
+                        <span class="shortcut-label">Agent Vehicle Request History</span>
+                    </a>
+
+                     <a href="/Admin/ReceptionistList" class="shortcut">
+                        <img alt="" src="~/Images/icon/32.png" />
+                        <span class="shortcut-label">Receptionist List</span>
+                    </a>
+
+                       <a href="/Admin/SendCredential" class="shortcut">
+                      <img src="~/Photo/credentials.png"  width="60%" />
+                        <span class="shortcut-label">Send Credentials</span>
+                    </a>
+
+                </div>
+                <!-- /shortcuts -->
+
+            </div>
+            <!-- /widget-content -->
+
+        </div>
+
+    </div>
+
+</div>*@

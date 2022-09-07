@@ -1,0 +1,331 @@
+﻿@model SPARSHBUILDCON.Models.Member_tab
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "Member";
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var tr = db.TDSLF_tabs.Single(f => f.Id == 1);
+
+
+    DateTime dt = DateTime.Now.Date;
+    Formdate fd = new Formdate();
+    var count = db.Formdates.Where(o => o.opid == User.Identity.Name).Count();
+    if (count > 0)
+    {
+        fd = db.Formdates.Single(o => o.opid == User.Identity.Name);
+        if (fd.status == 2)
+        {
+            dt = fd.formdate;
+        }
+
+    }
+   
+}
+
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#nomrel").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteRelations",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.relations, value: item.relations };
+
+
+                        }))
+
+                    }
+                })
+            }
+        });
+
+
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#chk').change(function () {
+            var adr = $("#Address").val();
+            if (this.checked == true) {
+                $("#Nomineeaddr").val(adr);
+            }
+            else if (this.checked == false) {
+                $("#Nomineeaddr").val('');
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#state").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteState",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.state, value: item.state };
+
+
+                        }))
+
+                    }
+                })
+            }
+        });
+    })
+</script>
+<script>
+    function checkdistrict(check_id) {
+
+        $("#" + check_id).mouseout(function () {
+
+            var state = $("#state").val();
+            var url = '@Url.Action("selectdistrict", "Branch")';
+            var select = $("#District");
+            $.get(url, { state: state }, function data(d) {
+
+                select.children().remove();
+                select.append('<option value="Select">Select</option>');
+                for (var i = 0; i < d.length; i++) {
+                    select.append('<option value="' + d[i].city + '">' + d[i].city + '</option>');
+                }
+
+            });
+        });
+
+    }
+</script>
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+<script>
+    $(function () {
+        $('#date').datepick();
+        $('#Dob').datepick();
+    });
+</script>
+
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Member Form</a></li>
+
+            </ol>
+
+        </div>
+        <form method="post">
+            <div class="row">
+
+
+                <div class="col-lg-6 card">
+
+                    <div class="card-header">
+                        <h3 class="card-title">Personal Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">@mr.branchname Code </label>
+                                    <input type="text" class="form-control " id="BranchCode" value="@User.Identity.Name" name="BranchCode" readonly="true"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Form Fee</label>
+                                    <input type="text" class="form-control" id="formfee" required name="formfee" value="@tr.memberfee" readonly="true"/>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="form-label">No. of Share </label>
+                                    <input type="number" class="form-control" id="Share" required name="Share" value="0" />
+                                    <input type="hidden" class="form-control" id="Type" name="Type" value="Member" />
+                                    <input type="hidden" class="form-control" id="Status" name="Status" value="1" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="name" required name="MemberName" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Relation of</label>
+                                    <select class="form-control" name="Relationof">
+                                        <option>S/O</option>
+                                        <option>D/O</option>
+                                        <option>W/O</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Father's Name</label>
+                                    <input type="text" class="form-control" required name="Father" id="Father" />
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Mother's Name</label>
+                                    <input type="text" class="form-control" id="Mother" name="Mother" />
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Mobile No</label>
+                                    <input type='tel' title="Invalid mobile format" pattern="[789][0-9]{9}" maxlength="10" name="Mobile" id="Mobile" required class="form-control" />
+
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-control" id="category" name="category">
+                                        <option value="General">General</option>
+                                        <option value="OBC">OBC</option>
+                                        <option value="SC">SC</option>
+                                        <option value="ST">ST</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nationality</label>
+                                    <input type="text" class="form-control" id="Nationality" name="Nationality" readonly="readonly" value="Indian" />
+
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Date Of Joining</label>
+                                    <input type="text" name="Cdate" id="Doj" value="@dt" readonly="true" required class="form-control date" />
+
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Date Of Birth</label>
+                                    <input type="text" id="Dob" name="DOB" required class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Gender</label>
+                                    <select name="Gender" id="Gender" class="form-control" required>
+
+                                        <option selected>Male</option>
+                                        <option>Female</option>
+                                    </select>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+                <div class="col-lg-6">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Bank Details</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Pan No</label>
+                                <input type="text" id="panno" name="panno" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Bank A/C No</label>
+                                <input type="text" id="accountno" name="accountno" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    IFSC Code</label>
+                                <input type="text" id="IFSC" name="IFSC" class="form-control" />
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Address Details</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <input type="text" id="Address" name="Address" required class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    State</label>
+                                <input type="text" id="state" name="state" onmouseout="checkdistrict(this.id)" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    District</label>
+                                <select class="form-control" id="District" name="District">
+                                    <option disabled="disabled">Select </option>
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Pin Code</label>
+                                <input type="number" name="Pin" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Nominee Details</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Nominee Name</label>
+                                <input type="text" id="NomineeName" name="NomineeName" required class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Nominee Age
+                                </label>
+                                <input type="number" id="NomineeAge" name="NomineeAge" required class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Relationship</label>
+                                <input type="text" id="nomrel" name="NomineeRel" required class="form-control" />
+                            </div>
+                            <div class="form-group">
+
+                                <input id="chk" type="checkbox" name="chk" />&nbsp;Same As Member
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <input type="text" id="Nomineeaddr" name="Nomineeaddr" required class="form-control" />
+                            </div>
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure to create Member?')">Submit</button>
+                                <p>@ViewBag.msg</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

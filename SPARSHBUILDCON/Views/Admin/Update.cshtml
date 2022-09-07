@@ -1,0 +1,213 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var br = db.CompanyInfos.Single(b => b.AdminId == User.Identity.Name);
+    var logo = string.Empty;
+    var companyname = string.Empty;
+    var incometype = string.Empty;
+    var mr = db.Members.Single(m => m.Id == 1);
+    var r = db.CompanyInfos.Single(ci => ci.AdminId == User.Identity.Name);
+  
+
+    logo = r.CompanyLogo;
+    companyname = r.CompanyName;
+    incometype = r.IncomeType;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Update";
+}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Welcome, @br.CompanyName</h4>
+
+        </div>
+        <div class="row  row-cards">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Update</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdateBranch" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.branchname
+                             <img alt="" src="/Images/icon/36.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdateOperator" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Collection Point
+                             <img alt="" src="/Images/icon/69.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                      
+         
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdateHR" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">HR
+                             <img alt="" src="/Images/icon/68.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdatePlan" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.planname Category
+                             <img alt="" src="/Images/icon/10.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdateBlock" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Block
+                             <img alt="" src="/Images/icon/block.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdatePlotLimit" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Edit Plot Limit
+                             <img alt="" src="/Images/icon/limit.jpg" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/EMIMaster" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">EMI Master
+                             <img alt="" src="/Images/icon/10.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdateRank" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.rankname
+                             <img alt="" src="/Images/icon/rank.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdateExpense" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Expense
+                             <img alt="" src="/Images/icon/exp.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdateMember" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Member
+                             <img alt="" src="/Images/icon/MemberIcon.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdateAgentForm" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname
+                             <img alt="" src="/Images/icon/70.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/UpdateBond" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.custname
+                             <img alt="" src="/Images/icon/71.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+              

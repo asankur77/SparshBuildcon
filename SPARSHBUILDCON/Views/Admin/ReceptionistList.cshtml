@@ -1,0 +1,314 @@
+﻿@using SPARSHBUILDCON.Models
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "ReceptionistList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var date = DateTime.Now.Date;
+    var model = db.DailyVisitors.ToList();
+    var a = 1;
+}
+<style>
+
+    #snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #333; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+}
+
+
+#snackbar.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
+   However, delay the fade out process for 2.5 seconds */
+   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+   animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+
+@@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+    @@keyframes scale {
+        from {
+            transform: scale(1.2);           
+            opacity: 0;
+           
+        }
+
+        to {
+            transform: scale(1);
+           
+            opacity: 1;
+        }
+    }
+
+
+    .modal-content {
+        visibility: visible;
+        -webkit-animation: scale 1s;
+        animation: scale 0.5s;
+    }
+
+    #myModal {
+        background-color: rgba(0,0,0,0.2);
+        border: none;
+        
+        margin-top:-50px;
+    }
+
+    thead > tr > th {
+        text-align: center;
+    }
+
+    tbody > tr > td {
+        text-align: center;
+    }
+</style>
+<script>
+    var global;
+    $(function () {
+        
+        $(".click").on("click", function () {
+            debugger;
+            var id = $(this).val(), array = id.split('+');
+            $.get("/admin/VehicleApproveCancel", { RequestToken: array[1], status: array[0],Recogniser:"Active" }, function (d) {
+                debugger;
+                var btnname, color, snackbg, snackname;
+                if (d != null) {
+                    var token;
+                    (d == 0) ? token = 1 : token = 0;
+                    if (d == "0") {
+                        btnname = "Activate";
+                        color = "#8eb252";
+                    }
+                    else {
+                        btnname = "Deactivate";
+                        color = "#c71d1d";
+                        
+                        
+                    }
+                    if (token == "0") {
+                        
+                        snackname = "Activated";
+                        snackbg = "#8eb252";
+                    }
+                    else {
+                       
+                        snackname = "Deactivated";
+                        snackbg = "#c71d1d";
+
+                    }
+                    $("#btn").val(d +"+"+ array[1])
+                    .html(btnname)
+                    .css("background-color", color);
+                    var x = document.getElementById("snackbar");
+                    x.style = "background-color:" + snackbg + ";font-size:16px;font-weight:bold";
+                    x.innerHTML = snackname;
+                    x.className = "show";
+                    setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+                    
+                }
+            });
+        });
+
+        //Modal open with values
+         $(".update").on('click', function () {
+             var id = $(this).attr("id"), array = id.split('+');
+             $.get("/admin/VehicleApproveCancel", { RequestToken: array[0], Recogniser: "getDetail" }, function (D) {
+                 debugger;
+                 var d=JSON.parse(D.replace('\///"/g','"'))
+                 if (d != null) {
+                     $("#ReceptionistId").val(d.ReceptionistId);
+                     $('#ReceptionistName').val(d.ReceptionistName);
+                     $('#MobileNo').val(d.MobileNo);
+                     $('#EmailId').val(d.EmailId);
+                     $('#Address').val(d.Address);
+                     $('#myModal').modal();
+                 }
+             });
+
+
+         });
+
+        });
+
+</script>
+
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Reception List</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Vehicle</li>
+            </ol>
+        </div>
+         <div class="row">
+            <div class="col-12 card">
+                <div class="card-header">
+                     <span style="color: #808080"><i class="	fa fa-hand-o-right" style="font-size: 17px; color: red;"></i>&nbsp;&nbsp;Hello Mr. Admin,you can &nbsp;&nbsp;<kbd style="font-size: 15px; background-color: #c71d1d">&nbsp;Deactive&nbsp;</kbd>&nbsp;&nbsp; , &nbsp;&nbsp;<kbd style="font-size: 15px; background-color: #8eb252">&nbsp;Activate&nbsp;</kbd> &nbsp;&nbsp;and &nbsp;&nbsp;<kbd style="font-size: 15px; background-color:#2f9fe0">&nbsp;Update&nbsp;</kbd>&nbsp;&nbsp;this receptionist list.</span>
+                </div>
+                 @if (model.Count() > 0)
+                 {
+            
+                    <div class="card-body">
+                        <div class="table-responsive">
+
+                            <table class="table card-table table-vcenter text-nowrap table-primary">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                            <th>Sr No.</th>
+                                            <th>Receptionist Id</th>
+                                            <th>Receptionist Name</th>
+                                            <th>User Name</th>
+                                            <th>Password</th>
+                                            <th>Office Code</th>
+                                            <th>Created By</th>
+                                            <th>Created Date</th>
+                                            <th>Mobile No.</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in model)
+                                        {
+                                            <tr>
+                                                <td><span style="background-color: #08B0AE; color: white; padding-bottom: 4px; padding-top: 4px; padding-left: 8px; padding-right: 8px; border-radius: 50%;">@a</span></td>
+                                                <td style="font-weight: bold">@item.ReceptionistId</td>
+                                                <td style="font-weight: bold">@item.ReceptionistName</td>
+                                                <td>@item.UserName</td>
+                                                <td>@item.Password.ToString().Substring(0, 1) *** @item.Password.ToString().Substring(3)</td>
+                                                <td>@item.OfficeCode</td>
+                                                <td>@item.CreaderBy</td>
+                                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                                <td><kbd style="font-size: 16px">@item.MobileNo</kbd></td>
+                                                                                               
+                                                <td>
+                                                    @if (item.Status != "0")
+                                                    {
+                                                    <button class="btn btn-success btn-sm click" style="font-weight:bold;background-color:#c71d1d" id="btn" value="@item.Status+@item.ReceptionistId" data-placement="bottom">Deactivate</button>                                                  
+                                                    }
+                                                    else
+                                                    {
+                                                    <button class="btn btn-success btn-sm click" style="font-weight:bold;background-color:#8eb252" id="btn" value="@item.Status+@item.ReceptionistId" data-placement="bottom">Activate</button>                                                  
+                                                    }
+                                                    <button class="btn btn-info btn-sm update" style="font-weight:bold" id="@item.ReceptionistId+update">Update</button>
+                                                </td>
+                                            </tr>@*
+                                                  <tr  style="display:none;">
+                                                      <td style="font-weight:bold">ReceptionistId :</td>
+                                                      <td >@item.ReceptionistId</td>
+                                                      <td style="font-weight:bold">Email Id :</td>
+                                                                  <td>@item.EmailId</td>
+                                                      <td style="font-weight:bold">Remark :</td>
+                                                                  <td>@item.Remark</td>
+
+                                                              </tr>*@
+
+                                                    a++;
+                                        }
+
+                                    </tbody>
+                                </table>
+
+
+
+                            </div>
+
+                        </div>
+                 }
+
+                 else
+                 {
+                        <br />
+            
+            <div class="row">
+              
+             <br />
+            <br />
+            </div>
+        <div class="row">
+      
+            <div class="col-md-2" ></div>
+            <div class="col-md-8">
+                
+                <span style=""><img src="~/Photo/odd.png" style="width:20%;float:left" class="img-responsive"/></span><span style="float:left;margin-top:38px;margin-left:37px;font-size:30px;font-weight:bold">Not Availiable</span><span><img src="~/Photo/search.png" style="width:20%;"  class="img-responsive"/></span>
+            </div>
+            <div class="col-md-2">
+                
+                </div>
+                  
+            </div>
+        
+        
+                 }
+
+                    </div>
+                </div>
+             </div>
+        </div>
+
+<div id="myModal" style="margin-top: 150px; border: 0px;" class="modal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <form method="post">
+        <div class="modal-content" id="" style="border: 0px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" style="color: #2f9fe0;">&times;</button>
+                <h4 class="modal-title" style="color: #2f9fe0;">Receptionist Detail...</h4>
+            </div>
+            <div class="modal-body">
+                
+                <label>Receptionist Id :</label>
+                <input type="text" style="color: #2f9fe0;" name="ReceptionistId" id="ReceptionistId" class="form-control" readonly="true" />
+
+                <label>Receptionist Name :</label>
+                <input type="text" style="color: #2f9fe0;" name="ReceptionistName" id="ReceptionistName" class="form-control"  />
+
+                <label>Mobile Number :</label>
+                <input type="text" style="color: #2f9fe0;" name="MobileNo" id="MobileNo" class="form-control"  />
+
+                <label>Email Id :</label>
+                <input type="text" style="color: #2f9fe0;" name="EmailId" id="EmailId" class="form-control"  />
+
+                <label>Address :</label>
+                   <input type="text" style="color: #2f9fe0;" name="Address" id="Address" class="form-control"  />
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="background-color: #2f9fe0; color: white;">Close</button>
+                <button type="submit" class="btn btn-warning pull-right bg-warning" style="background-color: #2f9fe0; color: white;">Save Update</button>
+            </div>
+        </div>
+            </form>
+
+    </div>
+</div>
+<div id="snackbar">Some text some message..</div>

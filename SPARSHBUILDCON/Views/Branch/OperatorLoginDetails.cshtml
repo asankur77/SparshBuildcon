@@ -1,0 +1,180 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.operatorlogin_detail>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    ViewBag.Title = "OperatorLoginDetails";
+    var a = 0;
+}
+
+ <link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#iid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteOpId",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.OperatorName, value: item.OperatorId };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<div class="my-3 my-md-5">
+    <div class="container"  id="divid1">
+        <div class="page-header" id="2">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Collection Point Login-Detail</a></li>
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Collection Point Login-Detail</h3>
+
+                    </div>
+ 
+                    <div class="card-body">
+                                             @using (@Html.BeginForm())
+                                             {
+                        <div class="row"  id="hide">
+                            <div class="col-md-12 col-lg-12">
+                                <form method="post">
+                                    <div class="form-group">
+
+                                        <label class="form-label">Enter Collection Point ID or Name</label>
+                                        <div class="input-group">
+                                          <input type="text" id="iid" class="form-control" required name="iid">
+                                            <span class="input-group-append">
+                                              <button id="submit" name="command" value="Search" class="btn btn-primary pull-right" type="submit" >View</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                                             }
+                    </div>
+                
+                    <div class="card-body">
+                                	<div class="table-responsive">
+									<table  class="table table-striped table-bordered" style="width:100%">
+									    @using (Html.BeginForm())
+             {
+                 foreach (var item in Model)
+                 {
+                     if (a == 0)
+                     {
+                            <tr >
+                                <th  colspan="3" style="text-align:center;"><b>Collection Point Login-Detail</b></th>
+                                <th   style="text-align:center;"><b>  <input type="hidden" value="@item.iid" id="id" name="id"></b></th> 
+                            </tr>
+         
+    <tr>
+        <th style="width:10%;text-align:center;">
+           <label id="sn"><b>S.N.</b></label>
+            </th>
+        <th style="width:30%;text-align:center;">
+           <label id="cc"><b>Collection Point Id</b></label>
+            </th>
+      
+        <th style="width:30%;text-align:center;">
+           <label id="intime"><b>Login Time</b></label>
+            </th>
+         <th style="width:30%;text-align:center;">
+           <label id="dd"><b>Logout Time</b></label>
+            </th>
+ 
+      
+    </tr>
+                     }
+                     a = a + 1;
+
+
+    <tr style="text-align:center;">
+        <td>
+            @a
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.iid)
+        </td>
+       
+        
+       <td>
+            
+            @Convert.ToDateTime(item.indatetime).ToString("dd/MM/yyy:HH:mm:ss")
+        </td>
+         <td>
+            
+            @Convert.ToDateTime(item.outdatetime).ToString("dd/MM/yyy:HH:mm:ss")
+        </td>
+     
+       
+             
+    </tr>
+                   
+                 }
+
+             }
+    
+    
+   
+</table>
+             @if (a > 0)
+             {
+                             <a href="@Url.Action("PrintLoginDetails")" target="_blank">Get Report In PDF</a>
+             }
+									
+								</div>
+                                </div>
+
+                </div>
+
+                
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,672 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+   
+    var logo=string.Empty;
+    var companyname = string.Empty;
+    var incometype = string.Empty;
+    UsersContext db=new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var r = db.CompanyInfos.Single(ci => ci.AdminId == User.Identity.Name);
+    var validitydays = r.duedate.Subtract(DateTime.Now.Date).TotalDays;
+    var f1 = db.VFormatTabs.Single(f => f.Id == 1);
+    var f2 = db.VFormatTabs.Single(f => f.Id == 2);
+    var f3 = db.VFormatTabs.Single(f => f.Id == 3);
+    
+         logo = r.CompanyLogo;
+         companyname = r.CompanyName;
+         incometype = r.IncomeType;
+}
+
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="msapplication-TileColor" content="#0061da">
+    <meta name="theme-color" content="#1643a3">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+    <title>@r.CompanyName</title>
+    <link rel="stylesheet" href="~/Content/Admin/assets/fonts/fonts/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+    <script src="~/Content/Admin/assets/js/vendors/bootstrap.bundle.min.js"></script>
+
+    <!-- Dashboard Css -->
+    <link href="~/Content/Admin/assets/css/dashboard.css" rel="stylesheet" />
+    <link href="~/Content/Admin/assets/plugins/charts-c3/c3-chart.css" rel="stylesheet" />
+    <link href="~/Content/Admin/assets/plugins/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/Admin/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <link href="~/Content/Admin/assets/plugins/fileuploads/css/dropify.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Admin/assets/plugins/iconfonts/plugin.css" rel="stylesheet" />
+    <link href="~/Content/Admin/assets/plugins/iconfonts/plugin.css" rel="stylesheet" />
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <!--Menu Content End-->
+    <link rel="stylesheet" href="~/Content/jquery-ui.css" />
+    <script type="text/javascript" src="~/Scripts/js/plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/jquery/jquery-ui.min.js"></script>
+    @*<script type="text/javascript" src="~/Scripts/js/plugins/bootstrap/bootstrap.min.js"></script>*@
+    <script type="text/javascript" src="~/Scripts/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;libraries=places"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/fancybox/jquery.fancybox.pack.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/js/plugins/rickshaw/d3.v3.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/rickshaw/rickshaw.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/flot/jquery.flot.js"></script>
+    <script type='text/javascript' src='~/Scripts/js/plugins/flot/jquery.flot.pie.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/plugins/flot/jquery.flot.resize.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/plugins/knob/jquery.knob.js'></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/plugins/daterangepicker/daterangepicker.js"></script>
+    <script type='text/javascript' src='~/Scripts/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/plugins/jvectormap/jquery-jvectormap-europe-mill-en.js'></script>
+
+    <script type="text/javascript" src="~/Scripts/js/plugins.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/demo.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/maps.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/charts.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/actions.js"></script>
+
+    <link rel="stylesheet" href="~/Content/width.css" />
+    <link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+    <script src="~/Content/datepicker/jquery.plugin.js"></script>
+    <script src="~/Content/datepicker/jquery.datepick.js"></script>
+    <style>
+        .admin-navbar .nav-link {
+            border: 0;
+            color: inherit;
+            color: #898989;
+            transition: .3s border-color;
+            font-weight: 500;
+            padding: 1rem 0.15rem;
+            font-size: 13px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right-width: 0;
+            text-transform: uppercase;
+        }
+    </style>
+    <style type="text/css">
+        #mask {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 9000;
+            background-color: #000;
+            display: none;
+        }
+
+        #boxes .window {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 400px;
+            height: 400px;
+            display: none;
+            z-index: 9999;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        #boxes #dialog {
+            top: 50px;
+            width: 500px;
+            height: 400px;
+            padding: 10px;
+            background-color: #ffffff;
+            font-family: 'Segoe UI Light',sans-serif;
+            font-size: 15pt;
+        }
+
+        #popupfoot {
+            font-size: 16pt;
+            position: absolute;
+            bottom: 25px;
+            width: 200px;
+            left: 75px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page">
+        <div class="page-main">
+            <div class="header py-1">
+                <div class="container">
+                    <div class="d-flex">
+                        <div style="float: left;">
+                            <div style="float: left;">
+                                <a href="~/Admin/Index" class="header-brand">
+                                    <img src="@Url.Content(r.CompanyLogo)" style="height:80px;width:80px;"/ >
+                                </a>
+                            </div>
+                            <div style="float: left; margin-left: 20px; margin-top: 20px;">
+                                <h2 style="color: white;"><b>@r.CompanyName </b></h2>
+                            </div>
+                        </div>
+
+                        <div class=" ">
+                        </div>
+                        <div class="d-flex order-lg-2 ml-auto">
+
+
+                            <div class="dropdown d-none d-md-flex mt-1">
+
+                                <h4 style="color: white"><b>Hello ,@User.Identity.Name</b></h4>
+
+
+                            </div>
+
+
+                            <div class="dropdown mt-1">
+                                <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
+                                    <img class="avatar avatar-md brround" src="@Url.Content(r.CompanyLogo)" />
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow ">
+
+                                    <a class="dropdown-item" href="#">
+                                        <i class="dropdown-icon mdi mdi-account-outline "></i>Profile
+                                    </a>
+
+                                    <a class="dropdown-item" href="~/Admin/ChangePassword">
+                                        <i class="dropdown-icon mdi mdi-compass-outline"></i>Change Password
+                                    </a>
+                                    <a class="dropdown-item" href="~/Admin/Logout">
+                                        <i class="dropdown-icon mdi  mdi-logout-variant"></i>Sign out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
+                            <span class="header-toggler-icon"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="admin-navbar" id="headerMenuCollapse">
+                <div class="container-fluid">
+                    <ul class="nav" id="myHeader">
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Admin/Index">
+                                <i class="fa fa-home"></i>
+                                <span>Home</span>
+                            </a></li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Admin/Create"><span>Create</span></a>
+                            <div class="sub-item" style="overflow-y: scroll; height: 350px">
+                                <ul>
+
+                                    <li>
+                                        <a href="~/Admin/CreateBranch">Branch </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/CreateOperator">Collection Point</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="~/Admin/CreateHr">HR</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/CreatePlan">Project Category</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/ProjectTerm">New Project</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/CreatePhase">New Phase</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/CreateBlock">New Block</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/CreateRank">Level</a>
+                                    </li>
+                                      <li>
+                                        <a href="~/Admin/pinwallet">Pin</a>
+                                    </li>
+                                     <li>
+                                        <a href="~/Admin/ocreatepackage">Package</a>
+                                    </li>
+                                    @*<li>
+                                        <a href="~/Admin/FillCommission">Fill Commission</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/FillSpotCommission">Fill Spot Commission</a>
+                                    </li>*@
+                                    <li>
+                                        <a href="~/Admin/AddHead">Expense Head</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/CreateRelation">Relation</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/SetTdsandLateFine">Set TDS and Late Fine</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/AddExpense">Add Expense</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/AddBonus">Add Bonus</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/AddState">Add State/City</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/Addbank">Add Bank</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/createid">ID Card(One)</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/CreateAllId">ID Card(All)</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/LaunchScheme">Launch Scheme</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Admin/Create"><span>Add</span></a>
+                            <div class="sub-item" style="overflow-y: scroll;">
+                                <ul>
+                                    <li><a href="~/Admin/Media_Centre">Add Gallery</a></li>
+                                    <li><a href="~/Admin/popup">Add Popup</a></li>
+                                    <li><a href="~/Admin/eventupload">Add Video</a>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="#"><span>Bulk</span></a>
+                            <div class="sub-item" style="overflow-y:scroll">
+                                <ul>
+                                    <li><a href="~/Admin/BulkTopup">Top Up</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="#"><span>Transfer</span></a>
+                            <div class="sub-item" style="overflow-y: scroll">
+                                <ul>
+                                    <li><a href="~/Admin/opinassigntomember">Transfer Pin to Member</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Admin/Vehicle"><span>Extra</span></a>
+                            <div class="sub-item">
+                                <ul>
+                                    <li>
+                                        <a href="~/Admin/AgentVehicleRequest">Vehicle Request</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="~/Admin/AgentVehicleRequestHistory">Vehicle Request History</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/ReceptionistList">Receptionist List</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/SendCredential">Receptionist Credentials</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="#"><span>Payout</span></a>
+                            <div class="sub-item">
+                                <ul>
+                                    @*<li>
+                                        <a href="~/Admin/SpotCommission">Spot Commission</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/DWSpotCommission">Datewise Spot Commission</a>
+                                    </li>*@
+                                    <li>
+                                        <a href="~/Admin/SLPReturn">SLP Return</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/GeneratePayout">Generate Payout</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/PayoutTransfer">Transfer Payout</a>
+                                    </li>
+                                </ul>
+                                <!-- row -->
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Admin/Duplicate"><span>Printing</span></a>
+                            <div class="sub-item">
+                                <ul>
+                                    <li>
+                                        <a href="~/Admin/AgreementForm">Agreement Form </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/AgentWelcomeLetter">@mr.agentname Welcome Letter</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="~/Admin/WelcomeLetter">Customer Welcome Letter</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/AllotMentLetter">Customer Allotment Letter</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/DuplicateBond">Customer Certificate</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/DuplicateReceipt">Renewal Receipt</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="~/Admin/ChequeDuplicateRenewalReceipt">Pending Receipt </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/ChequeDuplicateReceipt">Pending Certificate</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/DupliSpotCommission">Spot Commission </a>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Admin/Registry"><span>Registry</span></a>
+                            <div class="sub-item">
+                                <ul>
+                                    <li>
+                                        <a href="~/Admin/PlotRegistry">Plot Registry </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/PreSurrender">Pre Surrender </a>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub ">
+                            <a class="nav-link " href="~/Admin/Update"><span>Update</span></a>
+                            <div class="sub-item" style="overflow-y: scroll; height: 350px">
+                                <ul>
+                                    <li>
+                                        <a href="~/Admin/UpdateBranch">Branch</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/UpdateOperator">Collection Point </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/UpdateHR">HR</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/UpdatePlan">Project Category</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/UpdateBlock">Block</a>
+                                    </li>
+                                    @*<li>
+                                        <a href="~/Admin/UpdatePlotLimit">Edit Plot Limit</a>
+                                    </li>*@
+                                    <li>
+                                        <a href="~/Admin/EMIMaster">EMI Master</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/UpdateRank">Level</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/UpdateExpense">Expense</a>
+                                    </li>
+                                    @* <li>
+                                        <a href="~/Admin/UpdateMember">Member</a>
+                                    </li>*@
+                                    <li>
+                                        <a href="~/Admin/UpdateAgentForm">Associate</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/UpdateBond">Customer</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Admin/CompleteReport"><span>Complete Report</span></a>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Admin/BranchReport"><span>Branch Reports</span></a>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Admin/OperatorReport"><span>Operator Report</span></a>
+
+
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Admin/DeleteReciept"><span>Setting</span></a>
+                            <div class="sub-item" style="overflow-y: scroll; height: 350px">
+                                <ul>
+                                    <li>
+                                        <a href="~/Admin/ApproveDisapproveLeave">Employee Leave Request</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/Loginouttime">Set Log In-Out Time </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/ChangeMacAddress">Change Mac Address</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/Approvewebsite">Approve PC Login </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/AllowRenewal">Permission of Renewal </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/Renewalsms">Send Renewal Sms </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/VoucherFormat">Active-Deactive Voucher Format</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/ActiveDeactivePlan">Active-Deactive Project </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/BlockUnblockBranch">Block-UnBlock Branch </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/BlockUnblockOperator">Block-UnBlock Collection Point</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/BlockUnblockHR">Block-UnBlock HR</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/BlockUnblockBroker">Block-Unblock Associate </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/BlockUnblockCustomer">Block-Unblock Customer</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="~/Admin/DeactiveList">Customer Deactive List</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/ResetBranch">Reset Panel-Wise Password </a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/ResetAll">Reset All Password</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/AgentPrmote">Promote Associate</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/Approvecheque">Update Customer</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/SendSMS">Send SMS for Due RD Collection</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/Updateformdate">Set Business Date</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link" href="~/Admin/DeleteReciept"><span>Delete</span></a>
+                            <div class="sub-item">
+                                <ul>
+                                    <li>
+                                        <a href="~/Admin/DeleteReciept">Renewal</a>
+                                    </li>
+                                    <li>
+                                        <a href="~/Admin/DeleteExpanse">Expanse </a>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+                            <!-- dropdown-menu -->
+                        </li>
+                        <li class="nav-item with-sub">
+                            <a class="nav-link icon-logout" href="~/Admin/Logout"><span>Logout</span></a>
+
+                            <!-- dropdown-menu -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            @RenderBody()
+
+            @if (validitydays <= 7)
+            {
+              
+                <div id="boxes">
+                    <div id="dialog" class="window">
+                        <img src="~/Images/icon/Ring.png" style="height: 40px; width: 40px;" />
+                       
+                        <h2 style="color: red; font-weight: bold;">Reminder!</h2>
+                        <h2 style="color: red; margin-top: 20px; font-size: 20px;text-align:justify; font-family: 'Bodoni MT'">Your Next Payment Due Date is @r.duedate.ToString("dd-MMMM-yyyy") .
+                            <br /> Please make payemnt of Rs. @r.emiamount  before Due Date to continue services.Bank-Details given below.</h2>
+                        
+                        @if (r.IncomeType != null)
+                        {
+                            var a = r.IncomeType.Split(',');
+                            <ul style="list-style-type: none; border: 1px solid green; padding: 5px; text-align: center; border-radius: 5px;">
+                                <li style="color: green; font-size: 20px; font-family: 'Bodoni MT'">A/c Holder Name: @a[0]</li>
+                                <li style="color: green; font-size: 20px; font-family: 'Bodoni MT'">Bank Name: @a[1]</li>
+                                <li style="color: green; font-size: 20px; font-family: 'Bodoni MT'">A/c No: @a[2]</li>
+                                <li style="color: green; font-size: 20px; font-family: 'Bodoni MT'">IFSC Code: @a[3]</li>
+                            </ul>
+                            <ul style="list-style-type: none; border: 1px solid blue; padding: 2px; text-align: center; border-radius: 5px;">
+                                <li style="color: blue; font-size: 20px; font-family: 'Bodoni MT'">UPI Id: @a[4]</li>
+                            </ul>
+                        }
+                    </div>
+                    <div id="mask"></div>
+                </div>
+            }
+
+        </div>
+
+        <!--footer-->
+        <footer class="footer">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+                        Copyright © @r.RegDate.Year <a href="#">@r.CompanyName</a>.
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End Footer-->
+    </div>
+
+    <!-- Back to top -->
+    <a href="#top" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
+
+    <script src="~/Content/Admin/assets/js/vendors/bootstrap.bundle.min.js"></script>
+
+</body>
+
+<!-- Mirrored from www.spruko.com/demo/viboon/html/Viboon_teal/Horizontal-Light/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Dec 2018 11:43:23 GMT -->
+</html>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var id = '#dialog';
+
+        //Get the screen height and width
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+
+        //Set heigth and width to mask to fill up the whole screen
+        $('#mask').css({ 'width': maskWidth, 'height': maskHeight });
+
+        //transition effect
+        $('#mask').fadeIn(500);
+        $('#mask').fadeTo("slow", 0.9);
+
+        //Get the window height and width
+        var winH = $(window).height();
+        var winW = $(window).width();
+
+        //Set the popup window to center
+        $(id).css('top', winH / 2 - $(id).height() / 2);
+        $(id).css('left', winW / 2 - $(id).width() / 2);
+
+        //transition effect
+        $(id).fadeIn(2000);
+
+        //if close button is clicked
+        $('.window .close').click(function (e) {
+            //Cancel the link behavior
+            e.preventDefault();
+
+            $('#mask').hide();
+            $('.window').hide();
+        });
+
+        //if mask is clicked
+        $('#mask').click(function () {
+            $(this).hide();
+            $('.window').hide();
+        });
+
+    });
+</script>
+
+
+
+
+
+
+
+
+

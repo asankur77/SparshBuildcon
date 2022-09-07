@@ -1,0 +1,255 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+    ViewBag.Title = "FullMaturity";
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+        
+        
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#BondId").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Branch/AutoCompleteBondId",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.newbondid, value: item.newbondid };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<script type="text/javascript">
+
+    ///checkin Renewel-Status Start here ////
+
+    function check(clicked_id) {
+        $("#" + clicked_id).click(function () {
+
+            var newbondid = $("#BondId").val();
+            var url = '@Url.Action("CheckMaturity","Branch")';
+            $.get(url, { newbondid: newbondid }, function data(t) {
+                for (i = 0; i < t.length; i++) {
+                    if (t[i].type == 1) {
+
+                        $("#rdmsg").hide();
+                        $("#pd").show();
+                        $("#rd").show();
+
+                        $("#lblname").text(t[i].name)
+                        $("#lblnewbondid").text(t[i].newbondid)
+                        $("#lblintid").text(t[i].newintroducerid)
+                        $("#lbltotalcoll").text(t[i].totalcon)
+                        $("#lblma").text(t[i].mamount)
+                        $("#newbondid").val(t[i].newbondid)
+                    }
+                    else if (t[i].type == 2) {
+                        $("#rd").hide();
+                        $("#pd").hide();
+                        $("#rdmsg").show();
+                        $("#lblbondid").text(t[i].newbondid)
+                        $("#lblmsg").text(t[i].msg)
+
+                    }
+                }
+            });
+
+        });
+
+    }
+
+
+
+</script>
+
+
+
+<div class="page-content">
+
+                <div class="container">
+
+                    <div class="page-toolbar">
+                        
+                        <div class="page-toolbar-block">
+                            <div class="page-toolbar-title">Pay Full Maturity</div>
+                            <div class="page-toolbar-subtitle"> </div>
+                        </div>
+                        
+                        <div class="page-toolbar-block pull-right">
+                            
+                        </div>           
+                        
+                    </div>  
+
+                           <div class="row" >
+                                @using (Html.BeginForm())
+               {   
+                        <div class="col-md-6" style="width:98%">
+                            
+                            <div class="block" >
+                               
+                                <div class="block-content controls">
+                                   <div class="row-form">  
+                                         
+                                    <div class="col-md-9">
+                                      <div class="input-group">
+                                    <span class="input-group-addon"><label class="width">@mr.custname Id or Name</label></span>  
+                                    <input type="text"  class="form-control"  name="newbondid" id="BondId" ></div>
+                                   
+                                        </div>
+                                   </div>
+                                   <div class="page-toolbar-block pull-right">
+                            <div class="widget-info widget-from">
+                                                          
+                                <button type="button"  class="btn btn-primary" onclick="check(this.id)" id="search"><i class="fa fa-search"></i> Search</button>                            
+                               
+                            </div>
+                        </div>  
+                                     
+                                 
+                                </div>
+                                
+                            </div>
+                            </div>
+                                }
+                               <div class="col-md-6" style="width:98%">
+              <table id="rdmsg" border="1" style="margin-left:1%; margin-right:1px; width:95%;display:none;">
+   
+            <tr >
+                                <th  colspan="2" style="font-size:large;text-align:center;height:50px;">@mr.custname Status
+
+                                </th>
+                            
+                            </tr>
+            <tr style="font-size:medium;height:40px;">
+        
+                          <th style="width:20%;text-align:center;">
+           <label id="bid"><b>@mr.custname Id</b></label>
+            </th>
+        
+                           <th style="width:80%;text-align:center;">
+           <label id="msg"><b>Message</b></label>
+            </th>
+        
+ 
+      
+    </tr>
+            <tr style="text-align:center;">
+        <td>
+           <label id="lblbondid"></label>
+        </td>
+        <td>
+           <label id="lblmsg"></label>
+        </td>
+       
+    </tr>
+
+            </table>
+                                  
+         <table id="rd" border="1" style="margin-left:1%; margin-right:1px; width:95%;display:none;">
+   
+         <tr >
+                                <th  colspan="6" style="text-align:center;font-size:large;height:50px;"><b>@mr.custname-Detail </b>
+
+                                </th>
+                            
+                            </tr>
+         <tr style="font-size:medium;height:40px;">
+        <th style="width:15%;text-align:center;">
+           <label id="sn"><b>Name</b></label>
+            </th>
+        <th style="width:15%;text-align:center;">
+           <label id="cc"><b>@mr.custname Id</b></label>
+            </th>
+        <th style="width:15%;text-align:center;">
+           <label id="pp "><b>Introducer Id</b></label>
+            </th>
+             <th style="width:15%;text-align:center;">
+           <label id="iii"><b>Total Collection</b></label>
+            </th>
+        <th style="width:15%;text-align:center;">
+           <label id="dd"><b>Maturity Amount</b></label>
+            </th>
+          
+    </tr>
+         <tr style="text-align:center;">
+        <td>
+            <label id="lblname"></label>
+        </td>
+        <td>
+          <label id="lblnewbondid"></label>
+        </td>
+        <td>
+             <label id="lblintid"></label>
+        </td>
+        <td>
+             <label id="lbltotalcoll"></label>
+        </td>
+        <td>
+            <label id="lblma"></label>
+        </td>
+         
+     
+       
+             
+    </tr>
+         
+        </table> 
+        <table id="pd" style="margin-left:1%; margin-right:1px; width:95%;display:none;">
+
+        <tr>
+          <td>
+                 @using (Html.BeginForm())
+               {   
+              <div class="row">  
+                                        
+                        <input type="hidden" class="form-control" name="newbondid2" id="newbondid" />
+
+                                    <div class="row-form">
+                                     <div class="col-md-9">
+                                     <div style="margin-left:46%;">
+                                     <div class="widget-info widget-from" >
+                                     <button id="submit" type="submit" class="btn btn-primary" onclick="return alert('Are you sure to Pay Maturity?')">Pay Maturity</button>  
+                                     
+                                 
+                            </div>        
+                        </div>
+           </div>      </div>
+
+                                
+              </div>
+                 }
+              </td>
+          </tr>
+      
+       </table>
+                                     <div style="float:left;">
+                                    <p style="color:maroon;"><b> @ViewBag.cpy</b></p>
+                                    @if (ViewBag.cpy == "Maturity Done Successfully..")
+                                    {
+                                     @Html.ActionLink("Print Maturity Form", "PrintMaturityForm", new { newbondid =ViewData["newbondid"] },new {onclick = "return confirm('Are you sure to Print Maturity Form?'),target='_blank'"})
+                                    }
+                                         </div>
+ 
+
+
+                        </div> 
+                               
+                                       
+                        
+                    </div>
+  
+    </div>
+    </div>

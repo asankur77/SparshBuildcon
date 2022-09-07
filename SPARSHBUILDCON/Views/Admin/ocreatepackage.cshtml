@@ -1,0 +1,154 @@
+﻿@using SPARSHBUILDCON.Models
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "ocreatepackage";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var list = db.package_tabs.Where(x=>x.status==1).ToList();
+    var b=1;
+}
+
+
+
+<div class="main-body">
+    <div class="page-wrapper">
+         <br /><br /><br />
+     @*   <div class="page-header">
+            <div class="page-header-title">
+                <h4>Create Package</h4>
+                <span></span>
+            </div>
+            <div class="page-header-breadcrumb">
+                <ul class="breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">
+                            <i class="fa fa-university"></i>
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item"><a href="~/Operator/omember_list">Create Package</a>
+                    </li>
+                </ul>
+            </div>
+        </div>*@
+
+           <div class="page-body">
+             <div class="row">
+                 <div class="col-md-1"></div>
+                <div class="col-sm-10 col-md-10">
+                    <div class="card">
+                        <div class="panel-heading"><h3>Create Package</h3></div>
+                        <br />
+                            @using(Html.BeginForm("ocreatepackage", "Admin", FormMethod.Post))
+                {
+                    <div class="row" style="margin-left: 2%; margin-right: 2%">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Package Name</label>
+                                <input type="text" required="required" name="packagename" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                <label class="control-label"style="font-weight:bold; color:black" >Package amount</label>
+                                <input type="text" required="required" name="packageamount" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row" style="margin-left: 2%; margin-right: 2%">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                <label class="control-label"style="font-weight:bold; color:black">P.V.</label>
+                                <input type="text" required="required" name="bv" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Capping</label>
+                                <input type="text" required="required" name="capping" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                   <center> <button type="submit" class="btn btn-primary">Add</button></center>
+                    <div class="clearfix"></div>
+                                <br />
+                }
+                        </div>
+                    </div>
+                 <div class="col-md-1"></div>
+
+                 </div>
+
+               @if(list.Count > 0)
+{
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10 col-md-offset-1">
+        <div class="card">
+            <center> <h4>Package Detail (@list.Count)</h4></center>
+            <div class="card-content table-responsive" >
+                <table class="table" style="margin-left:1%;margin-right:1%">
+                    <thead class="text-primary">
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Package Id</th>
+                            <th>Package Name</th>
+                            <th>Package Amount</th>
+                            <th>Package P.V.</th>
+                            <th>Create By </th>
+                            <th>Capping</th>
+                           
+                           <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @foreach(var item in list)
+                        {
+                           using(Html.BeginForm())
+                           {
+                               <input type="hidden" name="id" value="@item.id" />
+                        <tr>
+                            
+                            <td>@b</td>
+                            <td>@item.packageid</td>
+                            <td><input type="text" name="packagename" value="@item.packagename" /></td>
+                            <td><input type="text" name="packageamount" value="@item.packageamount" /></td>
+                             <td><input type="text" name="packagepv" value="@item.bv" /></td>
+                            <td><input type="text" name="createby" value="@item.createby" /></td>
+                            <td><input type="text" name="capping" value="@item.capping" /></td>
+                            
+                            <td><button type="submit" name="command" value="update" class="btn btn-info">Update</button></td>
+                        </tr>
+                       }
+                            b++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+
+</div>
+}
+
+               </div>
+</div>
+    </div>
+
+@if (ViewData["alert"] != null)
+{ 
+<script>
+    var alert1 = '@ViewData["alert"]';
+    alert(alert1);
+</script>
+}
+
+
+
+
+
+
+
+

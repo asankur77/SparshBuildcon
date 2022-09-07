@@ -1,0 +1,84 @@
+﻿@model SPARSHBUILDCON.Models.ProTerm
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db=new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var plist = db.Plans.Where(p => p.status == 1).ToList();
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "ProjectTerm";
+}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Create New @mr.planname</h4>
+         
+            
+        </div>
+          @using (Html.BeginForm())
+                  {
+        <div class="row">
+            <div class="col-12 card">
+                 <div class="card-header">
+                        <h3 class="card-title">Create New @mr.planname</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                           
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">@mr.planname Category</label>
+                                 <select class="form-control" id="projectname" name="projectid" required>
+                                            <option >Select @mr.planname</option>
+                                            @foreach (var p in plist)
+                                            {
+                                            
+                                                <option value="@p.Plancode">@p.Planname </option>
+                                            
+                                            }
+                                        </select>
+                                </div>
+
+                                </div>
+                             <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label class="form-label">Year</label>
+                                       <input type="text" class="form-control" name="term" id="term" required>
+                                </div>
+
+                                </div>
+                                                        
+                            	<div class="card-footer text-right">
+										<div class="d-flex">
+							            <button type="submit" class="btn btn-primary pull-right">Create @mr.planname</button>
+                                </div>
+                            </div>
+         
+                            <p style="color: maroon;"><b>@ViewBag.msg</b></p>
+                       
+                    </div>
+                        </div>
+            
+                
+            </div>
+        </div>
+                  }
+    </div>
+
+     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

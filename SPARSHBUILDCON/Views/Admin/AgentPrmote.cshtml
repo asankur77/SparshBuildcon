@@ -1,0 +1,174 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "AgentPrmote";
+}
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#intro").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteAgentid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.NewAgentId };
+                        }))
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#promoterank").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Operator/AutoCompleteRank",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.Rankshrtcut, value: item.Rankshrtcut };
+
+
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+
+
+<script>
+    function check(check_id) {
+
+        $("#" + check_id).mouseover(function () {
+            var intro = $("#" + check_id).val();
+            var url = '@Url.Action("SelectRankName", "Admin")';
+            $.get(url, { intro: intro }, function data(name1) {
+                $('#rank').val(name1[0].RankName)
+            });
+        });
+
+    }
+</script>
+
+
+
+<script>
+    function checkintrankadmin(check_id) {
+
+        $("#" + check_id).mouseover(function () {
+            var rank = $("#" + check_id).val();
+            var intcode = $("#intro").val();
+            var url = '@Url.Action("checkintrankadmin", "Admin")';
+            $.get(url, { intcode: intcode, rank: rank }, function data(d) {
+                for (var i = 0; i < d.length; i++) {
+
+
+                    if (d[i].type == 0) {
+                        $("#msg").text(d[i].msg)
+                    }
+                    else if (d[i].type == 1) {
+                        $("#msg").text('')
+                    }
+                }
+
+
+
+            });
+        });
+
+    }
+</script>
+
+<div class="my-3 my-md-5">
+					<div class="container">
+						<div class="page-header">
+							<h4 class="page-title">Promote @mr.agentname</h4>
+						
+						</div>
+						<div class="row">
+							<div class="col-12 card">
+							 @using (Html.BeginForm())
+                    {
+									<div class="card-header">
+									</div>
+									<div class="card-body">
+										<div class="row">
+											<div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label">Enter @mr.agentname Id</label>
+													   <input type="text" class="form-control"  onmouseover ="check(this.id)"  name="intro" id="intro"  required/>
+	</div>
+
+
+</div>
+                                            <div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label">Current @mr.rankname</label>
+													   <input type="text" id ="rank" name="rank" class="form-control" />
+	</div>
+
+
+</div>
+                                            <div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label">@mr.rankname To Promote</label>
+													<input type="text" id ="promoterank" name="promoterank"  onmouseover="checkintrankadmin(this.id)" class="form-control" required />
+	</div>
+
+
+</div>
+                                            </div>
+                                        </div>
+                                  <div class="card-footer text-right">
+										<div class="d-flex">
+                                                    <label id="msg"></label>
+										  <button type="submit" class="btn btn-primary">@mr.agentname Promote</button>   
+										</div>
+									</div>
+
+                    }
+                                </div>
+                            </div>
+                        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

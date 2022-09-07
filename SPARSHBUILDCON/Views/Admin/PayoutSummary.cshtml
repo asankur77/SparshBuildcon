@@ -1,0 +1,183 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Payout> 
+@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "PayoutSummary";
+    UsersContext db = new UsersContext();
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var a = 0;
+   
+    var totbinincome = 0.0;
+    var totdsiincome = 0.0;
+    var totroiincome = 0.0;
+    var totleaderincome = 0.0;
+    
+    var totadmin = 0.0;
+    var totalinocme = 0.0;
+    var totNetIncome = 0.0;
+
+    var sdateee = Convert.ToDateTime(ViewData["sdate"]);
+    var edateee = Convert.ToDateTime(ViewData["edate"]);
+    
+    
+}
+
+<script>
+    $(function () {
+        // Set 'Select All' to checked if all other boxes are already checked
+        $('#selectAll').prop('checked', $('.check').length == $('.check:checked').length);
+
+        // Add click function to 'Select All' to select all other boxes
+        $('#selectAll').click(function () {
+            $('.check').prop('checked', this.checked);
+        });
+
+        // Add click function to each child checkbox
+        $('.check').click(function () {
+            $('#selectAll').prop('checked', $('.check').length == $('.check:checked').length);
+        });
+    })
+</script>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+
+        <div class="card form-group" style="width: 100%;">
+            <div class="card-header" style="background-color: #03966d;" style="color: white;">
+                @ViewData["msg"]
+                <h5><i class="fa fa-ok-circle"></i><b style="font-weight: 800; text-transform: uppercase; color: white;">Payout Summary ( Duration: @Convert.ToDateTime(ViewData["sdate"]).ToString("dd/MM/yyyy") To  @Convert.ToDateTime(ViewData["edate"]).ToString("dd/MM/yyyy") )</b> </h5>
+            </div>
+            <div class="card form-group" style="min-height: 100px; margin-right: 2px;">
+
+                @using (Html.BeginForm("PayoutSummary", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "JavascriptFunction()" }))
+                {
+                    
+@*  @Html.ActionLink("Get Record in Pdf", "PrintPayoutSummary", new {edate=ViewData["edate"], month =ViewData["month"], year = ViewData["year"]} , new { onclick = "return confirm('Are you sure to Print?'); " , target="'_blank' " } )
+                          
+                    *@
+                    
+                    <table class="table table-resposive table-striped table-bordered" style="text-align: center; width: 100%;" id="myTable">
+
+                        @if (a == 0)
+                        {
+                            
+                            <tr>
+                                <td colspan="4">
+                                    <label style="color: green; font-weight: 800; text-transform: uppercase;">Net Payout Paid: @Model.Where(nt => nt.status == 1).Sum(o => o.NetIncome)</label></td>
+                                <td colspan="6">
+                                    <label style="color: red; font-weight: 800; text-transform: uppercase;">Net Payout Unpaid: @Model.Where(nt => nt.status == 0).Sum(o => o.NetIncome)</label></td>
+                                <td colspan="4">
+                                    <label style="color: #246daa; font-weight: 800; text-transform: uppercase;">Total Payout Amount: @Model.Sum(o => o.NetIncome)</label></td>
+
+                            </tr>
+                            <tr style="background-color: #03966d; color: white;">
+                                <td>
+                                    <label style="color: white; font-weight: 800;">S.N.</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Member Name</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Member Id</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Direct</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Binary</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">SLP</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Leadership</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Total</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Admin Fee</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">TDS</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Payout</label></td>
+                                 <td>
+                                    <label style="color: white; font-weight: 800;">Receipt</label></td>
+                                <td>
+                                    <label style="color: white; font-weight: 800;">Action</label></td>
+                               
+                                <td>
+                                    <input type="checkbox" id="selectAll" />All</td>
+
+                            </tr>
+                        }
+                        @foreach (var d in Model)
+                        {
+                            var rank = db.AgentDetails.Single(c => c.NewAgentId == d.Newid);
+                            var direct = db.AgentDetails.Where(c => c.spilid == d.Newid && c.Status == 1).Count();
+
+                            a = a + 1;
+                            DateTime edate = Convert.ToDateTime(d.Dayname);
+                            totbinincome = totbinincome + d.BinaryIncome;
+                            totdsiincome = totdsiincome + d.Directincome;
+                            totroiincome = totroiincome + d.Roiincome;
+                            totleaderincome = totleaderincome + d.LeadershipIncome;
+                            totadmin = totadmin + d.AdminFee;
+                            totalinocme = totalinocme + d.TotalIncome;
+                            totNetIncome = totNetIncome + d.NetIncome;
+                            <tr>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@a</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.Name</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.Newid</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.Directincome</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.BinaryIncome</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.Roiincome</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.LeadershipIncome</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.TotalIncome</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.AdminFee</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.TDS</label></td>
+                                <td>
+                                    <label style="color: black; font-weight: 800;">@d.NetIncome</label></td>
+                                <td>@Html.ActionLink("Print  ", "Printpayout", new { Newid = d.Newid, edate = edateee }, new { onclick = "return confirm('Are you sure to Print?'); ", target = "'_blank' " })</td>
+
+
+                                @if (d.status == 0)
+                                {
+                                    <td>
+                                        <b style="color: green;">
+                                            @Html.ActionLink("Pay ", "PayoutSummary", new { Newid = d.Newid, edate = edateee }, new { onclick = "return confirm('Are you sure to Pay this Payout?');" })
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <input id="@a" type="checkbox" name="chk1" value="@d.Newid" class="check"/>
+                                    </td>
+                                    }
+                                else
+                                {
+                                    <td colspan="2">
+                                        <b style="color: green;">Paid</b>
+                                    </td>
+                                    }
+
+
+                            </tr>
+                            
+                            <input type="hidden" name="date" value="@edate" />
+                            <input type="hidden" name="month" value="@d.month" />
+                            <input type="hidden" name="year" value="@d.year" />
+                            <input type="hidden" name="sdate" value="@sdateee" />
+                            <input type="hidden" name="edate" value="@edateee" />
+            
+                        }
+                        <tr>
+                            <td colspan="14">
+                                <button type="submit" id="Payall" name="command" value="Payall" class="btn btn-primary pull-right">Pay All</button>
+                            </td>
+                        </tr>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div> 

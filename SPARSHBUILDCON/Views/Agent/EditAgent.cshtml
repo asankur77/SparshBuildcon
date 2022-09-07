@@ -1,0 +1,129 @@
+﻿@model SPARSHBUILDCON.Models.AgentDetail
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_New_AgentLayout.cshtml";
+    ViewBag.Title = "EditAgent";
+    
+}
+
+<style>
+    input[disabled] {
+        color:#726e6e !important;
+    }
+</style>
+<form method="post" id="fid">
+    <div class="my-3 my-md-5">
+
+        <div class="container" style="padding-bottom: 80px;">
+
+            <div class="page-header">
+                <h4 class="page-title">Dashboard</h4>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Edit @mr.agentname</a></li>
+
+                </ol>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="pull-left"><strong>@mr.agentname Details</strong></h2>
+                            <h2 class="pull-right text-success" id="message">@ViewBag.message</h2>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="form-group">
+
+                                <label class="form-label" style="width: 100px;">Agent Id</label>
+                                <input type="text" class="form-control" value="@Model.NewAgentId" name="NewAgentId" id="NewAgentId" readonly="disabled">
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="form-label" style="width: 100px;">Agent Name</label>
+                                <input type="text" class="form-control" value="@Model.name" name="name" id="name" readonly="disabled">
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="form-label" style="width: 100px;">Mobile</label>
+                                <input type="text" class="form-control" value="@Model.Mobile" name="Mobile" id="Mobile" readonly="disabled">
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="form-label" style="width: 100px;">Other Mobile</label>
+                                <input type="text" class="form-control" value="@Model.OtherMobile" name="OtherMobile" id="OtherMobile" >
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="form-label">PAN No</label>
+                                <input type="text" class="form-control" value="@Model.Panno" name="Panno" id="Panno" maxlength="10">
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="form-label">Aadhar No</label>
+                                <input type="text" class="form-control" value="@Model.Aadhaar_No" name="Aadhaar_No" id="Aadhaar_No">
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="form-label">Driving Licence No</label>
+                                <input type="text" class="form-control" value="@Model.Drivinglno" name="Drivinglno" id="Drivinglno">
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="form-label">Bank Name</label>
+                                <input type="text" class="form-control" value="@Model.BankName" name="BankName" id="BankName">
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="form-label">Branch Name</label>
+                                <input type="text" class="form-control" value="@Model.BankBranchName" name="BankBranchName" id="BankBranchName">
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label class="form-label">Bank A/C No</label>
+                                <input type="text" class="form-control" value="@Model.BankAccountno" name="BankAccountno" id="BankAccountno">
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="form-label">IFSC Code</label>
+                                <input type="text" class="form-control" value="@Model.IFCCode" name="IFCCode" id="IFCCode">
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label class="form-label">Bank Address</label>
+                                <input type="text" class="form-control" value="@Model.BankAddress" name="BankAddress" id="BankAddress">
+                            </div>
+
+                            <input type="submit" value="Update" class="btn btn-success pull-right" />
+
+
+                        </div>
+                        <div style="margin-left: 15px;">
+
+                            @Html.ActionLink("Back ", "AgentProfile")
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</form>

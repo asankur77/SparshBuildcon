@@ -1,0 +1,78 @@
+﻿
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+  
+    var mydirectlst = db.AgentDetails.Where(a => a.spilid == User.Identity.Name).ToList();
+    int b = 1;
+    ViewBag.Title = "My_direct";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+}
+
+
+
+<div class="outter-wp">
+    <!--/sub-heard-part-->
+    <div class="sub-heard-part">
+        <ol class="breadcrumb m-b-0">
+            <li><a href="index.html">Home</a></li>
+            <li class="active">Direct Sponsor List</li>
+        </ol>
+    </div>
+    <!--/sub-heard-part-->
+    <!---728x90--->
+    <!--/forms-->
+
+
+    <br />
+    <br />
+    <div class="graph-visual tables-main">
+
+        @*	<div class="col-md-12" style="background-color:#fb442c">Colored Rows Table</div>*@
+
+        <div class="graph">
+            <div class="tables">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><b>Sr. No.</b></th>
+                            <th><b>Name</b></th>
+                            <th><b>User id</b></th>
+                            <th><b>Upline id</b></th>
+                            <th><b>Upline</b></th>
+
+                            <th><b>joing Date</b></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var it in mydirectlst)
+                        {
+                            var introname = db.AgentDetails.Single(a => a.NewAgentId == it.spilid).name;
+                          
+                            <tr>
+                                <td>@b</td>
+                                <td>@it.name</td>
+                                <td>@it.NewAgentId</td>
+                                <td>@it.spilid</td>
+                                <td>@introname</td>
+
+                                <td>@it.Doj</td>
+
+
+                            </tr>
+                                b++;
+                            }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--//forms-->
+</div>
+
+

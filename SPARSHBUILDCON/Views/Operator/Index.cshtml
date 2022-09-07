@@ -1,0 +1,242 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Operator>
+@using SPARSHBUILDCON.Models;
+@{
+    
+    UsersContext db = new UsersContext();
+    var plan1 = db.Plans.Single(p1 => p1.Plancode == 1);
+    var plan2 = db.Plans.Single(p2 => p2.Plancode == 2);
+    var plan3 = db.Plans.Single(p3 => p3.Plancode == 3);
+    var plan4 = db.Plans.Single(p4 => p4.Plancode == 4);
+    var item = db.Operators.Single(b => b.OperatorId == User.Identity.Name);
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+    ViewBag.Title = "Index";
+
+    var mr = db.Members.Single(m => m.Id == 1);
+    var fromyear = 0;
+    DateTime today1 = DateTime.Now.Date;
+    DateTime yesterday1 = DateTime.Now.AddDays(-1).Date;
+    int month1 = DateTime.Now.Month;
+    int year1 = DateTime.Now.Year;
+    if(month1 <=3)
+    {
+        fromyear = DateTime.Now.Year-1;
+    }
+    else
+    {
+        fromyear = DateTime.Now.Year;
+    }
+    var frommonth = 4;
+    var days = 01;
+    DateTime from2 = Convert.ToDateTime(frommonth + "-" + days + "-" + fromyear);
+    var toyear = fromyear + 1;
+    var tomonth = 3;
+    var daysto = 31;
+    DateTime to2 = Convert.ToDateTime(tomonth + "-" + daysto + "-" + toyear);
+    var finyear = fromyear + "-" + toyear;
+    var tbd = (from ap in db.appltabs where ap.status == 1 select ap.bondid);
+
+    var todayfdcoll1 = (from df in db.Installmenttabs where df.paymentdate == today1 && df.mode == "Single" && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var todayRdcoll1 = (from df in db.Installmenttabs where df.paymentdate == today1 && df.mode != "Single" && df.installmentno == 1 && df.opid == item.OperatorId && df.type != "Adjustment" && df.planname.Substring(0, 3) != plan4.shortcutname && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var todaypps1 = (from ag in db.appltabs where ag.formdate == today1 && ag.opid == item.OperatorId && ag.planname.Substring(0, 3) == plan4.shortcutname && tbd.Contains(ag.bondid) select ag.totalcon).DefaultIfEmpty(0).Sum();
+    var todaybooking1 = (from ag in db.appltabs where ag.formdate == today1 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.bookingamount).DefaultIfEmpty(0).Sum();
+    var todayadvance1 = (from ag in db.appltabs where ag.formdate == today1 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.downpayment).DefaultIfEmpty(0).Sum();
+    var todaysaving1 = (from df in db.TransactionTabs where df.pdate == today1 && df.opid == item.OperatorId select df.credit).DefaultIfEmpty(0).Sum();
+    var todaywidthdraw1 = (from df in db.TransactionTabs where df.pdate == today1 && df.opid == item.OperatorId select df.debit).DefaultIfEmpty(0).Sum();
+    var todayRd1 = todayRdcoll1;
+    var todayNewBondcoll1 = todaybooking1;
+    var todayRenewalBondcoll1 = (from df in db.Installmenttabs where df.paymentdate == today1 && df.installmentno != 1 && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var todaylatefee1 = (from df in db.Installmenttabs where df.paymentdate == today1 && df.installmentno != 1 && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.latefine).DefaultIfEmpty(0).Sum();
+    var todayreleaf1 = (from df in db.Installmenttabs where df.paymentdate == today1 && df.installmentno != 1 && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.reliefrs).DefaultIfEmpty(0).Sum();
+    var todayRenewal1 = todayRenewalBondcoll1;
+    var todayappfee1 = (from ag in db.appltabs where ag.formdate == today1 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.applicationcharge).DefaultIfEmpty(0).Sum();
+    var todayagfee1 = (from ag in db.AgentDetails where ag.Doj == today1 && ag.operatorid == item.OperatorId select ag.formfee).DefaultIfEmpty(0).Sum();
+    var todaymemberfee1 = (from ag in db.Member_tabs where ag.Cdate == today1 && ag.Opid == item.OperatorId select ag.Fee).DefaultIfEmpty(0).Sum();
+    var todayacformfee1 = (from ag in db.SavingAccountInfos where ag.Doj == today1 && ag.opid == item.OperatorId select ag.formfee).DefaultIfEmpty(0).Sum();
+    var todaycoll1 = (todayNewBondcoll1 + todayRenewal1 + todaysaving1 + todayappfee1 + todayagfee1 + todaymemberfee1 + todayacformfee1 + todaylatefee1 + todayadvance1) - (todaywidthdraw1 + todayreleaf1);
+
+    var yesterdayfdcoll1 = (from df in db.Installmenttabs where df.paymentdate == yesterday1 && df.mode == "Single" && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var yesterdayRdcoll1 = (from df in db.Installmenttabs where df.paymentdate == yesterday1 && df.mode != "Single" && df.installmentno == 1 && df.opid == item.OperatorId && df.type != "Adjustment" && df.planname.Substring(0, 3) != plan4.shortcutname && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var yesterdaypps1 = (from ag in db.appltabs where ag.formdate == yesterday1 && ag.opid == item.OperatorId && ag.planname.Substring(0, 3) == plan4.shortcutname && tbd.Contains(ag.bondid) select ag.totalcon).DefaultIfEmpty(0).Sum();
+    var yesterdaybooking1 = (from ag in db.appltabs where ag.formdate == yesterday1 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.bookingamount).DefaultIfEmpty(0).Sum();
+    var yesterdayadvance1 = (from ag in db.appltabs where ag.formdate == yesterday1 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.downpayment).DefaultIfEmpty(0).Sum();
+    var yesterdaysaving1 = (from df in db.TransactionTabs where df.pdate == yesterday1 && df.opid == item.OperatorId select df.credit).DefaultIfEmpty(0).Sum();
+    var yesterdaywidthdraw1 = (from df in db.TransactionTabs where df.pdate == yesterday1 && df.opid == item.OperatorId select df.debit).DefaultIfEmpty(0).Sum();
+    var yesterdayRd1 = yesterdayRdcoll1;
+    var yesterdayNewBondcoll1 = yesterdaybooking1;
+    var yesterdayRenewalBondcoll1 = (from df in db.Installmenttabs where df.paymentdate == yesterday1 && df.installmentno != 1 && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var yesterdaylate1 = (from df in db.Installmenttabs where df.paymentdate == yesterday1 && df.opid == item.OperatorId && df.installmentno != 1 && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.latefine).DefaultIfEmpty(0).Sum();
+    var yesterdayrelief1 = (from df in db.Installmenttabs where df.paymentdate == yesterday1 && df.opid == item.OperatorId && df.installmentno != 1 && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.reliefrs).DefaultIfEmpty(0).Sum();
+    var yesterdayRenewal1 = yesterdayRenewalBondcoll1;
+    var yesterdayappfee1 = (from ag in db.appltabs where ag.formdate == yesterday1 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.applicationcharge).DefaultIfEmpty(0).Sum();
+    var yesterdayagfee1 = (from ag in db.AgentDetails where ag.Doj == yesterday1 && ag.operatorid == item.OperatorId select ag.formfee).DefaultIfEmpty(0).Sum();
+    var yesterdaymemberfee1 = (from ag in db.Member_tabs where ag.Cdate == yesterday1 && ag.Opid == item.OperatorId select ag.Fee).DefaultIfEmpty(0).Sum();
+    var yesterdayacformfee1 = (from ag in db.SavingAccountInfos where ag.Doj == yesterday1 && ag.opid == item.OperatorId select ag.formfee).DefaultIfEmpty(0).Sum();
+    var yesterdaycoll1 = (yesterdayNewBondcoll1 + yesterdayRenewal1 + yesterdaysaving1 + yesterdayappfee1 + yesterdayagfee1 + yesterdaymemberfee1 + yesterdayacformfee1 + yesterdaylate1 + yesterdayadvance1) - (yesterdaywidthdraw1 + yesterdayrelief1);
+
+    var monthlyfdcoll1 = (from df in db.Installmenttabs where df.paymentdate.Value.Month == month1 && df.paymentdate.Value.Year == year1 && df.mode == "Single" && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var monthlyrdcoll1 = (from df in db.Installmenttabs where df.paymentdate.Value.Month == month1 && df.paymentdate.Value.Year == year1 && df.mode != "Single" && df.installmentno == 1 && df.opid == item.OperatorId && df.type != "Adjustment" && df.planname.Substring(0, 3) != plan4.shortcutname && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var monthlypps1 = (from ag in db.appltabs where ag.pdate.Month == month1 && ag.pdate.Year == year1 && ag.opid == item.OperatorId && ag.planname.Substring(0, 3) == plan4.shortcutname && tbd.Contains(ag.bondid) select ag.totalcon).DefaultIfEmpty(0).Sum();
+    var monthlybooking1 = (from ag in db.appltabs where ag.formdate.Month == month1 && ag.formdate.Year == year1 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.bookingamount).DefaultIfEmpty(0).Sum();
+    var monthlyadvance1 = (from ag in db.appltabs where ag.formdate.Month == month1 && ag.formdate.Year == year1 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.downpayment).DefaultIfEmpty(0).Sum();
+    var monthlysaving1 = (from df in db.TransactionTabs where df.pdate.Month == month1 && df.pdate.Year == year1 && df.opid == item.OperatorId select df.credit).DefaultIfEmpty(0).Sum();
+    var monthlywidthdraw1 = (from df in db.TransactionTabs where df.pdate.Month == month1 && df.pdate.Year == year1 && df.opid == item.OperatorId select df.debit).DefaultIfEmpty(0).Sum();
+    var monthlyrd1 = monthlyrdcoll1;
+    var monthlynewbondcoll1 = monthlybooking1;
+    var monthlyrenewalbondcoll1 = (from df in db.Installmenttabs where df.paymentdate.Value.Month == month1 && df.paymentdate.Value.Year == year1 && df.installmentno != 1 && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var monthlylate1 = (from df in db.Installmenttabs where df.paymentdate.Value.Month == month1 && df.paymentdate.Value.Year == year1 && df.installmentno != 1 && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.latefine).DefaultIfEmpty(0).Sum();
+    var monthlyrelief1 = (from df in db.Installmenttabs where df.paymentdate.Value.Month == month1 && df.paymentdate.Value.Year == year1 && df.installmentno != 1 && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.reliefrs).DefaultIfEmpty(0).Sum();
+    var monthlyrenewal1 = monthlyrenewalbondcoll1;
+    var monthlyappfee1 = (from ag in db.appltabs where ag.formdate.Month == month1 && ag.formdate.Year == year1 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.applicationcharge).DefaultIfEmpty(0).Sum();
+    var monthlyagfee1 = (from ag in db.AgentDetails where ag.Doj.Month == month1 && ag.Doj.Year == year1 && ag.operatorid == item.OperatorId select ag.formfee).DefaultIfEmpty(0).Sum();
+    var monthlymemberfee1 = (from ag in db.Member_tabs where ag.Cdate.Month == month1 && ag.Cdate.Year == year1 && ag.Opid == item.OperatorId select ag.Fee).DefaultIfEmpty(0).Sum();
+    var monthlyacformfee1 = (from ag in db.SavingAccountInfos where ag.Doj.Month == month1 && ag.opid == item.OperatorId && ag.Doj.Year == year1 select ag.formfee).DefaultIfEmpty(0).Sum();
+    var monthlycoll1 = (monthlynewbondcoll1 + monthlyrenewal1 + monthlysaving1 + monthlyappfee1 + monthlyagfee1 + monthlymemberfee1 + monthlyacformfee1 + monthlylate1 + monthlyadvance1) - (monthlywidthdraw1 + monthlyrelief1);
+
+    var totalfdcoll1 = (from df in db.Installmenttabs where df.paymentdate >= from2 && df.paymentdate <= to2 && df.mode == "Single" && df.opid == item.OperatorId && df.type != "Adjustment" && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var totalRdcoll1 = (from df in db.Installmenttabs where df.paymentdate >= from2 && df.paymentdate <= to2 && df.mode != "Single" && df.installmentno == 1 && df.opid == item.OperatorId && df.type != "Adjustment" && df.planname.Substring(0, 3) != plan4.shortcutname && tbd.Contains(df.bondid) select df.payamount).DefaultIfEmpty(0).Sum();
+    var totalpps1 = (from ag in db.appltabs where ag.formdate >= from2 && ag.formdate <= to2 && ag.opid == item.OperatorId && ag.planname.Substring(0, 3) == plan4.shortcutname && tbd.Contains(ag.bondid) select ag.totalcon).DefaultIfEmpty(0).Sum();
+    var totalbooking1 = (from ag in db.appltabs where ag.formdate >= from2 && ag.formdate <= to2 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.bookingamount).DefaultIfEmpty(0).Sum();
+    var totaladvance1 = (from ag in db.appltabs where ag.formdate >= from2 && ag.formdate <= to2 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.downpayment).DefaultIfEmpty(0).Sum();
+    var totalsaving1 = (from df in db.TransactionTabs where df.pdate >= from2 && df.pdate <= to2 && df.opid == item.OperatorId select df.credit).DefaultIfEmpty(0).Sum();
+    var totalwidthdraw1 = (from df in db.TransactionTabs where df.pdate >= from2 && df.pdate <= to2 && df.opid == item.OperatorId select df.debit).DefaultIfEmpty(0).Sum();
+    var totalRd1 = totalRdcoll1;
+    var totalNewBondcoll1 = totalbooking1;
+    var totalRenewalBondcoll1 = (from df in db.Installmenttabs where df.paymentdate >= from2 && df.paymentdate <= to2 && df.installmentno != 1 && df.opid == item.OperatorId && df.type != "Adjustment" select df.payamount).DefaultIfEmpty(0).Sum();
+    var TotalLate1 = Math.Round((from df in db.Installmenttabs where df.paymentdate >= from2 && df.paymentdate <= to2 && df.installmentno != 1 && df.opid == item.OperatorId && df.type != "Adjustment" select df.latefine).DefaultIfEmpty(0).Sum(),2);
+    var TotalRelief1 = Math.Round((from df in db.Installmenttabs where df.paymentdate >= from2 && df.paymentdate <= to2 && df.installmentno != 1 && df.opid == item.OperatorId && df.type != "Adjustment" select df.reliefrs).DefaultIfEmpty(0).Sum(),2);
+    var totalRenewal1 = totalRenewalBondcoll1;
+    var totalappfee1 = (from ag in db.appltabs where ag.formdate >= from2 && ag.formdate <= to2 && ag.opid == item.OperatorId && tbd.Contains(ag.bondid) select ag.applicationcharge).DefaultIfEmpty(0).Sum();
+    var totalagfee1 = (from ag in db.AgentDetails where ag.Doj >= from2 && ag.Doj <= to2 && ag.operatorid == item.OperatorId select ag.formfee).DefaultIfEmpty(0).Sum();
+    var totalmemberfee1 = (from ag in db.Member_tabs where ag.Cdate >= from2 && ag.Cdate <= to2 && ag.Opid == item.OperatorId select ag.Fee).DefaultIfEmpty(0).Sum();
+    var totalacformfee1 = (from ag in db.SavingAccountInfos where ag.Doj >= from2 && ag.Doj <= to2 && ag.opid == item.OperatorId select ag.formfee).DefaultIfEmpty(0).Sum();
+    var totalcoll1 = (totalNewBondcoll1 + totalRenewal1 + totalsaving1 + totalappfee1 + totalagfee1 + totalmemberfee1 + totalacformfee1 + TotalLate1 + totaladvance1) - (totalwidthdraw1 + TotalRelief1);
+
+    
+    
+}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Welcome @item.OperatorName</h4>
+            <ol class="breadcrumb">
+               @* <li class="breadcrumb-item"><a href="#">Pages</a></li>*@
+
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Total Collection(@item.OperatorName)</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+
+                            <table class="table card-table table-vcenter text-nowrap table-primary">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th class="text-white"><b>Type</b></th>
+                                        <th class="text-white">Today's</th>
+                                        <th class="text-white">Yeaterday's</th>
+                                        <th class="text-white">@DateTime.Now.Date.ToString("MMMM")</th>
+                                         <th class="text-white">@finyear</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><b>Booking Amount</b></th>
+                                        <td>@todaybooking1</td>
+                                        <td>@yesterdaybooking1</td>
+                                        <td>@monthlybooking1</td>
+                                        <td>@totalbooking1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Renewal</th>
+                                        <td>@todayRenewal1</td>
+                                        <td>@yesterdayRenewal1</td>
+                                        <td>@monthlyrenewal1</td>
+                                        <td>@totalRenewal1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Advance Amount</th>
+                                        <td>@todayadvance1</td>
+                                        <td>@yesterdayadvance1</td>
+                                        <td>@monthlyadvance1</td>
+                                        <td>@totaladvance1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">@mr.custname Fee </th>
+                                        <td>@todayappfee1</td>
+                                        <td>@yesterdayappfee1</td>
+                                        <td>@monthlyappfee1</td>
+                                        <td>@totalappfee1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Topup Business </th>
+                                        <td>@todayagfee1</td>
+                                        <td>@yesterdayagfee1</td>
+                                        <td>@monthlyagfee1</td>
+                                        <td>@totalagfee1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Member Fee </th>
+                                        <td>@todaymemberfee1</td>
+                                        <td>@yesterdaymemberfee1</td>
+                                        <td>@monthlymemberfee1</td>
+                                        <td>@totalmemberfee1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Late Fee  </th>
+                                        <td>@todaylatefee1</td>
+                                        <td>@yesterdaylate1</td>
+                                        <td>@monthlylate1</td>
+                                        <td>@TotalLate1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Relief </th>
+                                        <td>@todayreleaf1</td>
+                                        <td>@yesterdayrelief1</td>
+                                        <td>@monthlyrelief1</td>
+                                        <td>@TotalRelief1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total </th>
+                                        <td>@todaycoll1 </td>
+                                        <td>@yesterdaycoll1  </td>
+                                        <td>@monthlycoll1 </td>
+                                        <td>@totalcoll1 </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- table-wrapper -->
+                </div>
+                <!-- section-wrapper -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

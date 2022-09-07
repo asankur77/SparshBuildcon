@@ -1,0 +1,198 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.plotReglist>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "PreSurrender";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int a = 0;
+}
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<script type="text/javascript" src="~/Scripts/autosearch.js"></script> 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#newbondid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteBondAppl",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.newbondid, value: item.name };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+<script>
+    function remnamt()
+    {
+        debugger;
+        var remain = $("#remainingamount").val();
+        var amount = $("#amount").val();
+        var deduct = $("#deductionamount").val();
+        var commission = $("#commission").val();
+        var amtcom = parseFloat(deduct) + parseFloat(commission);
+        var remainamount = parseFloat(amount) - parseFloat(amtcom);
+        if (remainamount >= deduct) {
+            $("#remainingamount").val(remainamount);
+            $("#alt").text('');
+        }
+        else {
+            $("#alt").text("Deduct Amount Is Greater Than  paid Amount")
+        }
+    }
+</script>
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Pre Surrender</h4>
+            <button type="button" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>@DateTime.Now</button>
+        </div>
+      @using (Html.BeginForm("PreSurrender", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                      {
+            <div class="row">
+                <div class="col-12 card">
+
+
+                    <div class="card-header">
+                        <h3 class="card-title">Pre Surrender</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Enter Customer ID</label>
+                                    <div class="input-group">
+                                        <input type="text" id="newbondid" class="form-control" required name="newbondid">
+                                        <span class="input-group-append">
+                                        <button id="btnsearch" name="command" type="submit" class="btn btn-primary" value="Search">Search</button>   
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                          if (Model != null)
+                          {
+                              foreach (var item in Model)
+                              {
+                                  var ramt = item.totalamount - item.commission;
+            <div class="row">
+                <div class="col-12 card">
+                    <div class="card-header">
+                        <h3 class="card-title">Pre Surrender</h3>
+                    </div>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                              <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Customer ID</label>
+                                <input type="text" class="form-control"  required  name="bondid" id="nnewbondid" value="@item.newbondid" readonly="true" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Customer Name</label>
+                                  <input type="text" class="form-control" name="name" id="name" value="@item.name" readonly="true">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Booking Amount</label>
+                               <input type="text" class="form-control" required  name="bookingamount" id="bookingamount" value="@item.bookingamount" readonly="true" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Plot No</label>
+                                 <input type="text" class="form-control"  required  name="plotno" id="plotno" value="@item.plotno" readonly="true"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Block</label>
+                                       <input type="text" class="form-control" name="block" id="block" value="@item.block" readonly="true"/>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Total Deposit Amount</label>
+                                         <input type="text" class="form-control" name="amount" id="amount" value="@item.totalamount" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Commission</label>
+                                       <input type="text" class="form-control" name="commission" id="commission" value="@item.commission" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Deduction Amount</label>
+                                         <input type="text" class="form-control" name="deductionamount" id="deductionamount" onclick="remnamt()" value="0" required/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Remaining Amount</label>
+                                       <input type="text" class="form-control" name="remainingamount" id="remainingamount" value="@ramt" readonly="true"/>
+                                    </div>
+                                </div>
+                           
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right card">
+                    <div class="d-flex">
+
+                      <button id="submit" name="command" type="submit" class="btn btn-primary" value="submit" formnovalidate="formnovalidate">Submit</button> 
+                    </div>
+                </div>
+            </div>
+                }
+            }
+            }                     
+            <p style="color: maroon;"><b>@ViewBag.msg</b></p>     
+                               
+         
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

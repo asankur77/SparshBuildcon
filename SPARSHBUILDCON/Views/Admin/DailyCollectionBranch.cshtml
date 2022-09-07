@@ -1,0 +1,364 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.DailyCollection>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "DailyCollectionBranch";
+    var a = 0;
+    int my = Convert.ToInt32(db.RateTabs.Max(y => y.term));
+    int min=1;
+    Double appfee = 0, agencyfee = 0, memberfee = 0, acformfee = 0, totalexp = 0, totalvoucher = 0, sum = 0, late = 0, rebate = 0, diposit = 0, withdraw = 0;
+     
+    }
+
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+<script>
+    $(function () {
+        $('#date').datepick();
+
+
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type="radio"]').click(function () {
+
+            if ($(this).attr("value") == "1") {
+                $("#yy").hide();
+
+            }
+            if ($(this).attr("value") == "2") {
+
+                $("#yy").hide();
+            }
+            if ($(this).attr("value") == "3") {
+                $("#yy").show();
+
+            }
+            if ($(this).attr("value") == "4") {
+                $("#yy").hide();
+
+            }
+
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#newagentid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteAgentid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.NewAgentId };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#bcode").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompleteBrachcode",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.BranchName, value: item.BranchCode };
+                        }))
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header" id="2">
+            <h4 class="page-title">Daily Collection Report</h4>
+        
+          
+@if (a > 0)
+{
+    <a href="@Url.Action("PrintDailyCollectionBranchReport")" class="btn btn-outline-primary"  target="_blank">Get Report In PDF</a>
+}
+             
+      
+         
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Daily Collection Report</h3>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm())
+                    {
+                        <div class="row" id="hide">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">@mr.branchname Code</label>
+                               <input type="text" id="bcode" class="form-control" required name="bcode" value="@ViewData["Branch"]" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Select Date</label>
+                                <input type="text" id="date"  class="form-control" required name="date" value="@ViewData["date"]">
+                                </div>
+                            </div>
+                             <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Enter @mr.agentname Id</label>
+                                     <input type="text" id="newagentid" name="newagentid" class="form-control" value="@ViewData["newagentid"]"  />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-label">Filler By</label>
+                                 <label class="radio-inline">
+      <input id="radio2" type="radio" name="filter" class="filter" value="1" checked="checked"/>All
+    </label>
+    <label class="radio-inline">
+      <input id="radio3" type="radio" name="filter" class="filter" value="2"  />Fresh
+    </label>
+    <label class="radio-inline">
+      <input id="radio4" type="radio" name="filter" class="filter" value="3"  />Renewal
+    </label>
+              <label class="radio-inline">
+   <input id="radio5" type="radio" name="filter" class="filter" value="4"  />Saving
+    </label>                                 
+              
+              
+              
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6" id="yy" style="display:none;">
+                                <div class="form-group">
+                                    <label class="form-label">Select Year</label>
+                               <select class="form-control" id="year" name="year" required>
+                                                  <option selected value="0">All </option>
+                          @while(min<=my)
+                          {
+                            <option value="@min">@min Yr</option>
+                              min = min + 1;
+                                                  
+                          }
+
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="card-footer text-right">
+										<div class="d-flex">
+									<button id="submit" value="Search" class="btn btn-primary pull-right" type="submit" >View</button>
+										</div>
+									</div>
+
+                        </div>
+                    }
+              
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" style="width: 100%">
+               @foreach (var item in Model)
+        {
+            if (a == 0)
+            {
+                            <tr style="font-size:13px;color:#2192d6;font-weight:100"><th colspan="4">@mr.branchname:@item.branchcode</th>
+                                <th colspan="3" ><b>Daily Collection Report</b></th>
+                                <th colspan="4" ><b> Dated:@Convert.ToDateTime(ViewData["ondate"]).ToString("dd/MM/yyyy")</b></th>
+                                
+                            </tr>
+    <tr>
+        <th style="width:5%;text-align:center;">
+           <label><b>S.N.</b></label>
+            </th>
+         <th style="width:8%;text-align:center;">
+           <label><b>CSS No</b></label>
+        </th>
+        <th style="width:10%;text-align:center;">
+           <label ><b>@mr.custname Id</b></label>
+            </th>
+         <th style="width:10%;text-align:center;">
+           <label ><b>Name</b></label>
+            </th>
+        
+        <th style="width:5%;text-align:center;">
+           <label id="term_plan"><b>Type</b></label>
+        </th>
+          
+         <th style="width:10%;text-align:center;">
+         <label><b>Introducer Id</b></label>
+        </th>
+
+        <th style="width:10%;text-align:center;">
+         <label ><b>Amount</b></label>
+        </th>
+
+         <th style="width:5%;text-align:center;">
+           <label><b>Late Fee</b></label>
+        </th>
+
+         <th style="width:5%;text-align:center;">
+           <label><b>Rebate</b></label>
+        </th>
+
+         <th style="width:7%;text-align:center;">
+           <label><b>@mr.planname</b></label>
+        </th>
+
+         <th style="width:10%;text-align:center;">
+           <label><b>@mr.branchname</b></label>
+        </th>
+    </tr>
+            
+
+            }
+            a = a + 1;
+
+
+    <tr style="text-align:center;">
+        <td>
+            @a
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.CSS_No)
+        </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.Account_Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.New)
+        </td>
+       
+       
+         <td>
+            @Html.DisplayFor(modelItem => item.Introducer_Code)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Amt_Deposit)
+        </td>
+        
+        <td>
+           
+            @Html.DisplayFor(modelItem => item.Late_Fee)
+           
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.Rebate)
+        </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Planname)
+        </td>
+
+         <td>
+            @Html.DisplayFor(modelItem => item.branchname)
+        </td>
+       
+    </tr>
+            late = late + Convert.ToDouble(item.Late_Fee);
+            rebate = rebate + Convert.ToDouble(item.Rebate);
+            sum = sum + Convert.ToDouble(item.Amt_Deposit);
+            appfee = Convert.ToDouble(item.appcharge);
+            agencyfee = Convert.ToDouble(item.formfee);
+            memberfee = Convert.ToDouble(item.memberfee);
+            acformfee = Convert.ToDouble(item.acformfee);
+            totalexp = Convert.ToDouble(item.totalexp);
+            totalvoucher = Convert.ToDouble(item.Voucher);
+            diposit = Convert.ToDouble(item.dipositsaving);
+            withdraw = Convert.ToDouble(item.widthdrawsaving);
+        }
+    @if(a>0)
+    {
+    <tr style="text-align:left;">
+         <td style="width:20%" colspan="5"></td><td><label><b>TOTAL:</b></label></td><td><label><b>@sum</b></label></td><td><label><b> @late</b></label></td><td><label><b>@rebate</b></label></td><td colspan="2"></td>
+                
+            </tr>
+        <tr style="text-align:left;">
+         <td style="width:20%" colspan="5"></td><td><label><b>@mr.custname Fee:</b></label></td><td><label><b>@appfee</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+        <tr style="text-align:left;">
+         <td style="width:20%" colspan="5"></td><td><label><b>@mr.agentname Fee:</b></label></td><td><label><b>@agencyfee</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+         <tr style="text-align:left;">
+         <td style="width:20%" colspan="5"></td><td><label><b>Member Fee:</b></label></td><td><label><b>@memberfee</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+        <tr style="text-align:left;">
+         <td style="width:20%" colspan="5"></td><td><label><b>A/c Form Fee:</b></label></td><td><label><b>@acformfee</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+               <tr style="text-align:left;">
+         <td style="width:20%" colspan="5"></td><td><label><b>Total Saving Deposit:</b></label></td><td><label><b>@diposit</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+        
+          <tr style="text-align:left;">
+         <td style="width:20%" colspan="5"></td><td><label><b>TOTAL INCOME:</b></label></td><td><label><b>@(sum+appfee+agencyfee+memberfee+acformfee+diposit+late)</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+        <tr style="text-align:left;display:none">
+         <td style="width:20%" colspan="5"></td><td><label><b>Total Expense:</b></label></td><td><label><b>@totalexp</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+        <tr style="text-align:left;">
+         <td style="width:20%" colspan="5"></td><td><label><b>Total Saving Withdraw:</b></label></td><td><label><b>@withdraw</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+         <tr style="text-align:left;display:none" >
+         <td style="width:20%" colspan="5"></td><td><label><b>Total Voucher:</b></label></td><td><label><b>@totalvoucher</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+         <tr style="text-align:left;display:none">
+         <td style="width:20%" colspan="5"></td><td><label><b>TOTAL EXPENSE:</b></label></td><td><label><b>@(withdraw)</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+         <tr style="text-align:left;">
+         <td style="width:20%" colspan="5"></td><td><label><b>GRAND TOTAL:</b></label></td><td><label><b>@(sum+appfee+agencyfee+late+memberfee+acformfee+diposit-withdraw-rebate)</b></label></td><td></td><td></td><td colspan="2"></td>
+            </tr>
+    }
+    
+  
+</table>
+         
+      
+
+                      
+                    </div>
+               
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

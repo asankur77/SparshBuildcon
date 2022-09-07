@@ -1,0 +1,173 @@
+﻿@using SPARSHBUILDCON.Models;
+@model AgentDetail
+@{
+    ViewBag.Title = "AgentKYC";
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+}
+<style type="text/css">
+    .block-content {
+        width: 97% !important;
+    }
+
+    .block {
+        width: 91%;
+    }
+</style>
+
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Duplicate Spot Commission</a></li>
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Agent/Associate KYC</h3>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <form method="post">
+                                    <div class="form-group">
+
+                                        <label class="form-label">Enter Agent Id or Name </label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="NewAgentId" id="NewAgentId" required>
+                                            <span class="input-group-append">
+                                                <button type="submit" value="Search" name="command" class="btn btn-primary"><i class="fa fa-search"></i>Search</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+                   @if (Model != null)
+                   {
+                       if (Model.NewAgentId != null)
+                       {
+                <div class="card" style="overflow-y: auto">
+                     <form method="post">
+
+                    <div class="card-header">
+
+                        <h2 class=" card-title"><strong>Bank KYC Details</strong></h2>
+                        <h2 class="pull-right text-success" id="message">@ViewBag.message</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                           
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" style="width: 100px;">Agent Id</label>
+                                        <input type="text" class="form-control" value="@Model.NewAgentId" name="NewAgentId" readonly="disabled">
+                                    </div>
+                                    <div class="form-group">
+                                       <label class="form-label" style="width: 100px;">Agent Name</label>
+                                        <input type="text" class="form-control" value="@Model.name" name="name" id="name" readonly="disabled">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" style="width: 100px;">Mobile</label>
+                                        <input type="text" class="form-control" value="@Model.Mobile" name="Mobile" id="Mobile" readonly="disabled">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" style="width: 100px;">Other Mobile</label>
+                                        <input type="text" class="form-control" value="@Model.OtherMobile" name="OtherMobile" id="OtherMobile" maxlength="10" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">PAN No</label>
+                                        <input type="text" class="form-control" value="@Model.Panno" name="Panno" id="Panno" maxlength="10">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Aadhar No</label>
+                                        <input type="text" class="form-control" value="@Model.Aadhaar_No" name="Aadhaar_No" id="Aadhaar_No">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Driving Licence No</label>
+                                        <input type="text" class="form-control" value="@Model.Drivinglno" name="Drivinglno" id="Drivinglno">
+                                    </div>
+
+                                <div class="form-group">
+                                     <label class="form-label">Bank Name</label>
+                                    <input type="text" class="form-control" value="@Model.BankName" name="BankName" id="BankName">
+                                </div>
+
+                           
+                                <div class="form-group">
+                                    <label class="form-label">Branch Name</label>
+                                    <input type="text" class="form-control" value="@Model.BankBranchName" name="BankBranchName" id="BankBranchName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Bank A/C No</label>
+                                    <input type="text" class="form-control" value="@Model.BankAccountno" name="BankAccountno" id="BankAccountno">
+                                </div>
+
+                                <div class="form-group">
+                                   <label class="form-label">IFSC Code</label>
+                                    <input type="text" class="form-control" value="@Model.IFCCode" name="IFCCode" id="IFCCode">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Bank Address</label>
+                                    <input type="text" class="form-control" value="@Model.BankAddress" name="BankAddress" id="BankAddress">
+                                </div>
+                                    <div class="form-footer">
+													    <input type="submit" value="Update" name="command" class="btn btn-success pull-right" />
+												</div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                  </form>
+                </div>
+                       }
+                   }
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#NewAgentId').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Branch/AgentIdAC/",
+                    type: "get",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.NewAgentId };
+                        }));
+                    }
+                });
+            }
+        });
+    });
+</script>

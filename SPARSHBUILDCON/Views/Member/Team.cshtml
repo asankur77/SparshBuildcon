@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.totbinary>
+@using SPARSHBUILDCON.Models
+@{
+    ViewBag.Title = "Team";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    var b = 0;
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" style="background-color: #00B356;">
+
+                <h4 class="title">Team Turnover - @Model.Count()</h4>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table">
+
+                    @foreach (var s in Model)
+                    {
+                        if (b == 0)
+                        {
+                        <tr>
+                            <th>
+                                <label>Sr No.</label></th>
+                            <th>
+                                <label>Member Id</label></th>
+                            <th>
+                                <label>Member Name</label></th>
+                            <th>
+                                <label>Sponsor Id</label></th>
+                           
+                            <th>
+                                <label>Package</label></th>
+                            <th>
+                                <label>Join Date</label></th>
+                        </tr>
+                        }
+                        b = b + 1;
+                        //   var pack = db.PackageTabs.Single(x => x.usedby == @s.newid);
+                                  
+                        <tr>
+                            <td>
+                                <label>@b</label></td>
+                            <td>
+                                <label>@s.newid</label></td>
+                            <td>
+                                <label>@s.username</label></td>
+                            <td>
+                                <label>@s.introducerid</label></td>
+                            
+                            <td>
+                                <label>@s.amount</label></td>
+
+                            <td>
+                                <label>@s.joindate.ToString("dd/MM/yyyy")</label></td>
+                        </tr>
+                    }
+                    <tr>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

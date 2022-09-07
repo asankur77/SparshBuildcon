@@ -1,0 +1,102 @@
+﻿@using SPARSHBUILDCON.Models;
+@using System;
+@{
+    ViewBag.Title = "AgentWelcomeLetter";
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+ }
+
+<script>
+    $(function () {
+        $('[name=AgentId]').autocomplete({            
+            source: function (request, response) {
+                debugger;
+                $.ajax({
+                    url: "/Admin/AgentWelcomeLetter",
+                    type: "Get",
+                    datatype: "JSON",
+                    data: { AgentId: request.term ,Recogniser:"Print"},
+                    success: function (data) {
+                        debugger;
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.NewAgentId }                           
+                        }));
+                    }
+                });
+            }
+        });
+
+        $("#btn").on("click", function (e) {
+           
+           // window.open("");
+
+        });
+
+    });
+        
+</script>
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Agent Welcome Letter</a></li>
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                  <form action="/Branch/AgentWelcomeLetter" method="post" target="_blank">
+            <div class="card-header">
+                            <h3 class="card-title">Agent Welcome Letter</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row"  id="hide">
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Enter the Agent Id </label>
+                                        <div class="input-group">
+                                             <input type="text" name="AgentId" class="form-control" required />
+                                            <span class="input-group-append">
+                                                <button id="btn" type="submit" class="btn btn-primary btn-md" style="margin-top: 2px;">Print Welcome Letter</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                 </form>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,228 @@
+﻿@using SPARSHBUILDCON.Models
+@{
+    ViewBag.Title = "EwalletWithdrawal";
+    UsersContext db = new UsersContext();
+
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+
+    var memberinfo = db.AgentDetails.Single(a => a.NewAgentId == User.Identity.Name);
+    var introid = db.AgentDetails.Single(b => b.NewAgentId == memberinfo.spilid);
+
+    Double ewalletbalance = (from a in db.wallettabs where a.UserId == memberinfo.NewAgentId select a.amount).DefaultIfEmpty(0).Sum();
+
+
+    var deduct = db.SetDeductions.Single(a => a.Id == 1);
+
+    int panlength = 0;
+    double tds = 0;
+
+    if (memberinfo.Panno != null)
+    {
+        panlength = memberinfo.Panno.Length;
+    }
+
+    if (memberinfo.Panno == null || memberinfo.Panno == "" || panlength < 10)
+    {
+        tds = deduct.TDScharge;
+    }
+    else
+    {
+        tds = deduct.PANTDS;
+    }
+   
+}
+<script type="text/javascript" language="javascript">
+    function JavascriptFunction() {
+        var url = '@Url.Action("PostMethod", "Customer")';
+        $("#divLoading").show();
+        $.post(url, null,
+                function (data) {
+                    $("#PID")[0].innerHTML = data;
+                    $("#divLoading").hide();
+                });
+    }
+</script>
+<script type="text/javascript">
+
+    function checkit(clicked_id) {
+        debugger;
+        $('input:radio[name="productstatus"]').change(function () {
+            if ($(this).is(':checked') && $(this).val() == 1) {
+
+                var productstatus = $("#" + clicked_id).val();
+                var url = '@Url.Action("GetProList", "Customer")';
+                $.get(url, { productstatus: productstatus }, function data(d) {
+                    var select = $("#productid");
+                    $("#pid").removeClass("hide");
+                    select.children().remove();
+                    select.append('<option value="NA">Select</option>');
+                    for (var i = 0; i < d.length; i++) {
+                        select.append('<option value="' + d[i].ProductName + '">' + d[i].ProductName + '</option>');
+                    }
+
+                });
+            }
+            else if ($(this).is(':checked') && $(this).val() == 0) {
+                $("#pid").addClass("hide");
+                //$("#pins").addClass("hide");
+                //var container = $('#rblist').html('');
+                select.children().remove();
+                select.append('<option value="NA">Select</option>');
+            }
+        });
+
+    }
+
+</script>
+
+<script>
+    function checkamount() {
+        debugger
+        var ebalance = $("#ebalance").val();
+        var rbalance = $("#rbalance").val();
+
+        $("#tdsamount").children().remove();
+        $("#tds").children().remove();
+        $("#netamount").children().remove();
+
+
+           
+                var tds = parseFloat(@tds)
+                var abalance = parseFloat(rbalance)
+
+                var tdsamount = (parseFloat(abalance) * parseFloat(tds) / 100);
+                var netamount = parseFloat(rbalance) - parseFloat(tdsamount);
+
+                $("#tdsamount").append("<hr><label style='color:black;font-weight:800;'>Request Amount - TDS : Net Amount</label><br><label style='color:red;font-weight:800;'>" + rbalance + "-" + tdsamount + " = Rs." + netamount + "/-</label>");
+
+                $("#netamount").append("<input type='hidden' value='" + netamount + "' name='netamount'>");
+                $("#tds").append("<input type='hidden' value='" + tdsamount + "' name='tds'>");
+           
+        
+    }
+</script>
+
+
+
+
+
+
+<style type="text/css">
+    .hide {
+        display:none;
+    }
+
+    .deco {
+        background-color:#e0dbdb;
+    }
+
+</style>
+
+<div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001; opacity: .8; filter: alpha(opacity=70); display: none">
+    <p style="position: absolute; top: 30%; left: 42%; color: White;">
+        <img src="~/Content/11.gif"><br />
+        <br />
+        <b style="margin-left: 50px;">Loading, please wait...</b>
+    </p>
+</div>
+<div class="row" style="margin-top: 50px;">
+     
+    <div class="card form-group" style="margin-top: -50px;">
+
+        <div>
+            <div  class="card-header"   style="background-color: #00B356;">
+
+                <h3><i class="fa fa-ok-circle"></i>E-Wallet Withdrawal</h3>
+            </div>
+            <div class="widget-content" style="min-height: 600px;">
+
+               <label style="font-weight:800;color:green;">@ViewData["msg"]</label>
+                    <div class="col-md-12 " style="border:5px;text-transform:uppercase;">
+
+                        <table class="table table-hover well" style="overflow-y:scroll;">
+                            <tr>
+                                <th>Associate Id:</th>
+                                <td>@memberinfo.memberid</td>
+                                <th>Associate Name:</th>
+                                <td>@memberinfo.name</td>
+                            </tr>
+
+                            <tr>
+                                <th>Sponser Id:</th>
+                                <td>@introid.memberid</td>
+                                <th>Sponser Name:</th>
+                                <td>@introid.name</td>
+                            </tr>
+
+                            <tr>
+                                <th>Date of Joining:</th>
+                                <td>@memberinfo.Doj.ToString("dd-MMM-yyyy")</td>
+                                <th>Mobile</th>
+                                <td>@memberinfo.Mobile</td>
+                            </tr>
+                            <tr>
+                                <th>Email Id:</th>
+                                <td>@memberinfo.Email</td>
+                               
+                               
+                            </tr>
+                        </table>
+                     
+                    </div>
+
+                    <div class="col-md-12 " style="border:5px;text-transform:uppercase;">
+
+                            <table class="table table-hover well" style="overflow-y:scroll;">
+                                <caption><h3 style="text-align:left;color:white;font-weight:500;"   style="background-color: #00B356;">&nbsp;Banking Information</h3></caption>
+                                <tr>
+                                    <th>Account Holder Name:</th>
+                                    <td>@memberinfo.AccountHolder</td>
+                                    <th>Account No.:</th>
+                                    <td>@memberinfo.BankAccountno</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Bank Name:</th>
+                                    <td>@memberinfo.BankName</td>
+                                    <th>Branch Name:</th>
+                                    <td>@memberinfo.BankBranchName</td>
+                                </tr>
+
+                                <tr>
+                                    <th>IFSC:</th>
+                                    <td>@memberinfo.IFCCode</td>
+                                    <th>PAN</th>
+                                    <td>@memberinfo.Panno</td>
+                                </tr>
+                            
+                            </table>
+                     
+                        </div>
+                @using(Html.BeginForm())
+                {
+                    <div id="tds"></div>
+                        <div id="netamount"></div>
+                    <div class="col-md-12 " style="border:5px;">
+
+                            <table class="table table-hover well" style="overflow-y:scroll;background-color:#f6efe5;text-align:center;padding:50px;">
+                                <caption><h3 style="text-align:left;color:white;font-weight:500;"  style="background-color: #00B356;">&nbsp; Ewallet Balance</h3></caption>
+                                <tr>
+                                    <th style="text-align:center;">Ewallet Balance:</th>
+                                    <td>Rs. @ewalletbalance</td>
+                                    <input type="hidden" id="ebalance" value="@ewalletbalance" />
+
+                                    <th style="text-align:center;">Withdrawal Request:</th>
+                                    <td><input onblur="checkamount()" type="number" id="rbalance" name="amount" class="form-control" style="width:100%;"/><br /><label style="font-style:italic;color:green;font-weight:800;">Minimum withdrawal Rs. 1000/-<br /><div id="tdsamount"></div></label></td>
+                                    <td><input type="submit" name="amount" class="btn btn-primary" style="width:100%;"/></td>
+                                </tr>
+
+                            </table>
+                        </div>
+                }
+            </div>
+
+        </div>
+
+    </div>
+</div>
+

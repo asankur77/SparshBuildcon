@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "pinallocation";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card form-group">
+            <div class="col-md-2" style="margin-top:2%">
+                <input type="radio" />
+                <p class="category">All</p>
+            </div>
+            <div class="col-md-2" style="margin-top:2%">
+                <input type="radio" />
+                <p class="category">Used</p>
+            </div>
+            <div class="col-md-2" style="margin-top:2%">
+                <input type="radio"/>
+                <p class="category">Unused</p>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label">Pin Value</label>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+                        <div class="col-md-3">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-sm">Search</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Download Excel</button>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" style="background-color: #00B356;">
+                <h4 class="title">Pins Details</h4>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table">
+                    <thead class="text-primary">
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Date</th>
+                            <th>Account Of</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                            <th>Narration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>02/11/2017</td>
+                            <td>Oud-Turnhout</td>
+                            <td>Dakota Rice</td>
+                            <td>Niger</td>
+                            <td class="text-primary">3000</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="text-primary">Balance Till Today(0.00)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

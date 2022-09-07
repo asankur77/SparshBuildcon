@@ -1,0 +1,112 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.hrlist>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1); 
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "HRList";
+    var a = 0;
+}
+<div class="my-3 my-md-5" >
+					<div class="container">
+						<div class="page-header">
+							<h4 class="page-title">HR List</h4>
+					
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-lg-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">HR List</div>
+								</div>
+								<div class="card-body">
+                                	<div class="table-responsive">
+									<table  class="table table-striped table-bordered" style="width:100%">
+                                @foreach (var item in Model)
+    {
+        if (a == 0)
+        {
+  <tr>
+        <th style="width:5%;text-align:center;">
+           <label id="sn"><b>S.N.</b></label>
+            </th>
+        <th style="width:10%;text-align:center;">
+           <label id="HRId"><b>HR Id</b></label>
+            </th>
+        
+        <th style="width:10%;text-align:center;">
+           <label id="HRName"><b>HR Name</b></label>
+        </th>
+            
+        <th style="width:10%;text-align:center;">
+           <label id="BranchCode"><b>@mr.branchname Code</b></label>
+        </th>
+            
+        <th style="width:10%;text-align:center;">
+            <label id="HRMobile" ><b>HR Mobile</b></label>
+        </th>
+            
+        <th style="width:10%;text-align:center;">
+           <label id="HRAddress"><b>HR Address</b></label>
+        </th>
+       <th style="width:10%;text-align:center;">
+           <label id="HR_Mail"><b>HR Mail</b></label>
+        </th>
+        <th style="width:10%;text-align:center;">
+           <label id="Cdate"><b>Creation Date</b></label>
+        </th>
+    </tr>
+        }
+
+        a = a + 1;
+    <tr style="text-align:center;">
+        <td>
+            @a
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HRId)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.HRName)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.BranchCode)
+        </td>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.Mobile)
+        </td>
+         
+        <td>
+            @Html.DisplayFor(modelItem => item.hAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.emailid)
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.date)
+        </td>
+    </tr>
+    } 
+
+</table>
+
+    @if (a > 0)
+    {
+        <a href="@Url.Action("PrintHRList")" target="_blank">Get Report In PDF</a>
+    }
+                                       
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+    </div>
+
+
+
+
+

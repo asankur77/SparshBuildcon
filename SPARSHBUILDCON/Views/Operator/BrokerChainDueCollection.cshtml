@@ -1,0 +1,213 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.ChaindueCollection>
+@using SPARSHBUILDCON.Models;
+@{
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+    ViewBag.Title = "BrokerChainDueCollection";
+
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    var a = 0;
+    var pr = db.Operators.Single(o => o.OperatorId == User.Identity.Name);
+    var br = db.Branchtabs.Single(o => o.BranchCode == pr.BranchCode);
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#newagentid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Operator/AutoCompleteOperatorAgentid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.NewAgentId };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>  
+
+
+ 
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">@mr.agentname Chain Due Collection</h4>
+            
+
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">@mr.agentname Chain Due Collection</h3>
+                </div>
+                <div class="card-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+													<label class="form-label">Enter @mr.agentname Id</label>
+													<div class="input-group">
+														 <input type="text" id="newagentid" class="form-control" required name="newagentid">
+														<span class="input-group-append">
+														<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>Search</button>  
+														</span>
+													</div>
+												</div>
+
+                                
+
+                            </div>
+
+                   
+            
+                </div>
+
+                    }
+                    <div class="row">
+                	<div class="col-md-12">
+                                	<div class="table-responsive">
+									<table  class="table table-striped table-bordered" style="width:100%">
+			  
+                    @foreach (var item in Model)
+                    {
+                        if (a == 0)
+                        {
+                        <tr style="text-align: center;">
+                            <th colspan="4">@mr.branchname Name:@item.branchname</th>
+
+                            <th colspan="3"><b>@mr.agentname Chain Due Collection</b></th>
+                            <th colspan="4"><b>Dated:@Convert.ToDateTime(DateTime.Now.Date).ToString("dd/MM/yyyy") </b></th>
+                        </tr>
+                        <tr style="text-align: center;">
+                            <th colspan="6">@mr.agentname Id:@item.brokercode</th>
+                            <th colspan="5">@mr.agentname Name:@item.brokername</th>
+
+                        </tr>
+                            
+                        <tr>
+                            <th style="width: 5%; text-align: center;">
+                                <label><b>S.N.</b></label>
+                            </th>
+                            <th style="width: 10%; text-align: center;">
+                                <label><b>@mr.agentname Id</b></label>
+                            </th>
+                            <th style="width: 10%; text-align: center;">
+                                <label><b>@mr.agentname Name</b></label>
+                            </th>
+                            <th style="width: 10%; text-align: center;">
+                                <label><b>@mr.custname Id</b></label>
+                            </th>
+
+                            <th style="width: 10%; text-align: center;">
+                                <label><b>@mr.custname Name</b></label>
+                            </th>
+                            <th style="width: 5%; text-align: center;">
+                                <label><b>Mobile No</b></label>
+                            </th>
+                            <th style="width: 10%; text-align: center;">
+                                <label><b>Amount</b></label>
+                            </th>
+
+                            <th style="width: 10%; text-align: center;">
+                                <label><b>@mr.planname Name</b></label>
+                            </th>
+
+                            <th style="width: 5%; text-align: center;">
+                                <label><b>Term </b></label>
+                            </th>
+                            <th style="width: 7%; text-align: center;">
+                                <label id="email"><b>Mode</b></label>
+                            </th>
+
+
+
+                            <th style="width: 10%; text-align: center;">
+                                <label><b>Maturity Date</b></label>
+                            </th>
+
+
+
+                        </tr>
+                        }
+                        a = a + 1;
+
+
+                        <tr style="text-align: center;">
+                            <td>
+                                @a
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.newagentid)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.newbondid)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.cname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.mobileno)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.amount)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.planname)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.term)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.mode)
+                            </td>
+
+                            <td>
+                                @Convert.ToDateTime(item.expirydate).ToString("dd/MM/yyyy")
+                            </td>
+
+
+
+
+                        </tr>
+                   
+                    }
+
+  </table>
+
+                @if (a > 0)
+                {
+                    <a href="@Url.Action("PrintBrokerChainDueReport")" target="_blank">Get Report In PDF</a>
+                }
+       
+
+                                        </div>
+                        </div></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+    </div>
+
+
+
+

@@ -1,0 +1,137 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    
+    ViewBag.Title = "pinwallet";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+
+    string pin = Convert.ToString(ViewData["pin"]);
+
+    var pinn = db.pintabs.Single(a => a.pin == pin);
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("#introducerid").autocomplete({
+            source: function (request, response) {
+
+                debugger;
+                $.ajax({
+                    url: "/Operator/AutoCompleteintro",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name + ' (' + item.NewAgentId + ')', value: item.NewAgentId };
+                        }))
+                    }
+                })
+
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+<script>
+    function checkid(check_id) {
+
+
+        var intro = $("#" + check_id).val();
+        var url = '@Url.Action("SelectIntroName", "Admin")';
+        $.get(url, { intro: intro }, function data(name1) {
+            $('#introducername').text(name1)
+        });
+
+
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $("#packamt").change(function () {
+            debugger;
+            $("#pinamt").val($(this).val());
+            if ($(this).val() == "select") {
+                $("#pinamt").val(null);
+            }
+        });
+    });
+</script>
+<script>
+    function krp(id) {
+        debugger;
+        $("#detail").hide();
+        $("#sho").show();
+        var amount = id;
+        $("#pack").val(amount)
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $("#tabs").tabs();
+    });
+</script>
+
+
+@using (Html.BeginForm("opinwallet", "Operator", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+}
+
+<h3 style="color: Red; font-weight: 800">@ViewData["msg"]</h3>
+<h3 style="color:red; font-weight:800">@ViewData["balance"]</h3>
+
+    
+
+    
+    
+   
+
+<div class="row" id="sho" >
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header"style="background-color:#1FA06A">
+                <h4 class="title">Member Topup</h4>
+            </div>
+            <div class="card-content">
+                @using(Html.BeginForm("topup","Operator", FormMethod.Post))
+                {
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Member Id</label>
+                                <input type="text" required="required" onblur="checkid(this.id)" id="introducerid" name="introducerid" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Member Name</label><br />
+                                <label id="introducername" style="color:green;font-weight:800;"></label>
+                            </div>
+                        </div>
+                         <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Package Amount</label><br />
+                                <input type="number" value="@pinn.pinamount" required="required" class="form-control" readonly//>
+                                <input type="text" value="@pinn.pin" required="required" name="packet" class="form-control" readonly//>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                 <button type="submit" name="command" value="add" class="btn btn-primary pull-right">TopUp</button>
+                            </div>
+                        </div>
+                    </div>
+                   
+                }
+            </div>
+        </div>
+    </div>
+</div>

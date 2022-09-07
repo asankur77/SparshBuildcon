@@ -1,0 +1,95 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.appltab>
+@using SPARSHBUILDCON.Models
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Approvecheque";
+
+    var a = 0;
+    var branch = string.Empty;
+    UsersContext db = new UsersContext();
+
+    var tr = db.TDSLF_tabs.Single(f => f.Id == 1);
+
+    var mr = db.Members.Single(m => m.Id == 1);
+    
+}
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#newbondid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Branch/AutoCompletePPSBondId",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.newbondid };
+                        }))
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Update @mr.custname</h4>
+
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+                @using (Html.BeginForm())
+                {
+                    <div class="card-header">
+                        <h3 class="card-title">Update @mr.custname</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Enter @mr.custname Id</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="newbondid" id="newbondid">
+                                        <span class="input-group-append">
+                                            <button type="submit" value="Search" name="command" class="btn btn-primary"><i class="fa fa-search"></i>Search</button>
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                  
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

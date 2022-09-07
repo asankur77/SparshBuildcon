@@ -1,0 +1,50 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "ResetAll";
+}
+
+<div class="my-3 my-md-5">
+					<div class="container">
+						<div class="page-header">
+							<h4 class="page-title">Reset All Password</h4>
+						
+						</div>
+						<div class="row">
+							<div class="col-12 card">
+							 @using (Html.BeginForm())
+                    {
+									<div class="card-header">
+										<h3 class="card-title">Reset All Password</h3>
+									</div>
+									<div class="card-body">
+										<div class="row">
+											<div class="col-md-12 col-lg-12">
+												<div class="form-group">
+													<label class="form-label">@ViewBag.msg</label>
+													    <button type="submit" class="btn btn-primary"><i class="fa fa-cog"></i> Reset Password</button>
+
+												</div></div>
+                                            </div>
+                                        </div>
+                                  
+        }
+                                </div>
+                            </div>
+                        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

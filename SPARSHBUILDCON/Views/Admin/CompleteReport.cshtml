@@ -1,0 +1,902 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var logo = string.Empty;
+    var companyname = string.Empty;
+    var incometype = string.Empty;
+    var mr = db.Members.Single(m => m.Id == 1);
+    var r = db.CompanyInfos.Single(ci => ci.AdminId == User.Identity.Name);
+    var plan1 = db.Plans.Single(p1 => p1.Plancode == 1);
+    var plan2 = db.Plans.Single(p2 => p2.Plancode == 2);
+    var plan3 = db.Plans.Single(p3 => p3.Plancode == 3);
+    var plan4 = db.Plans.Single(p4 => p4.Plancode == 4);
+    
+    logo = r.CompanyLogo;
+    companyname = r.CompanyName;
+    incometype = r.IncomeType;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "CompleteReport";
+}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Complete Report</h4>
+
+        </div>
+        <div class="row  row-cards">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Field Reports</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BTree" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Tree View
+                             <img alt="" src="/Images/icon/btree.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/TotalBusiness" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Downline Business
+                             <img alt="" src="/Images/icon/downline.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/TotalBinary" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Matching Summary
+                             <img alt="" src="/Images/icon/maching.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/AllBroker" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname List
+                             <img alt="" src="/Images/icon/7.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DatewiseBroker" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise @mr.agentname List
+                             <img alt="" src="/Images/icon/63.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BrokerChain" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Chain
+                             <img alt="" src="/Images/icon/52.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/BrokerPaymentDetail" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Payment Details
+                             <img alt="" src="/Images/icon/20.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/Selfbusiness" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Business Details
+                             <img alt="" src="/Images/icon/33.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BrokerAccount" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Account Details
+                             <img alt="" src="/Images/icon/33.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BrokerwiseAccountDetail" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise @mr.agentname Account Details
+                             <img alt="" src="/Images/icon/16.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BrokerSelfCollection" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Self Collection
+                             <img alt="" src="/Images/icon/11.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BrokerChainCollection" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Chain Collection
+                             <img alt="" src="/Images/icon/37.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BrokerSelfDueCollection" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Self Due Collection
+                             <img alt="" src="/Images/icon/28.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BrokerChainDueCollection" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Chain Due Collection
+                             <img alt="" src="/Images/icon/53.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/Voucher" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Monthly Payment
+                             <img alt="" src="/Images/icon/36.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>*@
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/PromotionList" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Promotion Report
+                             <img alt="" src="/Images/icon/promotion.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BDCReport" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">TDS Report
+                             <img alt="" src="/Images/icon/54.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DWDueCollection" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Bondwise Due Collection
+                             <img alt="" src="/Images/icon/54.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Official Reports</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BranchlLoginDetail" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.branchname Login Details
+                             <img alt="" src="/Images/icon/77.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/OperatorLoginDetails" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Collection Point Login Details
+                             <img alt="" src="/Images/icon/32.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/HRLoginDetails" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">HR Login Details
+                             <img alt="" src="/Images/icon/16.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BranchList" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.branchname List
+                             <img alt="" src="/Images/icon/28.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/OperatorList" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Collection Point List
+                             <img alt="" src="/Images/icon/21.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/HRList" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">HR List
+                             <img alt="" src="/Images/icon/7.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/AllCustomer" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.custname List
+                             <img alt="" src="/Images/icon/26.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DatewiseCustomer" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise @mr.custname List
+                             <img alt="" src="/Images/icon/26.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/FilterCustomer" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Filter @mr.custname
+                                            <img alt="" src="/Images/icon/26.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/AssignPlotCustomer" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Assign Plot @mr.custname List
+                             <img alt="" src="/Images/icon/assign.jpg" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DatewiseCustomerLedger" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise @mr.custname Ledger
+                             <img alt="" src="/Images/icon/ledger.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DateWiseMember" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise Member List
+                             <img alt="" src="/Images/icon/MemberIcon.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/MemberWiseAccountDetail" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">All Member List
+                             <img alt="" src="/Images/icon/MemberIcon.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        @if (@mr.type == "New")
+                        {
+                            <div class="col-sm-12 col-lg-3">
+                                <div class="card bg-info  card-img-holder text-white">
+                                    <div class="card-body" style="height: 130px">
+                                        <a href="~/Admin/RdPlanList" style="color: white">
+                                            <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                            <h4 class="font-weight-normal  mb-3">@plan1.Planname List
+                             <img alt="" src="/Images/icon/28.png" class=" fs-30 float-right" />
+                                            </h4>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-3">
+                                <div class="card bg-success   card-img-holder text-white">
+                                    <div class="card-body" style="height: 130px">
+                                        <a href="~/Admin/FdPlanList" style="color: white">
+                                            <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                            <h4 class="font-weight-normal  mb-3">@plan2.Planname List
+                             <img alt="" src="/Images/icon/19.png" class=" fs-30 float-right" />
+                                            </h4>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/RankList" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.rankname List
+                             <img alt="" src="/Images/icon/28.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/CustumerInstallmentReport" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.custname Ledger-Details
+                             <img alt="" src="/Images/icon/73.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DailyExpense" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise Expense Details
+                             <img alt="" src="/Images/icon/76.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/HeadWiseExpense" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Head Wise Expense Details
+                             <img alt="" src="/Images/icon/76.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/AllDailyCollection" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Daily Collection
+                             <img alt="" src="/Images/icon/11.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DateWiseChequeCollection" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise Cheque Collection
+                             <img alt="" src="/Images/icon/cheq.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DateWiseChequeClearCollection" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Clear Cheque Collection
+                             <img alt="" src="/Images/icon/cheq.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/CompleteDailyCollection" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise Collection Details
+                             <img alt="" src="/Images/icon/datewise.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body">
+                                    <a href="~/Admin/DateWiseCollection" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise Business
+                             <img alt="" src="/Images/icon/74.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/FundMobilisation" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Fund Mobilisation
+                             <img alt="" src="/Images/icon/5.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/AllClosingBalance" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">RP Statement Report
+                             <img alt="" src="/Images/icon/11.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DuplicatePrintReport" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Duplicate Print
+                             <img alt="" src="/Images/icon/74.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/CancelReceiptReport" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Cancel Receipt List
+                             <img alt="" src="/Images/icon/75.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/PaidVoucher" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Paid Voucher
+                             <img alt="" src="/Images/icon/36.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/Unpaidvoucher" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">UnPaid Voucher
+                             <img alt="" src="/Images/icon/65.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DatewiseSVoucherList" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise Spot Commission List
+                             <img alt="" src="/Images/icon/spotcomm.jpg" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DatewiseVoucherList" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise Voucher List
+                             <img alt="" src="/Images/icon/voucher.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/RenewalList" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Monthly Renewal Report
+                             <img alt="" src="/Images/icon/28.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/LiabalityReport" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Liability Report
+                             <img alt="" src="/Images/icon/28.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/PlotRegistryReport" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Plot Registry Report
+                             <img alt="" src="~/Images/icon/home_registration.png" style="width: 80px; height: 70px;" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/DailyHolding" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Daily Plot Holding
+                             <img alt="" src="~/Images/icon/plot.png" style="width: 80px; height: 80px;" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/Advancepaymentreport" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Advance Payment Report
+                             <img alt="" src="~/Images/icon/advancepay.jpg" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/RevivalCustomerList" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Revival List
+                             <img alt="" src="~/Images/icon/Revival.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/RevivalReport" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Plot Unrelease Report
+                             <img alt="" src="~/Images/icon/Revival.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/VisitorReport" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Visitors Report
+                             <img alt="" src="~/Images/icon/visitor.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/BondApproval" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Bond Approval
+                             <img alt="" src="~/Images/icon/Approved-Stamp-Icon.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/ApproveRenewal" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Renewal Approval
+                             <img alt="" src="~/Images/icon/Approved-Stamp-Icon.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/PreSurrenderReport" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Pre Surrender Report
+                             <img alt="" src="~/Images/icon/icon-reports.jpg" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/RejectedCheque" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Rejected Cheque Report
+                             <img alt="" src="~/Images/icon/54.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/Plotholding" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Plot Holding
+                             <img alt="" src="~/Images/icon/holding_plot.jpg" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/AgentBankDetail" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Agent Bank Detail Report
+                             <img alt="" src="~/Images/icon/icon-reports.jpg" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Admin/ApproveDailyClosing" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Approve Closing
+                             <img alt="" src="~/Images/icon/icon-reports.jpg" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+              

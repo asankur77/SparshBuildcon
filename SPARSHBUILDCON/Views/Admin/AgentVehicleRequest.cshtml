@@ -1,0 +1,283 @@
+﻿@using SPARSHBUILDCON.Models
+@{
+   
+    ViewBag.Title = "AgentVehicleRequest";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    UsersContext db = new UsersContext();
+   // var name = db.NewLogins.Single(o => o.UserName == User.Identity.Name).type;
+   
+    
+    var date = DateTime.Now.Date;
+    var totalrequest = db.VehicleRequestDetails.Where(o => o.RequestedDate == date).Count();
+    var approve = db.VehicleRequestDetails.Where(o => o.RequestedDate == date && o.Status==2).Count();
+    var cancel = db.VehicleRequestDetails.Where(o => o.RequestedDate == date && o.Status == 3).Count();
+    var model = db.VehicleRequestDetails.Where(o => o.RequestedDate == date && o.Status == 1).ToList();
+    var a = 1;
+    
+}
+
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+
+<script>
+    $(function () {
+        $('.date').datepick();
+       
+        function Time() {
+            
+            
+            var a = new Date();
+            var b = a.getHours();
+            if (a.getHours() > 12) {
+                b = a.getHours() - 12;
+            }
+            
+            var t = b + ":" + a.getMinutes() + ":" + a.getSeconds();
+            $("#time").val(t).css("padding-left", "30px");
+
+        }
+
+        setInterval(Time, 1000);
+
+       
+        $(".checkout").on("click",function () {
+            debugger;
+            var id = $(this).attr("id"); idplit = id.split("+"); vid = idplit[0]; vname = idplit[1];
+            $("#vid").val(vid)
+            $("#vname").val(vname)
+            $("#myModal").modal();
+
+        });
+    });
+</script>
+
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<script type="text/javascript" src="~/Scripts/autosearch.js"></script>
+<style>
+    .table tr > th {
+    background-color:#c0f9d7;
+    text-align:center;
+    }
+    
+
+    .badge {
+        background-color: #08B0AE;
+    }
+   
+@@keyframes scale {
+    from {transform:scale(0); opacity: 0;}
+    to {transform:scale(1); opacity: 1;}
+}
+/*sign up form*/
+
+    .modal-content {
+     visibility: visible;
+    -webkit-animation: scale 0.8s;
+    animation: scale 0.5s;
+    
+    }
+    #myModal {
+   
+    background-color:rgba(0,0,0,0.2);
+    border:none;
+    
+    }
+    .table > thead > tr th, tbody > tr td {
+    
+    text-align:center;
+    
+    }
+</style>
+
+
+
+
+	<div class="my-3 my-md-5">
+					<div class="container">
+						<div class="page-header">
+							<h4 class="page-title">Vehicle Request</h4>
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Create</li>
+							</ol>
+							</div>
+                           <div class="row">
+            <div class="col-12 card">
+                 <div class="card-header">
+                        <h3 class="card-title"></h3>
+                    </div>
+                    <div class="card-body">
+                       <div class="row">
+                                        <div class="col-md-12">
+                                 	<div class="form-group">
+                                           <span style="color: #C21148; font-size: 15px">Total Vehicle Request</span> &nbsp;<span class="badge">@totalrequest</span>
+                &nbsp;&nbsp;<span style="color: #C21148; font-size: 15px">Today's Approved  Request</span>&nbsp;<span class="badge">@approve</span>
+                &nbsp;&nbsp;<span style="color: #C21148; font-size: 15px">Today's Cancelled Request</span> &nbsp;<span class="badge">@cancel</span>
+                <span style="visibility: hidden" class="badge">5</span>
+								</div>
+                                            </div>
+                           </div>					
+                        </div>
+                <br />
+
+                   @if (model.Count() > 0)
+                   {
+            
+
+                <div class="card-body">
+                       <div class="table-responsive">
+
+                            <table class="table card-table table-vcenter text-nowrap table-primary">
+                                <thead class="bg-primary text-white">
+                                                  <tr>
+                                                <th>Serial No.</th>
+                                                <th>Request Token</th>
+                                                <th>Agent Id</th>
+                                               @* <th>Agent Name</th>*@
+                                                <th>No. Of Visitor</th>
+                                                <th>Distance</th>
+                                                <th>Visit Date</th>
+                                                <th>Return Date</th>
+                                                <th>Requested Date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                              @foreach (var item in model)
+                                              {
+                                                <tr>
+                                                    <td ><span style="background-color:#08B0AE;color:white;padding-bottom:4px;padding-top:4px;padding-left:8px;padding-right:8px;border-radius:50%;">@a</span></td>
+                                                    <td style="font-weight:bold">@item.RequestToken</td>
+                                                    <td style="font-weight:bold">@item.AgentId</td>
+                                                     @*<td style="font-weight:bold">@db.AgentDetails.Single(o=>o.NewAgentId==item.AgentId).name</td>*@
+                                                   
+                                                    <td style="font-weight:bold">@item.NoOfSeatRequired</td>
+                                                    <td>@item.TravelDistance km</td>
+                                                    <td>@item.VisitDate.ToString("dd-MM-yyyy")</td>
+                                                    <td>@item.ReturnDate.ToString("dd-MM-yyyy")</td>
+                                                    <td>@item.RequestedDate.ToString("dd-MM-yyyy")</td>
+                                                    
+                                                        @if (item.Status == 1)
+                                                        {
+                                                   
+                                                        <td ><kbd style="color:white;font-weight:bold;padding:5px;font-size:14px;background-color:#de9018">Pending..</kbd></td>
+                                                    
+                                                        }
+                                                        else if (item.Status == 2)
+                                                        {
+                                                        <td ><kbd style="color:white;font-weight:bold;padding:5px;font-size:14px;background-color:#369B07"">Approved</kbd></td>
+                                                        }
+                                                        else
+                                                        {
+                                                        <td><kbd style="color:whitesmoke;font-weight:bold;padding:5px;font-size:14px;background-color:#C21148"">Cancelled</kbd></td>
+                                                        }
+                                                 
+                                                    <td><button class="btn btn-success check" id="@item.RequestToken+@item.AgentId" onclick="closeForm()"><i class="fa fa-check" style="font-size:14px;"></i></button>
+                                                        <button class="btn btn-danger cancel" id="@item.AgentId+@item.RequestToken" onclick="closeForm()"><i class="fa fa-trash-o" style="font-size:14px;"></i></button>
+
+                                                    </td>
+                                                </tr>
+                                                        a++;
+                                                }
+                                            
+                                        </tbody>
+                                    </table>
+
+                                    <script>
+                                        $(function () {
+                                            $('.check').on('click', function () {
+                                                debugger;
+                                                var ele = $(this), spil = ele.attr("id"), array = spil.split('+');
+                                                $.get("/admin/VehicleApproveCancel", { RequestToken: array[0], Recogniser: "Approved" }, function (d) {
+                                                    debugger;
+                                                    if (d == 1) {
+
+                                                    }
+                                                });
+                                            });
+                                            $('.cancel').on('click', function () {
+                                                debugger;
+
+                                                var ele = $(this), spil = ele.attr("id"), array = spil.split('+');
+                                                $('#myModal').modal();
+                                                $('#token').val(array[1]);
+                                                $('#vid').val(array[0])
+
+                                            });
+
+                                        });
+
+
+                                    </script>
+
+                </div>
+                        </div>
+        }
+                   else
+                   {
+
+
+                   }
+
+                        </div>
+        </div>
+</div>
+        </div>
+
+
+
+<!-------Modal------->
+<div id="myModal" style="margin-top:150px;border:0px;" class="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+      <form method="post" action="/admin/AgentVehicleRequest">
+    <div class="modal-content" style="border:0px">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" style="color:#2f9fe0;">&times;</button>
+        <h4 class="modal-title" style="color:#2f9fe0;">Remark...</h4>
+      </div>
+      <div class="modal-body">
+          
+        <label>Request Token</label>
+          <input type="text" style="color:#2f9fe0;" name="RequestToken" id="token" class="form-control" readonly="true" />
+              
+        <label>Agent Id</label>
+          <input type="text" style="color:#2f9fe0;"  id="vid" class="form-control" readonly="true" />
+            
+        <label>Remark</label>
+          <textarea name="remark" class="form-control" required></textarea>
+             
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="background-color:#2f9fe0;color:white;">Close</button>
+          <button type="submit" class="btn btn-warning pull-right bg-warning" style="background-color:#2f9fe0;color:white;">Save Remark</button>
+      </div>
+    </div>
+</form>
+  </div>
+</div>
+@if (ViewBag.msg != "" && ViewBag.msg != null)
+{ 
+    <script>
+        (function myFunction() {
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        })();
+
+  </script>      
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#submit').click(function () {
+            @Html.ValidationSummary(true)
+        });
+    });
+
+    
+
+</script>

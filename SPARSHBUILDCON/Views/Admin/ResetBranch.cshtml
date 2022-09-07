@@ -1,0 +1,86 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1); 
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "ResetBranch";
+}
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Reset Panel-Wise Password</h4>
+
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+                @using (Html.BeginForm())
+                {
+                    <div class="card-header">
+                        <h3 class="card-title">Reset Panel-Wise Password</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-label">Select Panel</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="type" name="type" required>
+                                            <option disabled="disabled">Select</option>
+                                            <option value="Branch">@mr.branchname</option>
+                                            <option>Collection Point</option>
+                                            <option>HR</option>
+
+
+                                        </select>
+                                        <span class="input-group-append">
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-cog"></i>Reset Password</button>
+                                            &nbsp;@ViewBag.msg
+                                        </span>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                                  
+                    }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

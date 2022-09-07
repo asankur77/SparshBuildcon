@@ -1,0 +1,58 @@
+﻿@using SPARSHBUILDCON.Models
+@{
+    ViewBag.Title = "CreditDebitHistory";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    UsersContext db = new UsersContext();
+    var transaction = db.TransactionTabs.Where(x => x.accountno == User.Identity.Name).ToList();
+    var cpin = db.Create_Pins.Where(p => p.ID == User.Identity.Name);
+    var a = 0;
+}
+
+<div class="row">
+    <h3 style="color:red; font-weight:800">@ViewData["msg"]</h3>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" style="background-color: #00B356;">
+                <h4 class="title">All Create PIN Detail</h4>
+            </div>
+            <div class="card-content">
+              
+                    <div class="row" style="overflow-x:auto">
+                        <div class="col-md-12">
+                           
+                                
+                                <table class="table table-responsive ">
+
+                                    <tr style="color:blue">
+                                        <th>SrNo</th>
+                                        <th>Create Name</th>
+                                        <th>Total PIN</th>
+                                        <th>PIN Amount</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                    </tr>
+
+                                    @foreach (var i in cpin)
+                                    {
+                                        <tr>
+                                            <td>@a</td>
+                                            <td>@i.ID</td>
+                                            <td>@i.Total_Pin</td>
+                                            <td>@i.Pin_Amount</td>
+                                            <td>@i.Date.ToString("dd/MM/yyyy")</td>
+                                            <td>@i.Date.ToShortTimeString()</td>
+                                        </tr>
+            a = a + 1;
+        }
+
+
+                                </table>
+                          
+                        </div>
+                      
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>

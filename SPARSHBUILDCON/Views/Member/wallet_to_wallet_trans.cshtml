@@ -1,0 +1,91 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "wallet_to_wallet_trans";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    var waltab = (from r in db.wallettabs where r.UserId == User.Identity.Name select r.amount).DefaultIfEmpty(0).Sum();
+    var totamt = waltab;
+}
+<script>
+    function checkid(check_id) {
+
+
+        var intro = $("#" + check_id).val();
+        var url = '@Url.Action("SelectIntroName", "Admin")';
+        $.get(url, { intro: intro }, function data(name1) {
+            $('#introducername').val(name1)
+        });
+
+
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Tomemberid").autocomplete({
+            source: function (request, response) {
+                debugger;
+                $.ajax({
+                    url: "/Admin/assignmem",
+                    type: "POST",
+                    dataType: "json",
+                    data: { mem: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.username, value: item.memberid };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+ 
+
+ @using (Html.BeginForm())
+        {
+          
+<div class="row">
+    <div class="col-md-12">
+        <div class="card form-group">
+            <div class="row" style="margin-left:2%; margin-right:2%">
+            <div class="col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label">Available Balance</label>
+                    <input type="text" class="form-control" name="avlamount" value="@totamt" readonly="true">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label">Amount</label>
+                    <input type="Number" class="form-control"  name="amount">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label">To MemberId</label>
+                    <input type="text" class="form-control" name="Tomemberid"id="Tomemberid" onblur="checkid(this.id)">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group label-floating">
+                   
+                    <input type="text" class="form-control" name="name" id="introducername" readonly="true" style="font-weight:800;color:green;">
+                </div>
+            </div>
+                </div>
+            <div class="row">
+                        <div class="col-md-12">
+                <div class="form-group" style="margin-right:2%">
+                    <button type="submit" class="btn btn-primary btn-md pull-right">Transfer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+ }

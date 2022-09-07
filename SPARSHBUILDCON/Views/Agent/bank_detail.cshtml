@@ -1,0 +1,90 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "bank_detail";
+    Layout = "~/Views/Shared/_New_AgentLayout.cshtml";
+    UsersContext db = new UsersContext();
+    var agentdetail = db.AgentDetails.Single(s => s.NewAgentId == User.Identity.Name);
+}
+
+
+<div class="my-3 my-md-5">
+					<div class="container">
+						<div class="page-header">
+							<h4 class="page-title"></h4>
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">Agent</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Edit Detail</li>
+							</ol>
+							
+						</div>
+                        <form action="/Agent/bank_detail" method="post" enctype="multipart/form-data">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="card">
+									<div class="card-header">
+										<h3 class="card-title">My Bank Detail</h3>
+									</div>
+									<div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6">
+                                                <div class="form-group">
+												<label class="form-label">Agent Name</label>
+                                                    <input type="text" value="@agentdetail.name" name="name" readonly="readonly" class="form-control" />
+											</div>
+                                                <div class="form-group">
+												<label class="form-label">Bank Name</label>
+                                                    <input type="text" value="@agentdetail.BankName" name="BankName" class="form-control" />
+											</div>
+                                                    <div class="form-group">
+												<label class="form-label">Bank A/C Number</label>
+                                                    <input type="text" value="@agentdetail.BankAccountno" name="BankAccountno" class="form-control" />
+											</div>
+                                                       @* <div class="form-group">
+												<label class="form-label">Nominee Name</label>
+                                                    <input type="text" class="form-control" value="@agentdetail.NomineeName" />
+											</div>*@
+                                                        @*<div class="form-group">
+												<label class="form-label">RelationShip</label>
+                                                            <input type="text" value="@agentdetail.Relationship" class="form-control" />
+                                                   <select name="relationship" class="form-control">
+                                                       <option value="None">Select Relation</option>
+                                                       <option value="Father">Father</option>
+                                                       <option value="Mother">Mother</option>
+                                                       <option value="Brother">Brother</option>
+                                                       <option value="Sister">Sister</option>
+                                                       <option value="Friend">Friend</option>
+                                                       <option value="Neighbour">Neighbour</option>
+                                                       <option value="Others">Others</option>
+                                                   </select>
+											</div>*@
+                                            </div>
+                                            <div class="col-md-6 col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Agent Id</label>
+                                                    <input type="text" readonly="readonly" value="@agentdetail.NewAgentId" name="NewAgentId" class="form-control" />
+                                                </div>
+                                                  <div class="form-group">
+                                                    <label class="form-label">Bank Ifsc</label>
+                                                    <input type="text" value="@agentdetail.IFCCode" name="IFCCode" class="form-control" />
+                                                </div>
+                                                  <div class="form-group">
+                                                    <label class="form-label">Bank Address</label>
+                                                   <textarea class="form-control"  rows="2" name="BankAddress">@agentdetail.BankAddress</textarea>
+                                                </div>
+                                                       @* <div class="form-group">
+												<label class="form-label">Nominee Age</label>
+                                                    <input type="text" value="@agentdetail.NomineeAge" class="form-control" />
+											</div>*@
+                                                </div>
+                                            <div class="col-md-12 col-lg-12">
+                                                <button type="submit" class="btn btn-primary btn-lg pull-right">Update</button>
+                                            </div>
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </form> 
+                        </div>
+    </div>

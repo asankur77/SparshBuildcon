@@ -1,0 +1,182 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Ranktab>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "UpdateRank";
+    var pagesize = (from r in db.Ranktabs select r).Count();
+    var grid = new WebGrid(null,
+             defaultSort: "",
+             rowsPerPage: pagesize,
+             selectionFieldName: "SearchString",
+             ajaxUpdateContainerId: "agrid",
+             sortFieldName: "SortColumn",
+             sortDirectionFieldName: "SortOrder");
+    grid.Bind(Model, autoSortAndPage: true, rowCount: pagesize);
+    var mr = db.Members.Single(m => m.Id == 1);
+   
+}
+<script type="text/javascript" >
+    $(function () {
+        $('.edit-mode').hide();
+        $('.edit-user, .cancel-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        $('.save-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+
+            var RankCode = tr.find("#lblRankCode").html();
+            var RankName = tr.find("#RankName").val();
+            var Rankshrtcut = tr.find("#Rankshrtcut").val();
+            var Selfquota = tr.find("#Selfquota").val();
+            var TeamQuota = tr.find("#TeamQuota").val();
+           
+           
+            tr.find("#lblRankName").text(RankName);
+            tr.find("#lblRankshrtcut").text(Rankshrtcut);
+            tr.find("#lblSelfquota").text(Selfquota);
+            tr.find("#lblTeamQuota").text(TeamQuota);
+
+            
+            tr.find('.edit-mode, .display-mode').toggle();
+            var RankTab =
+            {
+                "RankCode": RankCode,
+                "RankName": RankName,
+                "Rankshrtcut": Rankshrtcut,
+                "Selfquota": Selfquota,
+                "TeamQuota": TeamQuota
+               
+            };
+            $.ajax({
+                url: '/Admin/EditRank/',
+                data: JSON.stringify(RankTab),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                   
+                }
+            });
+
+        });
+    })
+</script>  
+
+<style type="text/css">
+    .dd {
+        height:50px;
+        width:70%;
+        float:left;
+        font-family:'Arial Rounded MT';
+        font-size:20px;
+    }
+    .d {
+        height:50px;
+        width:30%;
+        float:left;
+        font-family:'Arial Rounded MT';
+        font-size:20px;
+    }
+
+</style>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Update @mr.rankname</h4>
+     
+        </div>
+               @if (Convert.ToInt32(ViewData["count"]) > 0)
+                        {
+            <div class="row">
+                <div class="col-12 card">
+
+
+                    <div class="card-header">
+                        <h3 class="card-title">Update @mr.rankname</h3>
+                    </div>
+                       
+                    <div class="card-body">
+                          
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12" id="comm">
+                        
+                                   
+
+                                        <div id="gridContent">
+                                                                                 @grid.GetHtml(
+        tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        mode: WebGridPagerModes.All,
+        columns:
+             grid.Columns(
+             grid.Column(mr.rankname + " Code", format: @<text> <span class="display-mode" style="width:100%">@item.RankCode </span>
+                                    <label id="lblRankCode" class="edit-mode" style="width:100%">@item.RankCode</label>
+                                    </text>, style: "col2Width"),
+             grid.Column("RankName", mr.rankname+" Name", format: @<text> <span class="display-mode" style="width:100%">
+                 <label id="lblRankName">@item.RankName</label>
+             </span>
+                                    <input type="text" id="RankName" value="@item.RankName" class="edit-mode" style="width:100%" />
+                                    </text>, style: "col2Width"),
+             grid.Column("Rankshrtcut", mr.rankname+" Shortcut", format: @<text> <span class="display-mode" style="width:100%">
+                 <label id="lblRankshrtcut">@item.Rankshrtcut</label>
+             </span>
+                                    <input type="text" id="Rankshrtcut" value="@item.Rankshrtcut" class="edit-mode" style="width:100%" />
+                                    </text>, style: "col2Width"),
+             grid.Column("Selfquota", "SelfJoining", format: @<text> <span class="display-mode" style="width:100%">
+                 <label id="lblSelfquota">@item.Selfquota</label>
+             </span>
+                                    <input type="text" id="Selfquota" value="@item.Selfquota" class="edit-mode" style="width:100%" />
+                                    </text>, style: "col2Width"),
+             grid.Column("TeamQuota", "TeamQuota", format: @<text> <span class="display-mode" style="width:100%">
+                 <label id="lblTeamQuota">@item.TeamQuota</label>
+             </span>
+                                    <input type="text" id="TeamQuota" value="@item.TeamQuota" class="edit-mode" style="width:100%" />
+                                    </text>, style: "col2Width"),
+             grid.Column("Action", format: @<text>
+                                    <button class="edit-user display-mode">Edit</button>
+                                    <button class="save-user edit-mode">Save</button>
+                                    <button class="cancel-user edit-mode">Cancel</button>
+                                    </text>, style: "col3Width", canSort: false)
+                    ))
+
+
+                                        </div>
+                                
+                      
+                            </div>
+                        </div>
+                    </div>
+                    
+                                      
+                </div>
+            </div>
+                        }
+             </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

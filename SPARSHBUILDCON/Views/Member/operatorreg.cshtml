@@ -1,0 +1,171 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "operatorreg";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    var regpin = ViewData["pinid"];
+    var introduction = db.AgentDetails.ToList();
+    
+}
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>  
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script type="text/javascript">
+    function JavascriptFunction() {
+        var url = '@Url.Action("PostMethod", "Admin")';
+        $("#divLoading").show();
+        $.post(url, null,
+                function (data) {
+                    $("#PID")[0].innerHTML = data;
+                    $("#divLoading").hide();
+                });
+    }
+</script>
+
+<style type="text/css">
+    .hide {
+        display:none;
+    }
+
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("#introducerid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Operator/AutoCompleteintroid",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.name, value: item.NewAgentId };
+
+
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+
+
+    })
+</script>
+
+<script>
+    function checkid(check_id) {
+
+
+        var intro = $("#" + check_id).val();
+        var url = '@Url.Action("SelectIntroName", "Member")';
+            $.get(url, { intro: intro }, function data(name1) {
+                $('#introducername').text(name1)
+            });
+
+
+        }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#opdop").change(function () {
+            $("#opdob").val($("#dob").val());
+        });
+        $("#india").change(function () {
+            debugger;
+            $("#country").val($(this).val());
+            if ($(this).val() == "select") {
+                $("#country").val(null);
+            }
+        });
+        $('input[type="date"]').change(function () {
+            $("#opdob").val(this.value);
+        });
+        $("#mf").change(function () {
+            debugger;
+            $("#gender").val($(this).val());
+            if ($(this).val() == "select") {
+                $("#gender").val(null);
+            }
+        });
+        $("#selrel").change(function () {
+            debugger;
+            $("#relation").val($(this).val());
+            if ($(this).val() == "select") {
+                $("#relation").val(null);
+            }
+        });
+    });
+</script>
+
+<div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001; opacity: .8; filter: alpha(opacity=70); display: none">
+    <p style="position: absolute; top: 30%; left: 42%; color: White;">
+        <img src="~/Content/11.gif"><br />
+        <br />
+        <b style="margin-left: 50px;">Loading, please wait...</b>
+    </p>
+</div>
+
+
+<i style="color:red;font-weight:800;">@ViewData["msg"]</i>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" style="background-color: #00B356;">
+                <h4 class="title">Member Registration</h4>
+            </div>
+            <div class="card-content">
+                @using(Html.BeginForm("operatorreg","Member", FormMethod.Post))
+                {
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Name</label>
+                                <input type="text" required="required" name="name" class="form-control">
+                                <input type="hidden" value="@regpin" name="regpin" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Spil Id</label>
+                                <input type="text" onblur="checkid(this.id)" required="required" id="introducerid" name="spilid" class="form-control">
+                                @*<select onchange="checkid(this.id)" id="IntroducerCode" class="form-control" name="introducerid">
+                                    <option>Select</option>
+                                    @foreach(var item in introduction)
+                                    {
+                                    <option value="@item.memberid">@item.memberid</option>
+                                    }
+
+                                </select>*@
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Introducer Name</label>
+                                <label id="introname" style="color:green;font-weight:800;"></label>
+                            </div>
+                        </div>
+
+                         <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Mobile</label>
+                                <input type="number" max-length="10" required="required" name="Mobile" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit"  onclick="JavascriptFunction()"  class="btn btn-primary pull-right">Register</button>
+                    <div class="clearfix"></div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

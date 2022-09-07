@@ -1,0 +1,82 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var br = db.Branchtabs.Single(b => b.BranchCode == User.Identity.Name);
+    ViewBag.Title = "FundManagement";
+    Layout = "~/Views/Shared/_BranchLayout.cshtml";
+}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Welcome @br.BranchName</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Fund Management</a></li>
+
+            </ol>
+
+        </div>
+
+        <div class="row row-cards">
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-info card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/DailyClosing" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Daily Closing
+											
+                                            <img alt="" src="~/Images/icon/chequeregister.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-primary  card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/ChequeRegis" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Cheque Register
+											
+                                            <img alt="" src="~/Images/icon/chequeregister.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card bg-success   card-img-holder text-white">
+                    <div class="card-body">
+                        <a href="~/Branch/BankRegis" style="color: white">
+                            <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                            <h4 class="font-weight-normal  mb-3">Bank Transaction
+
+											
+                                            <img alt="" src="~/Images/icon/chequeregister.png" class=" fs-30 float-right" />
+                            </h4>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

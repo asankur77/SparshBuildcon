@@ -1,0 +1,168 @@
+﻿@using SPARSHBUILDCON.Models; 
+@{
+    UsersContext db = new UsersContext();
+    ViewBag.Title = "FillMemberDetails";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+    var introducer = ViewData["Introducer"];
+    var intro = db.userinformations.Single(a => a.memberid == introducer); 
+    var SpilId = ViewData["SpilId"].ToString();
+    var Pin = ViewData["Pin"];
+    var side = ViewData["side"];
+    var Regfrom = ViewData["Regfrom"];
+    
+    
+   
+}
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>  
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+
+<script type="text/javascript">
+    function JavascriptFunction() {
+
+        var url = '@Url.Action("PostMethod", "Admin")';
+        $("#divLoading").show();
+        $.post(url, null,
+                function (data) {
+                    $("#PID")[0].innerHTML = data;
+                    $("#divLoading").hide();
+                });
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    .hide {
+        display:none;
+    }
+
+</style>
+
+
+<div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001; opacity: .8; filter: alpha(opacity=70); display: none">
+    <p style="position: absolute; top: 30%; left: 42%; color: White;">
+        <img src="~/Content/11.gif"><br />
+        <br />
+        <b style="margin-left: 50px;">Loading, please wait...</b>
+    </p>
+</div>
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+   
+        $("#dob").change(function () {
+            $("#opdob").val($("#dob").val());
+        });
+        $("#india").change(function () {
+            debugger;
+            $("#country").val($(this).val());
+            $("#india").val("select");
+        });
+        $('input[type="date"]').change(function () {
+            $("#opdob").val(this.value);
+        });
+        $("#mf").change(function () {
+            debugger;
+            $("#gender").val($(this).val());
+            $("#mf").val("select");
+        });
+        $("#selrel").change(function () {
+            debugger;
+            $("#relation").val($(this).val());
+            $("#selrel").val("Select");
+        });
+        $("#name").change(function () {
+            $("#introducerid").val($(this).val());
+            $("#name").val("Select");
+        });
+    });
+</script>
+
+
+
+
+<h3 style="color:red;">@ViewData["msg"]</h3> 
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+
+             @using (Html.BeginForm("FillMemberDetails", "Member", FormMethod.Post))
+                {
+         
+            <div class="card-header" style="background-color: #00B356;">
+                <h4 class="title">Member Registration</h4>
+            </div>
+            <div class="card-content">
+               
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Name</label>
+                                <input type="text" required="required" name="username" class="form-control" >
+                                <input type="hidden" value="@Pin" name="Pin" />
+                                 <input type="hidden" value="@side" name="position" />
+                                  <input type="hidden" value="@Regfrom" name="Regfrom" />
+                                
+                            </div>
+                        </div>
+                        
+
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Introducer Id</label><br />
+                              <input type="text" required="required" name="introducerid" class="form-control" value="@intro.memberid" readonly="true">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                             @*   <label class="control-label" style="font-weight:bold; color:black">Spil Id</label><br />*@
+                              <input type="hidden" name="spilid" class="form-control" value="@SpilId">
+                            </div>
+                        </div>
+                         <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                <label class="control-label" style="font-weight:bold; color:black">Mobile</label>
+                                <input type="number" max-length="10" required="required" name="mobile" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                          <div class="row">
+                     <div class="col-md-3">
+                            <div class="form-group label-floating">
+                      <label class="control-label" style="font-weight:bold; color:black">Introducer Name</label><br />
+                                <label style="color:green;font-weight:800;">@intro.username</label>
+                                </div>
+                         </div>
+                              @*<div class="col-md-3">
+                            <div class="form-group label-floating">
+                      <label class="control-label" style="font-weight:bold; color:black">MemberId</label><br />
+                               <input type="text" name="memberid"class="form-control" required />
+                                </div>
+                         </div>*@
+                              @*<div class="col-md-3">
+                            <div class="form-group label-floating">
+                      <label class="control-label" style="font-weight:bold; color:black">Password</label><br />
+                              <input type="Password"  name="Password"  class="form-control" required />
+                                </div>
+                         </div>*@
+                    </div>
+                            
+                    <button type="submit" onclick="JavascriptFunction()" class="btn btn-primary pull-right">Register</button>
+                    <div class="clearfix"></div>
+                    
+               
+        </div>
+        
+                }
+    </div>
+</div>
+                    </div>

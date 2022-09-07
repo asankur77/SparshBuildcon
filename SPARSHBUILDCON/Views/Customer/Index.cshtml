@@ -1,0 +1,58 @@
+﻿@using SPARSHBUILDCON.Models
+@{
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    ViewBag.Title = "Index";
+
+    UsersContext db = new UsersContext();
+    var br = db.appltabs.Single(brw => brw.newbondid == User.Identity.Name);
+    var mr = db.Members.Single(c => c.Id == 1);
+    Double payrenew = (from ab in db.Installmenttabs where ab.newbondid == User.Identity.Name && ab.payamount != 0 && ab.installmentno != 1 select ab.payamount).DefaultIfEmpty(0).Sum();
+    int renewcount = (from ab in db.Installmenttabs where ab.newbondid == User.Identity.Name && ab.payamount != 0 select ab.payamount).Count();
+    int norenewcount = (from ab in db.Installmenttabs where ab.newbondid == User.Identity.Name && ab.payamount == 0  select ab.payamount).Count();
+}
+
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Welcome, @br.name</h4>
+        </div>
+        <div class="col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Total Collection</div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                        <table class="table card-table table-vcenter text-nowrap table-primary">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th class="text-white"><b>@mr.custname Amount</b></th>
+                                    <th class="text-white">Paid Renewal Amount</th>
+                                    <th class="text-white">No. Of Paid Renewal</th>
+                                    <th class="text-white">No. Of UnPaid Renewal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+                                    <td>@br.payment</td>
+                                    <td>@payrenew</td>
+                                    <td>@renewcount</td>
+                                    <td>@norenewcount</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- table-wrapper -->
+            </div>
+            <!-- section-wrapper -->
+
+        </div>
+
+    </div>
+
+</div>

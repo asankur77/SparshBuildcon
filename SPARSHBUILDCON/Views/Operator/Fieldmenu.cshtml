@@ -1,0 +1,239 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var br = db.Operators.Single(b => b.OperatorId == User.Identity.Name);
+    var mr = db.Members.Single(m => m.Id == 1);
+ 
+    var plan1 = db.Plans.Single(p1 => p1.Plancode == 1);
+    var plan2 = db.Plans.Single(p2 => p2.Plancode == 2);
+    var plan3 = db.Plans.Single(p3 => p3.Plancode == 3);
+    var plan4 = db.Plans.Single(p4 => p4.Plancode == 4);
+    
+    var f1 = db.VFormatTabs.Single(f => f.Id == 1);
+    var f2 = db.VFormatTabs.Single(f => f.Id == 2);
+    var f3 = db.VFormatTabs.Single(f => f.Id == 3);
+
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+    ViewBag.Title = "Fieldmenu";
+}
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Welcome @br.OperatorId</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Field Reports</a></li>
+
+            </ol>
+
+        </div>
+        <div class="row">
+            <div class="col-12 card">
+
+                <div class="card-header">
+                    <h3 class="card-title">Welcome @br.OperatorId</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row row-cards">
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/BTree" style="color: white">
+                                        <img src="/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Tree View
+                             <img alt="" src="/Images/icon/btree.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/Broker" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname List
+											
+                                            <img alt="" src="~/Images/icon/7.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary  card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/DatewiseBroker" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise @mr.agentname List
+											
+                                            <img alt="" src="~/Images/icon/63.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning    card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/BrokerChain" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Chain
+
+											
+                                            <img alt="" src="~/Images/icon/52.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/BrokerPaymentDetail" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Payment Details
+
+											
+                                            <img alt="" src="~/Images/icon/20.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-cards">
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning  card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/Selfbusiness" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Business Details
+											
+                                            <img alt="" src="~/Images/icon/33.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary  card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/BrokerAccount" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Account Details
+											
+                                            <img alt="" src="~/Images/icon/33.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-success   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/BrokerwiseAccountDetail" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">Datewise @mr.agentname Account Details
+
+											
+                                            <img alt="" src="~/Images/icon/16.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/BrokerSelfCollection" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Self Collection
+
+											
+                                            <img alt="" src="~/Images/icon/11.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-cards">
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-info card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/BrokerChainCollection" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Chain Collection
+											
+                                            <img alt="" src="~/Images/icon/37.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-warning   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/BrokerSelfDueCollection" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Self Due Collection
+											
+                                            <img alt="" src="~/Images/icon/28.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-3">
+                            <div class="card bg-primary   card-img-holder text-white">
+                                <div class="card-body" style="height: 130px">
+                                    <a href="~/Operator/BrokerChainDueCollection" style="color: white">
+                                        <img src="~/Content/Admin/assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
+                                        <h4 class="font-weight-normal  mb-3">@mr.agentname Chain Due Collection
+
+											
+                                            <img alt="" src="~/Images/icon/52.png" class=" fs-30 float-right" />
+                                        </h4>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

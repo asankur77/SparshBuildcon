@@ -1,0 +1,229 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.RateTab>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    //var plist = db.Plans.Where(a => a.status == 1).ToList();
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "EMIMaster";
+    var pagesize = (from r in db.RateTabs select r).Count();
+    var grid = new WebGrid(null,
+             defaultSort: "",
+             rowsPerPage: pagesize,
+             selectionFieldName: "SearchString",
+             ajaxUpdateContainerId: "agrid",
+             sortFieldName: "SortColumn",
+             sortDirectionFieldName: "SortOrder");
+    grid.Bind(Model, autoSortAndPage: true, rowCount: pagesize);
+   
+}
+<link rel="stylesheet" href="~/Content/jquery-ui.css" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#projectid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Admin/AutoCompletenPlan",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.projectname, value: item.projectid };
+
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+    })
+</script>
+
+
+<script type="text/javascript" >
+    $(function () {
+        $('.edit-mode').hide();
+        $('.edit-user, .cancel-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        $('.save-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+
+            var Id = tr.find("#lblId").html();
+            var projectid = $("#pcode").val();
+            var projectname = tr.find("#lblprojectname").html();
+            var term = tr.find("#term").val();
+            var plotcost = tr.find("#plotcost").val();
+            var quotaper = tr.find("#quotaper").val();
+          
+            tr.find("#lblplotcost").text(plotcost);
+            tr.find("#lblquotaper").text(quotaper);
+
+            tr.find('.edit-mode, .display-mode').toggle();
+            var RateTab =
+            {
+                "Id": Id,
+                "term": term,
+                "projectid": projectid,
+                "projectname": projectname,
+                "term": term,
+                "plotcost": plotcost,
+                "quotaper": quotaper
+             
+            };
+            $.ajax({
+                url: '/Admin/EditEMIMaster/',
+                data: JSON.stringify(RateTab),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    alert(data);
+                }
+            });
+
+        });
+    })
+</script>  
+
+<style type="text/css">
+    .dd {
+        height:50px;
+        width:70%;
+        float:left;
+        font-family:'Arial Rounded MT';
+        font-size:20px;
+    }
+    .d {
+        height:50px;
+        width:30%;
+        float:left;
+        font-family:'Arial Rounded MT';
+        font-size:20px;
+    }
+
+</style>
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">EMI Master</h4>
+        </div>
+               
+            <div class="row">
+                <div class="col-12 card">
+
+
+                    <div class="card-header">
+                        <h3 class="card-title">EMI Master</h3>
+                    </div>
+                       
+                    <div class="card-body">
+                                       @using (Html.BeginForm())
+                                       {
+                          	<div class="row">
+                       
+											<div class="col-md-12 col-lg-12">
+											<div class="form-group">
+													<label class="form-label">Select @mr.planname Id or Name </label>
+													<div class="input-group">
+														<input type="text" class="form-control" name="projectid" id="projectid" required />
+														<span class="input-group-append">
+														  <button type="submit" class="btn btn-primary pull-right" id="search" onclick="showDiv()">Search</button>
+														</span>
+													</div>
+												</div>
+
+                                                </div>
+                                             <input type="hidden"  id="pcode" value="@ViewData["projectid"]" />
+                                    
+                                  </div>
+                                       }
+                         @if (Convert.ToInt32(ViewData["count"]) > 0)
+                         {
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12" id="comm">
+                        
+                                   
+
+                                        <div id="gridContent">
+                                                                            @grid.GetHtml(
+        tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        mode: WebGridPagerModes.All,
+        columns:
+             grid.Columns(
+             grid.Column("SN", format: @<text> <span class="display-mode" style="width: 100%">@item.Id </span>
+                                    <label id="lblId" class="edit-mode" style="width: 100%">@item.Id</label>
+                                    </text>, style: "col2Width"),
+             grid.Column(mr.planname + " Name", format: @<text> <span class="display-mode" style="width: 100%">@item.projectname</span>
+                                    <label id="lblprojectname" class="edit-mode" style="width: 100%">@item.projectname</label>
+                                    </text>, style: "col2Width"),
+             grid.Column("term", "Year", format: @<text> <span class="display-mode" style="width: 100%"> @item.term </span>
+                 <label id="lblterm" class="edit-mode" style="width: 20px;">@item.term</label>
+           
+                                    </text>, style: "col2Width"),
+             grid.Column("plotcost", "Plot Cost", format: @<text> <span class="display-mode" style="width: 100%">
+                 <label id="lblplotcost">@item.plotcost</label>
+             </span>
+                                    <input type="text" id="plotcost" value="@item.plotcost" class="edit-mode" style="width: 100%"  />
+                                    </text>, style: "col2Width"),
+                                     grid.Column("plotsize", "Plot Size(SqYd)", format: @<text> <span class="display-mode" style="width: 100%">
+                                         <label id="lblplotsize">@item.plotsize</label>
+                                     </span>
+                                    <input type="text" id="plotsize" value="@item.plotsize" class="edit-mode" style="width: 100%" readonly="true" />
+                                    </text>, style: "col2Width"),
+                                    grid.Column("quotaper", "Quota(%)", format: @<text> <span class="display-mode" style="width: 100%">
+                                         <label id="lblquotaper">@item.quotaper</label>
+                                     </span>
+                                    <input type="text" id="quotaper" value="@item.quotaper" class="edit-mode" style="width: 100%" />
+                                    </text>, style: "col2Width"),
+             grid.Column("Action", format: @<text>
+                                    <button class="edit-user display-mode">Edit</button>
+                                    <button class="save-user edit-mode">Save</button>
+                                    <button class="cancel-user edit-mode">Cancel</button>
+                                    </text>, style: "col3Width", canSort: false)
+                                               ))
+
+
+                                        </div>
+                                
+                      
+                            </div>
+                        </div>
+                         }
+                    </div>
+                    
+                                      
+                </div>
+            </div>
+                     
+             </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

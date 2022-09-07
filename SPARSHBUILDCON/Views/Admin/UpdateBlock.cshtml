@@ -1,0 +1,176 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.BlockTab>
+@using SPARSHBUILDCON.Models;
+@{
+    UsersContext db = new UsersContext();
+    var mr = db.Members.Single(m => m.Id == 1);
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "UpdateBlock";
+    var pagesize = (from r in db.BlockTabs select r).Count();
+    var grid = new WebGrid(null,
+             defaultSort: "",
+             rowsPerPage: pagesize,
+             selectionFieldName: "SearchString",
+             ajaxUpdateContainerId: "agrid",
+             sortFieldName: "SortColumn",
+             sortDirectionFieldName: "SortOrder");
+    grid.Bind(Model, autoSortAndPage: true, rowCount: pagesize);
+    var a = 0;
+   
+}
+
+<script type="text/javascript" >
+    $(function () {
+        $('.edit-mode').hide();
+        $('.edit-user, .cancel-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        $('.save-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            var Id = tr.find("#Id").html();
+            var min = tr.find("#min").val();
+            var max = tr.find("#max").val();
+           
+           
+            tr.find("#lblmin").text(min);
+            tr.find("#lblmax").text(max);
+            
+            tr.find('.edit-mode, .display-mode').toggle();
+            var BlockTab =
+            {
+                "Id": Id,
+                "min": min,
+                "max": max,
+               
+            };
+            $.ajax({
+                url: '/Admin/EditBlock/',
+                data: JSON.stringify(BlockTab),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    alert(data);
+                }
+            });
+
+        });
+    })
+</script>  
+
+<style type="text/css">
+    .dd {
+        height:50px;
+        width:70%;
+        float:left;
+        font-family:'Arial Rounded MT';
+        font-size:20px;
+    }
+    .d {
+        height:50px;
+        width:30%;
+        float:left;
+        font-family:'Arial Rounded MT';
+        font-size:20px;
+    }
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h4 class="page-title">Edit Block Limit</h4>
+            <button type="button" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>@DateTime.Now</button>
+        </div>
+                 @if (a == 0)
+                        { 
+            <div class="row">
+                <div class="col-12 card">
+
+
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Block Limit</h3>
+                    </div>
+                       
+                    <div class="card-body">
+                          
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12" id="comm">
+                        
+                                   
+
+                                        <div id="gridContent">
+                                                                        @grid.GetHtml(
+        tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        mode: WebGridPagerModes.All,
+        columns:
+             grid.Columns(
+             grid.Column("SN", format: @<text> <span class="display-mode" style="width: 100%;">@item.Id </span>
+                                    <label id="Id" class="edit-mode" style="width:100%;">@item.Id</label>
+                                    </text>, style: "col2Width" ), 
+             grid.Column("Plan Name", format: @<text> <span class="display-mode" style="width: 100%;">@item.Planname</span>
+                                    <label id="Planname" class="edit-mode" style="width: 100%;">@item.Planname</label>
+                                    </text>, style: "col2Width" ), 
+             grid.Column("Block Name", format: @<text> <span class="display-mode"style="width: 100%;">@item.block </span>
+                                    <label id="block" class="edit-mode" style="width: 100%;">@item.block</label>
+                                    </text>, style: "col2Width" ), 
+             grid.Column("min", "Min Value", format: @<text> <span class="display-mode">
+                 <label id="lblmin">@item.min</label>
+             </span>
+                                    <input type="text" id="min" value="@item.min" class="edit-mode" style="width: 100%;" />
+                                    </text>, style: "col2Width"), 
+             grid.Column("max", "Max Value", format: @<text> <span class="display-mode">
+                 <label id="lblmax">@item.max</label>
+             </span>
+                                    <input type="text" id="max" value="@item.max" class="edit-mode" style="width: 100%;" />
+                                    </text>, style: "col2Width"),   
+             grid.Column("Action", format: @<text>
+                                    <button class="edit-user display-mode">Edit</button>
+                                    <button class="save-user edit-mode">Save</button>
+                                    <button class="cancel-user edit-mode">Cancel</button>
+                                    </text>, style: "col3Width", canSort: false)
+                    ))
+
+
+                                        </div>
+                                
+                      
+                            </div>
+                        </div>
+                    </div>
+                    
+                                      
+                </div>
+            </div>
+                        }
+             </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+

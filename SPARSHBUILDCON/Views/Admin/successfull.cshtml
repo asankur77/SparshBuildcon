@@ -1,0 +1,79 @@
+﻿@using SPARSHBUILDCON.Models;
+@{
+    ViewBag.Title = "successfull";
+    UsersContext db = new UsersContext();
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main-body">
+    <div class="page-wrapper">
+         <br /><br /><br />
+        <div class="page-header">
+            <div class="page-header-title">
+               
+                <span></span>
+            </div>
+            <div class="page-header-breadcrumb">
+                <ul class="breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">
+                            <i class="fa fa-university"></i>
+                        </a>
+                    </li>
+
+                   
+                </ul>
+            </div>
+        </div>
+ 
+  
+
+    <div class="main-content" style="margin-top:50px;">
+
+                         <div class="widget widget-blue" >
+      <div class="widget-title"  >
+        
+        <h3><i class="fa fa-ok-circle"></i></h3>
+      </div>
+      <div class="widget-content"  style="min-height:600px;">
+          <center>
+  <br /> <br /> <br />
+ 
+              @if (ViewData["kycerror"] != null)
+              {
+                   <h3  style="color:red;">@ViewData["kycerror"]</h3>
+              }
+        
+       @if (ViewData["msg"]!=null)
+       {
+           <img height="200" width="250" src="~/Content/messg/Successfully1.gif" />
+            <h3  style="color:green;"> @ViewData["msg"]</h3>
+       }
+                
+
+         @if (ViewData["msgnottopup"] != null)
+       {
+           
+            <h3  style="color:red;"> @ViewData["msgnottopup"]</h3>
+       }
+              
+                 @if (ViewData["bankpan"] != null)
+       {
+           
+            <h3  style="color:red;"> @ViewData["bankpan"]</h3>
+       }
+              @if (ViewData["msg1"]!=null)
+                  
+              {<img src="~/Content/messg/oppps1.jpg" />
+               <h3  style="color:red;"> @ViewData["msg1"]</h3>
+              }
+            
+         </center>
+      </div>
+           
+                                               
+    </div>
+    
+   </div>   </div> 
+    </div>

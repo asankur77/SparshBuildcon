@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "VisitorEntry";
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+}
+
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+
+<script>
+    $(function () {
+        $('#date').datepick();
+        
+    });
+</script>
+
+<div class="my-3 my-md-5">
+					<div class="container">
+						<div class="page-header">
+							<h4 class="page-title">Visitor Entry Form</h4>
+						 <div class="page-toolbar-block pull-right">
+                <div class="widget-info widget-from">
+                    <div id="reportrange" class="dtrange">
+                        <span></span><b class="caret"></b>
+                    </div>
+                </div>
+            </div>
+						</div>
+						<div class="row">
+							<div class="col-12 card">
+							
+									<div class="card-header">
+										<h3 class="card-title">Visitor Entry Form</h3>
+									</div>
+									<div class="card-body">
+                                        
+                        @using (Html.BeginForm())
+                        {
+										<div class="row">
+											<div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label"> Name</label>
+												 <input type="Text"  class="form-control" name="name" id="name" required />
+												</div>
+							</div>
+                                            		<div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label"> Mobile</label>
+												  <input type="number" step="any" class="form-control" name="mobile" id="mobile" required />
+												</div>
+							</div>
+                                                    		<div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label"> Purpose</label>
+												     <input type="text" class="form-control" name="purpose" id="purpose" required />
+												</div>
+							</div>
+                                                               		<div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label"> Date</label>
+												   <input type="text" class="form-control"  name="date" id="date"/>
+												</div>
+							</div>
+                                                                      		<div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label"> In Time</label>
+												    <input type="time" class="form-control "  name="intime" id="intime"/>
+												</div>
+							</div>
+                                            <div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label"> Out Time</label>
+												    <input type="time" class="form-control "  name="outtime" id="outtime" />
+												</div>
+							</div>
+                                            <div class="col-md-6 col-lg-6">
+												<div class="form-footer">
+										 <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                                                       <p style="color: maroon;"><b>@ViewBag.msg</b></p>
+                        
+										</div>
+							</div>
+                                            </div>
+                        }
+                                 </div>
+                             
+                                    </div>
+
+                            </div>
+                        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

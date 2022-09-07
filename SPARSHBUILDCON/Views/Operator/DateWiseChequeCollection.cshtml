@@ -1,0 +1,81 @@
+﻿@model IEnumerable<SPARSHBUILDCON.Models.Chequecollection>
+@using SPARSHBUILDCON.Models
+@{
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+    ViewBag.Title = "DateWiseChequeCollection";
+    }
+    
+    
+
+<link href="~/Content/datepicker/jquery.datepick.css" rel="stylesheet" />
+<script src="~/Content/datepicker/jquery.plugin.js"></script>
+<script src="~/Content/datepicker/jquery.datepick.js"></script>
+
+<script>
+    $(function () {
+        $('#sdate').datepick();
+        $('#edate').datepick();
+        
+    });
+
+</script>
+
+<div class="my-3 my-md-5">
+					<div class="container"  id="divid1">
+						<div class="page-header"  id="2">
+							<h4 class="page-title">Datewise Cheque Collection</h4>
+							</div>
+						<div class="row">
+							<div class="col-12 card">
+								
+									<div class="card-header">
+										<h3 class="card-title">Datewise Cheque Collection</h3>
+									</div>
+									<div class="card-body">
+                                        
+        @using (Html.BeginForm())
+        {
+										<div class="row"  id="hide" >
+											<div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label">Start Date</label>
+													 <input type="text" id="sdate" class="form-control " required name="sdate" value="@ViewData["sdate"]" />
+												</div>
+                                                		</div>
+                                                	<div class="col-md-6 col-lg-6">
+												<div class="form-group">
+													<label class="form-label">End Date</label>
+												<input type="text" id="edate" class="form-control" required name="edate" value="@ViewData["edate"]" />
+												</div>
+                                        </div>
+                                                 <div class="form-footer">
+										   <button id="submit" value="Search" onclick="target='_blank'" class="btn btn-primary pull-right" type="submit">View</button>
+										</div>
+											</div>
+											
+						
+            
+        }
+									</div>
+									
+							
+								
+							</div>
+				
+						</div>
+					</div>
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
